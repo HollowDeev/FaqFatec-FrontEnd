@@ -23,3 +23,10 @@ O projeto FAQ Fatec é uma iniciativa dedicada a simplificar a busca por respost
 **Responsividade** : O FAQ é moldado para responder a todos os dispositivos de forma fluida.
 
 **Manutenção Simplificada** : O sistema de adição de novas perguntas e novos temas, além da edição de perguntas e temas já existentes, é intuitivo e simplificado, reunindo as informações uteis em campos e as opções de controle em áreas de fácil compreenção
+
+## Tecnologias
+
+- React
+- Tailwind
+- NextUI
+- FrameMotion
