@@ -15,12 +15,17 @@ export default {
     themes: {
       dark: {
         colors: {
-          background: "#0D0D0D",
+          background:"#070707",
+          background2: "#0D0D0D",
+          content5: "#771212",
+          content6: "#17c964"
         }
       },
       light: {
         colors: {
-          background: "#DEDEDE"
+          background2: "#DEDEDE",
+          content5: "#771212",
+          content6: "#17c964"
         }
       }
     },
