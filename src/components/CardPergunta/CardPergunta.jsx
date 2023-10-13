@@ -17,14 +17,13 @@ CardPergunta.propTypes = {
 
 export default function CardPergunta({limite, tema, filtro}) {
 
-
     switch(filtro){
         case "limite":
-            {console.log(perguntas.filter((pergunta) => pergunta.id <= limite))}
+            {console.log(perguntas.filter((pergunta, índice) => índice < 1))}
             return (
                 <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
                     {
-                        perguntas.filter((pergunta) => pergunta.id <= limite).map((pergunta) => (
+                        perguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
                             <AccordionItem 
                                 key={pergunta.id} 
                                 title={pergunta.title} 
@@ -40,6 +39,7 @@ export default function CardPergunta({limite, tema, filtro}) {
                                     <EyeClosed size={25} color="#ffffff" weight="bold" />
                                 }
                                 disableIndicatorAnimation
+                                
                             >
                                 <p>{pergunta.resposta}</p>
                             </AccordionItem>
