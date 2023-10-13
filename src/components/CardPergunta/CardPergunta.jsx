@@ -3,6 +3,8 @@ import { Eye, EyeClosed } from "@phosphor-icons/react"
 import { perguntas } from "../../data/perguntas"
 import PropTypes from 'prop-types'
 import Icone from "../Icone/Icone"
+import { useContext } from "react"
+import temaContexto from "../../context/TemaContexto"
 
 CardPergunta.defaultProps = {
     limite: 0,
@@ -16,6 +18,8 @@ CardPergunta.propTypes = {
 }
 
 export default function CardPergunta({limite, tema, filtro}) {
+
+    const {tema: temaSistema} = useContext(temaContexto)
 
     switch(filtro){
         case "limite":
@@ -34,9 +38,9 @@ export default function CardPergunta({limite, tema, filtro}) {
                                 indicator={
                                     ({ isOpen }) => isOpen 
                                     ? 
-                                    <Eye size={25} color="#ffffff" weight="bold" /> 
+                                    <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" /> 
                                     :
-                                    <EyeClosed size={25} color="#ffffff" weight="bold" />
+                                    <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
                                 }
                                 disableIndicatorAnimation
                                 
@@ -63,9 +67,9 @@ export default function CardPergunta({limite, tema, filtro}) {
                                 indicator={
                                     ({ isOpen }) => isOpen 
                                     ? 
-                                    <Eye size={25} color="#ffffff" weight="bold" /> 
+                                    <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" /> 
                                     :
-                                    <EyeClosed size={25} color="#ffffff" weight="bold" />
+                                    <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
                                 }
                                 disableIndicatorAnimation
                             >

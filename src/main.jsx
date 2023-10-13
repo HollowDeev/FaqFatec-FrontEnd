@@ -1,13 +1,16 @@
+import App from "./App"
+import temaContexto from "./context/TemaContexto"
+import {useContext} from 'react'
 
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { NextUIProvider } from '@nextui-org/react'
+function Main() {
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <NextUIProvider>
-  <main className="dark text-foreground bg-background">
-    <App />
-  </main>
-  </NextUIProvider>
-)
+  const {tema} = useContext(temaContexto)
+
+  return (
+    <main className={` ${tema} text-foreground bg-background`}>
+      <App />
+    </main>
+  )
+}
+
+export default Main
