@@ -1,6 +1,7 @@
-import App from "./App"
+
 import temaContexto from "./context/TemaContexto"
 import {useContext} from 'react'
+import Home from "./pages/Home/Home"
 
 function Main() {
 
@@ -8,7 +9,7 @@ function Main() {
 
   return (
     <main className={` ${tema} text-foreground bg-background`}>
-      <App />
+      <Home />
     </main>
   )
 }
