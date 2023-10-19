@@ -18,14 +18,16 @@ export default {
           background:"#070707",
           background2: "#0D0D0D",
           content5: "#771212",
-          content6: "#17c964"
+          content6: "#17c964",
+          danger: "#FF000F"
         }
       },
       light: {
         colors: {
           background2: "#DEDEDE",
           content5: "#771212",
-          content6: "#17c964"
+          content6: "#17c964",
+          danger: "#FF000F"
         }
       }
     },
