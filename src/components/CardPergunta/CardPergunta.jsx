@@ -14,16 +14,17 @@ CardPergunta.defaultProps = {
 CardPergunta.propTypes = {
     limite: PropTypes.number,
     filtro: PropTypes.string,
-    tema: PropTypes.string
+    tema: PropTypes.string,
+    cor: PropTypes.string
 }
 
-export default function CardPergunta({limite, tema, filtro}) {
+export default function CardPergunta({limite, tema, filtro, cor = '#771212' }) {
 
     const {tema: temaSistema} = useContext(temaContexto)
 
     switch(filtro){
         case "limite":
-            {console.log(perguntas.filter((pergunta, índice) => índice < 1))}
+        
             return (
                 <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
                     {
@@ -33,7 +34,7 @@ export default function CardPergunta({limite, tema, filtro}) {
                                 title={pergunta.title} 
                                 subtitle={pergunta.tema.toUpperCase()} 
                                 startContent={
-                                    <Icone tema={pergunta.tema} cor={'#771212'} tamanho={50} />
+                                    <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
                                 }
                                 indicator={
                                     ({ isOpen }) => isOpen 
@@ -62,7 +63,7 @@ export default function CardPergunta({limite, tema, filtro}) {
                                 title={pergunta.title} 
                                 subtitle={pergunta.tema.toUpperCase()} 
                                 startContent={
-                                    <Icone tema={pergunta.tema} cor={'#771212'} tamanho={50} />
+                                    <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
                                 }
                                 indicator={
                                     ({ isOpen }) => isOpen 
@@ -91,7 +92,7 @@ export default function CardPergunta({limite, tema, filtro}) {
                                 title={title} 
                                 subtitle={tema.toUpperCase()}  
                                 startContent={
-                                    <Icone tema={tema} cor={'#771212'} tamanho={50} />
+                                    <Icone tema={tema} cor={cor} tamanho={50} />
                                 }
                                 indicator={
                                     ({ isOpen }) => isOpen 
