@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router"
 import RequireAuth from "./context/Auth/RequireAuth"
 import { Login } from "./pages/Login/Login"
 import { Cabecalho } from "./components/Cabecalho/Cabecalho"
+import Rodape from "./components/Rodape/Rodape"
 
 function Main() {
 
@@ -14,7 +15,7 @@ function Main() {
 
   return (
 
-    <main className={` ${tema} text-foreground bg-background sm:bg-[url(bg-cps.png)] sm:bg-right sm:bg-repeat-y sm:bg-fixed h-full font-roboto`}>
+    <main className={` ${tema} text-foreground bg-background2 sm:bg-[url(bg-cps.png)] sm:bg-right sm:bg-repeat-y sm:bg-fixed h-full min-h-[100vh] flex flex-col justify-between font-roboto`}>
       <Cabecalho />
 
       <Routes>
@@ -27,6 +28,8 @@ function Main() {
         }/>
 
       </Routes>
+
+      <Rodape />
     </main>
 
   )
