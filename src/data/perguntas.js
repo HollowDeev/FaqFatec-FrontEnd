@@ -27,6 +27,6 @@ export const perguntas = [
         id: "5",
         title: "Pergunta 5",
         resposta: "Resposta 5",
-        tema: 'ano-letivo'
+        tema: 'ano letivo'
     }
 ]
