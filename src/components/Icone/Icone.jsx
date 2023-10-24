@@ -1,4 +1,4 @@
-import { Book, Code, GraduationCap } from '@phosphor-icons/react';
+import { Book, Code, GraduationCap, OfficeChair } from '@phosphor-icons/react';
 import P from 'prop-types';
 import { temas } from '../../data/temas';
 
@@ -10,7 +10,7 @@ Icone.propTypes = {
 
 export default function Icone({tema, tamanho, cor}) {
 
-   const temaObj =  temas.filter((item) => item.tema == tema)
+   const temaObj =  temas.filter((item) => item.nome == tema)
    const icone = temaObj[0].icone
     
   switch(icone){
@@ -28,7 +28,11 @@ export default function Icone({tema, tamanho, cor}) {
             return(
                 <GraduationCap size={tamanho} color={cor} weight="duotone" />
             )
-    
+        
+        case "OfficeChair":
+            return(
+                <OfficeChair size={tamanho} color={cor} weight="duotone"/>
+            )
     }
     
 }

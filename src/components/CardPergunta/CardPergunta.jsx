@@ -3,6 +3,8 @@ import { Eye, EyeClosed } from "@phosphor-icons/react"
 import { perguntas } from "../../data/perguntas"
 import PropTypes from 'prop-types'
 import Icone from "../Icone/Icone"
+import { useContext } from "react"
+import temaContexto from "../../context/TemaContexto"
 
 CardPergunta.defaultProps = {
     limite: 0,
@@ -12,32 +14,34 @@ CardPergunta.defaultProps = {
 CardPergunta.propTypes = {
     limite: PropTypes.number,
     filtro: PropTypes.string,
-    tema: PropTypes.string
+    tema: PropTypes.string,
+    cor: PropTypes.string
 }
 
-export default function CardPergunta({limite, tema, filtro}) {
+export default function CardPergunta({limite, tema, filtro = "nenhum", cor = '#771212' }) {
 
+    const {tema: temaSistema} = useContext(temaContexto)
 
     switch(filtro){
         case "limite":
-            {console.log(perguntas.filter((pergunta) => pergunta.id <= limite))}
+        
             return (
-                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
+                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}} >
                     {
-                        perguntas.filter((pergunta) => pergunta.id <= limite).map((pergunta) => (
+                        perguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
                             <AccordionItem 
                                 key={pergunta.id} 
                                 title={pergunta.title} 
                                 subtitle={pergunta.tema.toUpperCase()} 
                                 startContent={
-                                    <Icone tema={pergunta.tema} cor={'#771212'} tamanho={50} />
+                                    <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
                                 }
                                 indicator={
                                     ({ isOpen }) => isOpen 
                                     ? 
-                                    <Eye size={25} color="#ffffff" weight="bold" /> 
+                                    <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" /> 
                                     :
-                                    <EyeClosed size={25} color="#ffffff" weight="bold" />
+                                    <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
                                 }
                                 disableIndicatorAnimation
                             >
@@ -50,7 +54,7 @@ export default function CardPergunta({limite, tema, filtro}) {
 
         case 'tema':
             return (
-                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
+                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}}>
                     {
                         perguntas.filter((pergunta) => pergunta.tema == tema).map((pergunta) => (
                             <AccordionItem 
@@ -58,14 +62,14 @@ export default function CardPergunta({limite, tema, filtro}) {
                                 title={pergunta.title} 
                                 subtitle={pergunta.tema.toUpperCase()} 
                                 startContent={
-                                    <Icone tema={pergunta.tema} cor={'#771212'} tamanho={50} />
+                                    <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
                                 }
                                 indicator={
                                     ({ isOpen }) => isOpen 
                                     ? 
-                                    <Eye size={25} color="#ffffff" weight="bold" /> 
+                                    <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" /> 
                                     :
-                                    <EyeClosed size={25} color="#ffffff" weight="bold" />
+                                    <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
                                 }
                                 disableIndicatorAnimation
                             >
@@ -79,7 +83,7 @@ export default function CardPergunta({limite, tema, filtro}) {
 
         case 'nenhum':
             return (
-                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
+                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}}>
                     {
                         perguntas.map(({id, title, tema, resposta}) => (
                             <AccordionItem 
@@ -87,7 +91,7 @@ export default function CardPergunta({limite, tema, filtro}) {
                                 title={title} 
                                 subtitle={tema.toUpperCase()}  
                                 startContent={
-                                    <Icone tema={tema} cor={'#771212'} tamanho={50} />
+                                    <Icone tema={tema} cor={cor} tamanho={50} />
                                 }
                                 indicator={
                                     ({ isOpen }) => isOpen 

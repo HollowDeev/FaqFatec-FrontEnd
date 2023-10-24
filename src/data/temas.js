@@ -1,14 +1,19 @@
 export const temas = [
     {
-        tema: 'dsm',
+        nome: 'dsm',
         icone: 'Code'
     },
     {
-        tema: 'geral',
+        nome: 'ge',
+        icone: 'OfficeChair'
+    },
+    {
+        nome: 'geral',
         icone: 'Book'
     },
     {
-        tema: 'ano-letivo',
+        nome: 'ano letivo',
         icone: 'GraduationCap'
-    }
+    },
+    
 ]

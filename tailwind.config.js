@@ -8,19 +8,30 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "roboto": ["Roboto"] 
+      }
+    },
   },
   darkMode: "class",
   plugins: [nextui({
     themes: {
       dark: {
         colors: {
-          background: "#0D0D0D",
+          background:"#070707",
+          background2: "#0D0D0D",
+          content5: "#771212",
+          content6: "#17c964",
+          danger: "#FF000F"
         }
       },
       light: {
         colors: {
-          background: "#DEDEDE"
+          background2: "#DEDEDE",
+          content5: "#771212",
+          content6: "#17c964",
+          danger: "#FF000F"
         }
       }
     },
