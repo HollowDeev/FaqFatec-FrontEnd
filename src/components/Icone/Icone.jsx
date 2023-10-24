@@ -10,7 +10,7 @@ Icone.propTypes = {
 
 export default function Icone({tema, tamanho, cor}) {
 
-   const temaObj =  temas.filter((item) => item.tema == tema)
+   const temaObj =  temas.filter((item) => item.nome == tema)
    const icone = temaObj[0].icone
     
   switch(icone){
