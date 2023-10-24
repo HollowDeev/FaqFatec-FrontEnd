@@ -14,7 +14,7 @@ function Main() {
 
   return (
 
-    <main className={` ${tema} text-foreground bg-background`}>
+    <main className={` ${tema} text-foreground bg-background sm:bg-[url(bg-cps.png)] sm:bg-right sm:bg-repeat-y sm:bg-fixed h-full font-roboto`}>
       <Cabecalho />
 
       <Routes>
