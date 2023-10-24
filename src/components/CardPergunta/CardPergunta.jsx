@@ -18,7 +18,7 @@ CardPergunta.propTypes = {
     cor: PropTypes.string
 }
 
-export default function CardPergunta({limite, tema, filtro, cor = '#771212' }) {
+export default function CardPergunta({limite, tema, filtro = "nenhum", cor = '#771212' }) {
 
     const {tema: temaSistema} = useContext(temaContexto)
 
@@ -26,7 +26,7 @@ export default function CardPergunta({limite, tema, filtro, cor = '#771212' }) {
         case "limite":
         
             return (
-                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
+                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}} >
                     {
                         perguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
                             <AccordionItem 
@@ -44,7 +44,6 @@ export default function CardPergunta({limite, tema, filtro, cor = '#771212' }) {
                                     <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
                                 }
                                 disableIndicatorAnimation
-                                
                             >
                                 <p>{pergunta.resposta}</p>
                             </AccordionItem>
@@ -55,7 +54,7 @@ export default function CardPergunta({limite, tema, filtro, cor = '#771212' }) {
 
         case 'tema':
             return (
-                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
+                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}}>
                     {
                         perguntas.filter((pergunta) => pergunta.tema == tema).map((pergunta) => (
                             <AccordionItem 
@@ -84,7 +83,7 @@ export default function CardPergunta({limite, tema, filtro, cor = '#771212' }) {
 
         case 'nenhum':
             return (
-                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold"}}>
+                <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}}>
                     {
                         perguntas.map(({id, title, tema, resposta}) => (
                             <AccordionItem 
