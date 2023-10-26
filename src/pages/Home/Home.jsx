@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useState } from "react"
 import CardPergunta from "../../components/CardPergunta/CardPergunta"
 import CardTema from "../../components/CardTema/CardTema"
 import { ArrowFatLineLeft } from "@phosphor-icons/react"
@@ -9,9 +9,6 @@ const Home = () => {
 
   const [temaPagina, definirTema]= useState('inicial')
 
-  useEffect(() => {
-    console.log(temaPagina)
-  }, [temaPagina])
 
   return (
     <contextoPagina.Provider value={{temaPagina, definirTema}}>
