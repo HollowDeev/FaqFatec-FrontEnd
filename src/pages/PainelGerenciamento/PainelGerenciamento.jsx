@@ -6,6 +6,7 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-o
 import { temas } from "../../data/temas";
 import Icone from "../../components/Icone/Icone";
 
+
 export default function PainelGerenciamento() {
 
   const {tema} = useContext(temaContexto)
@@ -125,8 +126,10 @@ export default function PainelGerenciamento() {
           </DropdownMenu>
           </Dropdown>
         </div>
-      </div>
+      </div> 
+      
     </div>
+
   )
 }
 

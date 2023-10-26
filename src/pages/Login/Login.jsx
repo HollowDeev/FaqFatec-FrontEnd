@@ -4,6 +4,7 @@ import { useNavigate } from "react-router"
 import { Button, Input } from "@nextui-org/react"
 import { Eye, EyeSlash } from "@phosphor-icons/react"
 
+
 export const Login = () => {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
@@ -59,6 +60,7 @@ export const Login = () => {
         {
             email == "" || senha == "" ? <Button isDisabled onClick={() => handleButton()}>Entrar</Button> : <Button onClick={() => handleButton()}>Entrar</Button>
         }
+
     </div>
   )
 }
