@@ -1,12 +1,18 @@
 import { useContext } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
-import { Bell,  } from "@phosphor-icons/react"
+import { Bell, User,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
+import temaContexto from "../../context/TemaContexto"
+
 
 export const Cabecalho = () => {
 
   const {usuario} = useContext(AuthContext)
+  const {tema} = useContext(temaContexto)
+
+  const content1 = tema == "dark" ? "#18181B" : "#fff"
+
   let levelUsuario = usuario === null ? 0 : usuario.level
 
   return (
@@ -20,10 +26,15 @@ export const Cabecalho = () => {
             <BarraPesquisa/>
           </div>
           
-          {!usuario && 
-          <div className="rounded-full bg-content5 p-2 ">
-            <Bell size={24} color="#fdfcfc" weight="fill" />
-          </div>}
+          {levelUsuario == 0 ? 
+            <div className="rounded-full bg-content5 p-2 ">
+              <Bell size={24} color="#fdfcfc" weight="fill" />
+            </div>
+            :
+            <div className="rounded-full bg-foreground p-2  w-10 ">
+              <User size={24} color={content1} weight="fill" />
+            </div>
+          }
 
         </div>
 
@@ -31,16 +42,27 @@ export const Cabecalho = () => {
           <BarraPesquisa/>
         </div>
 
-        {levelUsuario == 0 && 
+        {levelUsuario == 0 ? 
           <>
             <div className="md:w-12 md:ml-10 hidden md:flex">
-              <div className="rounded-full bg-content5 p-2  w-10 ">
+              <div className="rounded-full bg-content5 p-2 ">
                 <Bell size={24} color="#fdfcfc" weight="fill" />
               </div>
             </div>
           </>
-        
+
+          : 
+
+          <>
+            <div className="md:w-12 md:ml-10 hidden md:flex">
+              <div className="rounded-full bg-foreground p-2 ">
+                <User size={24} color={content1} weight="fill" />
+              </div>
+            </div>
+          </>
         }
+
+        
 
     </header>
   )

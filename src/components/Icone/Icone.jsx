@@ -1,19 +1,26 @@
-import { Book, Code, GraduationCap, OfficeChair } from '@phosphor-icons/react';
+import { Book, Cards, Code, GraduationCap, OfficeChair } from '@phosphor-icons/react';
 import P from 'prop-types';
 import { temas } from '../../data/temas';
 
 Icone.propTypes = {
     tema: P.string,
     tamanho: P.number,
-    cor: P.string
+    cor: P.string,
+    icone: P.string
 }
 
-export default function Icone({tema, tamanho, cor}) {
+export default function Icone({tema, tamanho, cor, icone = "nenhum"}) {
 
-   const temaObj =  temas.filter((item) => item.nome == tema)
-   const icone = temaObj[0].icone
+   let iconeRecebido
+
+   if(icone != "nenhum"){
+        iconeRecebido = icone
+   } else {
+        const temaObj =  temas.filter((item) => item.nome == tema)
+        iconeRecebido = temaObj[0].icone
+   }
     
-  switch(icone){
+  switch(iconeRecebido){
         case 'Code':
             return(
                 <Code size={tamanho} color={cor} weight="duotone" />
@@ -32,6 +39,11 @@ export default function Icone({tema, tamanho, cor}) {
         case "OfficeChair":
             return(
                 <OfficeChair size={tamanho} color={cor} weight="duotone"/>
+            )
+        
+        case "Cards":
+            return(
+                <Cards size={tamanho} color={cor} weight="duotone" />
             )
     }
     
