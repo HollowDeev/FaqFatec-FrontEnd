@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import Icone from "../Icone/Icone"
 import { useContext } from "react"
 import temaContexto from "../../context/TemaContexto"
+import { useGerenciador } from "../../hooks/useGerenciador"
+import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 
 CardPergunta.defaultProps = {
     limite: 0,
@@ -21,33 +23,36 @@ CardPergunta.propTypes = {
     tipo: PropTypes.string
 }
 
-export default function CardPergunta({limite, tema, filtro, cor, tipo }) {
+export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
 
-    const {tema: temaSistema} = useContext(temaContexto)
+    const { tema: temaSistema } = useContext(temaContexto)
 
-    switch(tipo){
+    const { gerenciar } = useGerenciadorContexto()
+    const gerenciador = useGerenciador()
+
+    switch (tipo) {
         case "visualizacao":
-            switch(filtro){
+            switch (filtro) {
                 case "limite":
-                
+
                     return (
-                        <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}} >
+                        <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }} >
                             {
                                 perguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
-                                    <AccordionItem 
-                                        key={pergunta.id} 
-                                        title={pergunta.title} 
-                                        subtitle={pergunta.tema.toUpperCase()} 
+                                    <AccordionItem
+                                        key={pergunta.id}
+                                        title={pergunta.titulo}
+                                        subtitle={pergunta.tema.toUpperCase()}
                                         startContent={
                                             <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
                                         }
-                                        
+
                                         indicator={
-                                            ({ isOpen }) => isOpen 
-                                            ? 
-                                            <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" /> 
-                                            :
-                                            <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                            ({ isOpen }) => isOpen
+                                                ?
+                                                <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                                :
+                                                <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
                                         }
                                         disableIndicatorAnimation
                                     >
@@ -57,25 +62,25 @@ export default function CardPergunta({limite, tema, filtro, cor, tipo }) {
                             }
                         </Accordion>
                     )
-        
+
                 case 'tema':
                     return (
-                        <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}}>
+                        <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                             {
                                 perguntas.filter((pergunta) => pergunta.tema == tema).map((pergunta) => (
-                                    <AccordionItem 
-                                        key={pergunta.id} 
-                                        title={pergunta.title} 
-                                        subtitle={pergunta.tema.toUpperCase()} 
+                                    <AccordionItem
+                                        key={pergunta.id}
+                                        title={pergunta.titulo}
+                                        subtitle={pergunta.tema.toUpperCase()}
                                         startContent={
                                             <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
                                         }
                                         indicator={
-                                            ({ isOpen }) => isOpen 
-                                            ? 
-                                            <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" /> 
-                                            :
-                                            <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                            ({ isOpen }) => isOpen
+                                                ?
+                                                <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                                :
+                                                <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
                                         }
                                         disableIndicatorAnimation
                                     >
@@ -85,119 +90,121 @@ export default function CardPergunta({limite, tema, filtro, cor, tipo }) {
                             }
                         </Accordion>
                     )
-                    
-        
+
+
                 case 'nenhum':
                     return (
-                        <Accordion variant="splitted" itemClasses={{title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60"}}>
+                        <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                             {
-                                perguntas.map(({id, title, tema, resposta}) => (
-                                    <AccordionItem 
-                                        key={id} 
-                                        title={title} 
-                                        subtitle={tema.toUpperCase()}  
+                                perguntas.map(({ id, titulo, tema, resposta }) => (
+                                    <AccordionItem
+                                        key={id}
+                                        title={titulo}
+                                        subtitle={tema.toUpperCase()}
                                         startContent={
                                             <>
                                                 <Icone tema={tema} cor={cor} tamanho={50} />
-                                                
+
                                             </>
-                                            
+
                                         }
-        
+
                                         indicator={
-                                            ({ isOpen }) => isOpen 
-                                            ? 
-                                            <Eye size={25} color="#ffffff" weight="bold" /> 
-                                            :
-                                            <EyeClosed size={25} color="#ffffff" weight="bold" />
+                                            ({ isOpen }) => isOpen
+                                                ?
+                                                <Eye size={25} color="#ffffff" weight="bold" />
+                                                :
+                                                <EyeClosed size={25} color="#ffffff" weight="bold" />
                                         }
                                         disableIndicatorAnimation
                                     >
                                         <p>{resposta}</p>
                                     </AccordionItem>
                                 ))
-                            } 
+                            }
                         </Accordion>
                     )
-        
-            
+
+
             }
-        break
-        
+            break
+
 
         case "gerenciamento":
-            switch(filtro){
+            switch (filtro) {
                 case "nenhum":
                     return (
-                    <div className="w-full flex flex-col gap-10">
-                    
-                    {perguntas.map((pergunta) => (
-                        <>
-                        <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words">
+                        <div className="w-full flex flex-col gap-10">
 
-                            <div className="flex items-center h-auto gap-3 relative">
-                                <div>
-                                    <Icone tema={pergunta.tema} cor={cor} tamanho={50}  />
-                                </div>
-                                <div>
-                                    <h1 className="text-2xl font-bold">{pergunta.title}</h1>
-                                    <p className="opacity-50 font-light">{pergunta.tema}</p>
-                                </div>
-                                <Button isIconOnly color="success" className="hidden sm:flex absolute right-2">
-                                    <GearSix size={24} color="#070707" weight="bold"/>
-                                </Button>
-                            </div>
+                            {perguntas.map((pergunta) => (
+                                <>
+                                    <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" key={pergunta.id}>
 
-                            <p>{pergunta.resposta}</p>
+                                        <div className="flex items-center h-auto gap-3 relative">
+                                            <div>
+                                                <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
+                                            </div>
+                                            <div>
+                                                <h1 className="text-2xl font-bold">{pergunta.titulo}</h1>
+                                                <p className="opacity-50 font-light">{pergunta.tema}</p>
+                                            </div>
+                                            <Button isIconOnly color="success" className="hidden sm:flex absolute right-2" onClick={() => gerenciador.editarPerguntas(gerenciar, pergunta)}>
+                                                <GearSix size={24} color="#070707" weight="bold" />
+                                            </Button>
+                                        </div>
 
-                            <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
-                                EDITAR
-                            </div>
+                                        <p>{pergunta.resposta}</p>
+
+                                        <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden"
+                                             onClick={() => gerenciador.editarPerguntas(gerenciar, pergunta)}
+                                        >
+                                            EDITAR
+                                        </div>
+                                    </div>
+                                </>
+                            ))
+                            }
+
                         </div>
-                        </>
-                    ))
-                    }
-
-                    </div>
-                )
+                    )
 
                 case "tema":
                     return (
                         <div className="w-full flex flex-col gap-10">
-                    
-                    {perguntas.filter((pergunta) => pergunta.tema == tema).map((pergunta) => (
-                        <>
-                        <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words">
 
-                            <div className="flex items-center h-auto gap-3 relative">
-                                <div>
-                                    <Icone tema={pergunta.tema} cor={cor} tamanho={50}  />
-                                </div>
-                                <div>
-                                    <h1 className="text-2xl font-bold">{pergunta.title}</h1>
-                                    <p className="opacity-50 font-light">{pergunta.tema}</p>
-                                </div>
-                                <Button isIconOnly color="success" className="hidden sm:flex absolute right-2">
-                                    <GearSix size={24} color="#070707" weight="bold"/>
-                                </Button>
-                            </div>
+                            {perguntas.filter((pergunta) => pergunta.tema == tema).map((pergunta) => (
+                                <>
+                                    <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words">
 
-                            <p>{pergunta.resposta}</p>
+                                        <div className="flex items-center h-auto gap-3 relative">
+                                            <div>
+                                                <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
+                                            </div>
+                                            <div>
+                                                <h1 className="text-2xl font-bold">{pergunta.titulo}</h1>
+                                                <p className="opacity-50 font-light">{pergunta.tema}</p>
+                                            </div>
+                                            <Button isIconOnly color="success" className="hidden sm:flex absolute right-2">
+                                                <GearSix size={24} color="#070707" weight="bold" />
+                                            </Button>
+                                        </div>
 
-                            <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
-                                EDITAR
-                            </div>
+                                        <p>{pergunta.resposta}</p>
+
+                                        <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                            EDITAR
+                                        </div>
+                                    </div>
+                                </>
+                            ))
+                            }
+
                         </div>
-                        </>
-                    ))
-                    }
-
-                    </div>
-                )
+                    )
             }
-           
+
     }
-    
+
 }
 
 
