@@ -1,20 +1,17 @@
 import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import P from 'prop-types' 
 
-export default function EditorTexto() {
+export default function EditorTexto({textoInicial = '', onChange}) {
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
 
   return (
     <>
       <Editor
         onInit={(evt, editor) => editorRef.current = editor}
         apiKey={import.meta.env.VITE_TINYMCE_KEY}
-        initialValue="<p>This is the initial content of the editor.</p>"
+        initialValue={textoInicial}
+        onChange={() => onChange(editorRef.current.getContent())}
         init={{
           height: 500,
           widht: 500,
@@ -30,7 +27,12 @@ export default function EditorTexto() {
           lists_indent_on_tab: false,
         }}
       />
-      <button onClick={log}>Log editor content</button>
+      
     </>
   );
+}
+
+EditorTexto.propTypes = {
+  textoInicial: P.string,
+  onChange: P.func
 }

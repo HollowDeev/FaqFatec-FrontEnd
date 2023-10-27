@@ -1,15 +1,25 @@
 import { useContext, useState } from "react";
+import useGerenciadorContexto from "../../hooks/useGerenciadorContexto" 
 import CardPergunta from "../../components/CardPergunta/CardPergunta";
 import temaContexto from "../../context/TemaContexto";
 import { Calendar, FolderNotchOpen, Folders, Plus } from "@phosphor-icons/react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { temas } from "../../data/temas";
 import Icone from "../../components/Icone/Icone";
+import { useEffect } from "react";
+import CampoModais from "../../components/CampoModais/CampoModais";
 
 
 export default function PainelGerenciamento() {
 
   const {tema} = useContext(temaContexto)
+  const {gerenciamento} = useGerenciadorContexto()
+
+  useEffect(() => {
+    console.log(gerenciamento[0])
+  }, [gerenciamento])
+  
+
 
   const foregroundColor = tema == "dark" ? "#ECEDEE" : "#11181C"
 
@@ -26,6 +36,9 @@ export default function PainelGerenciamento() {
 
   return (
     <div className="relative flex ">
+
+      {/* Modais */}
+      <CampoModais />
 
       {/* Botoes esquerdo versão desktop */}
       <div className="hidden w-16 lg:flex bg-content1 fixed bottom-[50%] translate-y-[50%] mx-10 flex-col justify-between items-center rounded-full ">
