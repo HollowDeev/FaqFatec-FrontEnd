@@ -27,6 +27,18 @@ const reducer = (state, action) => {
                 }
             ]
 
+        case 'adicionarPergunta':
+        return [
+            {
+                editarPergunta: false,
+                adicionarPergunta: true,
+                idPergunta: null,
+                pergunta: '',
+                resposta: '',
+                tema: ''
+            }
+        ]
+
         case 'fechar':
             return [
                 {

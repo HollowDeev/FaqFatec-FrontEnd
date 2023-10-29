@@ -10,10 +10,15 @@ const CampoModais = () => {
     const [acaoModal, definirAcaoModal] = useState('')
 
     const { gerenciamento } = useGerenciadorContexto()
+
     useEffect(() => {
       if (gerenciamento[0].editarPergunta) {
         definirTipoModal('pergunta')
         definirAcaoModal('edicao')
+        setIsOpen(true)
+      }else if(gerenciamento[0].adicionarPergunta){
+        definirTipoModal('pergunta')
+        definirAcaoModal('adicao')
         setIsOpen(true)
       } else {
         setIsOpen(false)

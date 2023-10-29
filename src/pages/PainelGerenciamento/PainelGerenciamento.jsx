@@ -8,12 +8,15 @@ import { temas } from "../../data/temas";
 import Icone from "../../components/Icone/Icone";
 import { useEffect } from "react";
 import CampoModais from "../../components/CampoModais/CampoModais";
+import { useGerenciador } from "../../hooks/useGerenciador";
 
 
 export default function PainelGerenciamento() {
 
   const {tema} = useContext(temaContexto)
-  const {gerenciamento} = useGerenciadorContexto()
+  const {gerenciamento, gerenciar} = useGerenciadorContexto()
+
+  const gerenciador = useGerenciador()
 
   useEffect(() => {
     console.log(gerenciamento[0])
@@ -48,7 +51,7 @@ export default function PainelGerenciamento() {
           </div>
         </div>
 
-        <div className="p-2 bg-content6 hover:bg-opacity-70 transition-all rounded-full flex items-center justify-center border-[10px] border-background2 cursor-pointer ">
+        <div className="p-2 bg-content6 hover:bg-opacity-70 transition-all rounded-full flex items-center justify-center border-[10px] border-background2 cursor-pointer " onClick={() => gerenciador.adicionarPergunta(gerenciar)}>
           <Plus size={40} color="#fdfcfc" weight="bold" />
         </div>
       </div>
@@ -110,7 +113,7 @@ export default function PainelGerenciamento() {
         <div className="flex flex-1 justify-center">
           <Folders size={35} color="#fdfcfc" weight="fill" />
         </div>
-        <div className="p-2 bg-content6 rounded-full relative bottom-8 border-8 border-background ">
+        <div className="p-2 bg-content6 rounded-full relative bottom-8 border-8 border-background " onClick={() => gerenciador.adicionarPergunta(gerenciar)}>
           <Plus size={40} color="#fdfcfc" weight="bold" />
         </div>
         <div className="flex flex-1 justify-around">
@@ -129,7 +132,7 @@ export default function PainelGerenciamento() {
               <DropdownItem 
                 className="text-foreground"
                 key={tema.nome}
-                startContent={<Icone icone={tema.icone} tamanho={20} />}
+                startContent={<Icone icone={tema.icone} tamanho={20}/>}
               >
                 {tema.nome.toUpperCase()}
               </DropdownItem>
