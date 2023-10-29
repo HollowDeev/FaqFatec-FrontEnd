@@ -195,7 +195,9 @@ export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
 
                             {perguntas.filter((pergunta) => pergunta.tema == tema).map((pergunta) => (
                                 <>
-                                    <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words">
+                                    <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" 
+                                        key={pergunta.id}
+                                    >
 
                                         <div className="flex items-center h-auto gap-3 relative">
                                             <div>
@@ -205,16 +207,33 @@ export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
                                                 <h1 className="text-2xl font-bold">{pergunta.titulo}</h1>
                                                 <p className="opacity-50 font-light">{pergunta.tema}</p>
                                             </div>
-                                            <Button isIconOnly color="success" className="hidden sm:flex absolute right-2">
-                                                <GearSix size={24} color="#070707" weight="bold" />
-                                            </Button>
+                                            <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                <DropdownTrigger>
+                                                    <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                        <GearSix size={24} color="#070707" weight="bold" />
+                                                    </Button>
+                                                </DropdownTrigger>
+                                                <DropdownMenu className={tema} onAction={(acao) => selecao(acao, pergunta)}>
+                                                    <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                    <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                </DropdownMenu>
+                                            </Dropdown>
                                         </div>
 
                                         <p>{pergunta.resposta}</p>
 
-                                        <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
-                                            EDITAR
-                                        </div>
+
+                                        <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                <DropdownTrigger>
+                                                    <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                        GERENCIAR
+                                                    </div>
+                                                </DropdownTrigger>
+                                                <DropdownMenu className={tema} onAction={(acao) => selecao(acao, pergunta)}>
+                                                    <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                    <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                </DropdownMenu>
+                                            </Dropdown>
                                     </div>
                                 </>
                             ))
