@@ -156,7 +156,7 @@ export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
                                             </div>
                                             <Dropdown className={`text-foreground ${temaSistema}`}>
                                                 <DropdownTrigger>
-                                                    <Button isIconOnly color="success" className="hidden sm:flex absolute right-2" >
+                                                    <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
                                                         <GearSix size={24} color="#070707" weight="bold" />
                                                     </Button>
                                                 </DropdownTrigger>
@@ -169,11 +169,18 @@ export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
 
                                         <p>{pergunta.resposta}</p>
 
-                                        <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden"
-                                             onClick={() => gerenciador.editarPerguntas(gerenciar, pergunta)}
-                                        >
-                                            EDITAR
-                                        </div>
+                                        
+                                        <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                <DropdownTrigger>
+                                                    <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                        GERENCIAR
+                                                    </div>
+                                                </DropdownTrigger>
+                                                <DropdownMenu className={tema} onAction={(acao) => selecao(acao, pergunta)}>
+                                                    <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                    <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                </DropdownMenu>
+                                            </Dropdown>
                                     </div>
                                 </>
                             ))
