@@ -30,6 +30,7 @@ export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
     const { gerenciar } = useGerenciadorContexto()
     const gerenciador = useGerenciador()
 
+    //* Chamada no select de gerenciamento - Excluir / Editar pergunta
     const selecao = (acao, pergunta) => {
         if(acao == "editar"){
             gerenciador.editarPerguntas(gerenciar, pergunta)
