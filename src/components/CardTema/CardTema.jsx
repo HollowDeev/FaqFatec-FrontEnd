@@ -4,17 +4,28 @@ import Icone from "../Icone/Icone"
 import { useContext } from "react"
 import paginaHomeContexto from "../../context/PaginaHome/PaginaHomeContexto"
 import P from 'prop-types'
-import { GearSix } from "@phosphor-icons/react"
+import { GearSix, PencilSimpleLine, Trash } from "@phosphor-icons/react"
 import { useGerenciador } from "../../hooks/useGerenciador"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
+import temaContexto from "../../context/TemaContexto"
 
 const CardTema = ({tipo = 'visualizacao'}) => {
+
+    const {tema: temaSistema} = useContext(temaContexto)
 
     //* Contexto para definir o tema de visualização na PAGINA HOME
     const {definirTema} = useContext(paginaHomeContexto)
 
     const {gerenciar} = useGerenciadorContexto()
     const gerenciador = useGerenciador()
+
+    const selecionar = (acao, tema) => {
+        switch(acao){
+            case 'editar':
+                gerenciador.editarTema(gerenciar, tema)
+        }
+    }
 
    switch(tipo) {
         case 'visualizacao':
@@ -50,14 +61,32 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                             </MediaQuery>
             
                             <MediaQuery minWidth={640}>
-                                <div className="absolute w-8 h-8 bg-content6 top-2 right-2 rounded-xl cursor-pointer flex justify-center items-center hover:bg-opacity-70 transition-all" onClick={() => gerenciador.editarTema(gerenciar, tema)}>
-                                    <GearSix size={24} color="#070707" weight="bold" />
-                                </div>
+                                <Dropdown className={`text-foreground ${temaSistema}`}>
+                                        <DropdownTrigger >
+                                            <div className="absolute w-8 h-8 bg-content6 top-2 right-2 rounded-xl cursor-pointer flex justify-center items-center hover:bg-opacity-70 transition-all">
+                                                <GearSix size={24} color="#070707" weight="bold" />
+                                            </div>
+                                        </DropdownTrigger>
+                                        <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, tema)}>
+                                            <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                            <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                        </DropdownMenu>
+                                </Dropdown>
                                 <Icone tema={tema.nome} tamanho={100}/>
                             </MediaQuery>
             
                             <h1 className="text-2xl font-extrabold mx-1 sm:m-0">{tema.nome.toUpperCase()}</h1>
-                            <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden" onClick={() => gerenciador.editarTema(gerenciar, tema)}>EDITAR</div>
+                           
+                            
+                            <Dropdown className={`text-foreground ${temaSistema}`}>
+                                <DropdownTrigger >
+                                    <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden">GERENCIAR</div>
+                                </DropdownTrigger>
+                                <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, tema)}>
+                                    <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                    <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
                         </div>
                     )}
                     
