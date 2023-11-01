@@ -1,23 +1,22 @@
-export const temas = [
+export const icones = [
     {
         id: 1,
-        nome: 'dsm',
+        nome: 'Code',
         icone: 'Code'
     },
     {
         id: 2,
-        nome: 'ge',
+        nome: 'OfficeChair',
         icone: 'OfficeChair'
     },
     {
         id: 3,
-        nome: 'geral',
+        nome: 'Book',
         icone: 'Book'
     },
     {
         id: 4,
-        nome: 'ano letivo',
+        nome: 'GraduationCap',
         icone: 'GraduationCap'
-    },
-    
+    }
 ]
