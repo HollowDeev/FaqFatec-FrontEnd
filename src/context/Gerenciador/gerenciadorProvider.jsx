@@ -10,6 +10,13 @@ const valorInicial = [
         pergunta: '',
         resposta: '',
         tema: ''
+    },
+    {
+        editarTema: false,
+        adicionarTema: false,
+        idTema: null,
+        nome: '',
+        icone: ''
     }
 ]
 
@@ -24,6 +31,13 @@ const reducer = (state, action) => {
                     pergunta: action.pergunta.titulo,
                     resposta: action.pergunta.resposta,
                     tema: action.pergunta.tema
+                },
+                {
+                    editarTema: false,
+                    adicionarTema: false,
+                    idTema: null,
+                    nome: '',
+                    icone: ''
                 }
             ]
 
@@ -36,6 +50,13 @@ const reducer = (state, action) => {
                 pergunta: '',
                 resposta: '',
                 tema: ''
+            },
+            {
+                editarTema: false,
+                adicionarTema: false,
+                idTema: null,
+                nome: '',
+                icone: ''
             }
         ]
 
@@ -48,6 +69,53 @@ const reducer = (state, action) => {
                     pergunta: '',
                     resposta: '',
                     tema: ''
+                },
+                {
+                    editarTema: false,
+                    adicionarTema: false,
+                    idTema: null,
+                    nome: '',
+                    icone: ''
+                }
+            ]
+
+        case 'editarTema':
+            return [
+                {
+                    editarPergunta: false,
+                    adicionarPergunta: false,
+                    idPergunta: null,
+                    pergunta: '',
+                    resposta: '',
+                    tema: ''
+                },
+            
+                {
+                    editarTema: true,
+                    adicionarTema: false,
+                    idTema: action.tema.id,
+                    nome: action.tema.nome,
+                    icone: action.tema.icone
+                }
+            ]
+
+        case 'adicionarTema':
+            return [
+                {
+                    editarPergunta: false,
+                    adicionarPergunta: false,
+                    idPergunta: null,
+                    pergunta: '',
+                    resposta: '',
+                    tema: ''
+                },
+            
+                {
+                    editarTema: false,
+                    adicionarTema: true,
+                    idTema: null,
+                    nome: '',
+                    icone: ''
                 }
             ]
 

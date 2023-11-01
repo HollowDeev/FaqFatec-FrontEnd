@@ -1,32 +1,73 @@
 import MediaQuery from "react-responsive"
 import { temas } from "../../data/temas"
 import Icone from "../Icone/Icone"
-import { contextoPagina } from "../../pages/Home/Home"
 import { useContext } from "react"
+import paginaHomeContexto from "../../context/PaginaHome/PaginaHomeContexto"
+import P from 'prop-types'
+import { GearSix } from "@phosphor-icons/react"
+import { useGerenciador } from "../../hooks/useGerenciador"
+import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 
-const CardTema = () => {
+const CardTema = ({tipo = 'visualizacao'}) => {
 
-    const {definirTema}= useContext(contextoPagina)
+    //* Contexto para definir o tema de visualização na PAGINA HOME
+    const {definirTema} = useContext(paginaHomeContexto)
 
-  return (
-    <div className="flex gap-5 flex-wrap justify-center px-1">
-        {temas.map((tema) => 
-        
-            <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 p-5 text-center flex flex-col justify-between items-center hover:translate-y-[-20px] cursor-pointer transition-transform" key={tema.nome} onClick={() => definirTema(tema.nome)}>
-                <MediaQuery maxWidth={640}>
-                    <Icone tema={tema.nome} tamanho={70}/>
-                </MediaQuery>
+    const {gerenciar} = useGerenciadorContexto()
+    const gerenciador = useGerenciador()
 
-                <MediaQuery minWidth={640}>
-                    <Icone tema={tema.nome} tamanho={100}/>
-                </MediaQuery>
+   switch(tipo) {
+        case 'visualizacao':
+            
+            return (
+              <div className="flex gap-5 flex-wrap justify-center px-1">
+                  {temas.map((tema) => 
+                  
+                      <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 p-5 text-center flex flex-col justify-between items-center hover:translate-y-[-20px] cursor-pointer transition-transform" key={tema.id} onClick={() => definirTema(tema.nome)}>
+                          <MediaQuery maxWidth={640}>
+                              <Icone tema={tema.nome} tamanho={70}/>
+                          </MediaQuery>
+          
+                          <MediaQuery minWidth={640}>
+                              <Icone tema={tema.nome} tamanho={100}/>
+                          </MediaQuery>
+          
+                          <h1 className="text-2xl font-extrabold">{tema.nome.toUpperCase()}</h1>
+                      </div>
+                  )}
+                  
+              </div>
+            )
+        case 'gerenciamento':
+            return (
+                <div className="flex gap-5 flex-wrap justify-center px-1">
+                    {temas.map((tema) => 
+                    
+                        <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 sm:p-5 relative text-center flex flex-col justify-between items-center" key={tema.id} onClick={() => definirTema(tema.nome)}>
+                            
+                            <MediaQuery maxWidth={640}>
+                                <Icone tema={tema.nome} tamanho={70} />
+                            </MediaQuery>
+            
+                            <MediaQuery minWidth={640}>
+                                <div className="absolute w-8 h-8 bg-content6 top-2 right-2 rounded-xl cursor-pointer flex justify-center items-center hover:bg-opacity-70 transition-all" onClick={() => gerenciador.editarTema(gerenciar, tema)}>
+                                    <GearSix size={24} color="#070707" weight="bold" />
+                                </div>
+                                <Icone tema={tema.nome} tamanho={100}/>
+                            </MediaQuery>
+            
+                            <h1 className="text-2xl font-extrabold mx-1 sm:m-0">{tema.nome.toUpperCase()}</h1>
+                            <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden" onClick={() => gerenciador.editarTema(gerenciar, tema)}>EDITAR</div>
+                        </div>
+                    )}
+                    
+                </div>
+              )
+   }
+}
 
-                <h1 className="text-2xl font-extrabold">{tema.nome.toUpperCase()}</h1>
-            </div>
-        )}
-        
-    </div>
-  )
+CardTema.propTypes = {
+    tipo: P.string
 }
 
 export default CardTema

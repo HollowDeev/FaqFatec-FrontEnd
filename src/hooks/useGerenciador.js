@@ -8,6 +8,14 @@ export const useGerenciador = () => ({
         return dispatch({type: "adicionarPergunta"})
     },
 
+    editarTema: (dispatch, tema) => {
+        return dispatch({type: 'editarTema', tema})
+    },
+
+    adicionarTema: (dispatch) => {
+        return dispatch({type: 'adicionarTema'})
+    },
+
     fechar: (dispatch) => {
         return dispatch({type: "fechar"})
     }

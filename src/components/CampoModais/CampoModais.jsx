@@ -1,6 +1,7 @@
 
 import { useState } from "react"
 import ModalPerguntas from "../Modais/ModalPerguntas"
+import ModalTemas from "../Modais/ModalTemas"
 import { useEffect } from "react"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 
@@ -20,16 +21,27 @@ const CampoModais = () => {
         definirTipoModal('pergunta')
         definirAcaoModal('adicao')
         setIsOpen(true)
-      } else {
+      }else if(gerenciamento[1].editarTema){
+        console.log("teste")
+        definirTipoModal('tema')
+        definirAcaoModal('edicao')
+        setIsOpen(true)
+      }else if(gerenciamento[1].adicionarTema){
+        definirTipoModal('tema')
+        definirAcaoModal('adicao')
+        setIsOpen(true)
+      }else {
         setIsOpen(false)
       }
   }, [gerenciamento])
 
     return (
         <>
-           {tipoModal === 'pergunta' &&
+          {tipoModal === 'pergunta' ?
             <ModalPerguntas isOpen={isOpen} acao={acaoModal}/>
-           }
+            :
+            <ModalTemas isOpen={isOpen} acao={acaoModal} />
+          }
         </>
     )
 }
