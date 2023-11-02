@@ -17,6 +17,15 @@ const valorInicial = [
         idTema: null,
         nome: '',
         icone: ''
+    },
+    {
+        mudarSenha: false,
+        adicionarColaborador: false,
+        nome: '',
+        idColaborador: '',
+        email: '',
+        senha: '',
+        nivel: 1
     }
 ]
 
@@ -32,13 +41,8 @@ const reducer = (state, action) => {
                     resposta: action.pergunta.resposta,
                     tema: action.pergunta.tema
                 },
-                {
-                    editarTema: false,
-                    adicionarTema: false,
-                    idTema: null,
-                    nome: '',
-                    icone: ''
-                }
+                state[1],
+                state[2]   
             ]
 
         case 'adicionarPergunta':
@@ -51,13 +55,8 @@ const reducer = (state, action) => {
                 resposta: '',
                 tema: ''
             },
-            {
-                editarTema: false,
-                adicionarTema: false,
-                idTema: null,
-                nome: '',
-                icone: ''
-            }
+            state[1],
+            state[2]   
         ]
 
         case 'fechar':
@@ -76,46 +75,71 @@ const reducer = (state, action) => {
                     idTema: null,
                     nome: '',
                     icone: ''
+                },
+                {
+                    mudarSenha: false,
+                    adicionarColaborador: false,
+                    nome: '',
+                    idColaborador: '',
+                    email: '',
+                    senha: '',
+                    nivel: 1
                 }
             ]
 
         case 'editarTema':
             return [
-                {
-                    editarPergunta: false,
-                    adicionarPergunta: false,
-                    idPergunta: null,
-                    pergunta: '',
-                    resposta: '',
-                    tema: ''
-                },
-            
+                state[0],
                 {
                     editarTema: true,
                     adicionarTema: false,
                     idTema: action.tema.id,
                     nome: action.tema.nome,
                     icone: action.tema.icone
-                }
+                },
+                state[2]
             ]
 
         case 'adicionarTema':
             return [
-                {
-                    editarPergunta: false,
-                    adicionarPergunta: false,
-                    idPergunta: null,
-                    pergunta: '',
-                    resposta: '',
-                    tema: ''
-                },
-            
+                state[0],
                 {
                     editarTema: false,
                     adicionarTema: true,
                     idTema: null,
                     nome: '',
                     icone: ''
+                },
+                state[2]
+            ]
+
+        case 'mudarSenha':
+            return [
+                state[0],
+                state[1],
+                {
+                    mudarSenha: true,
+                    adicionarColaborador: false,
+                    nome: action.colaborador.nome,
+                    idColaborador: action.colaborador.id,
+                    email: '',
+                    senha: '',
+                    nivel: 1
+                }
+            ]
+
+        case 'adicionarColaborador':
+            return [
+                state[0],
+                state[1],
+                {
+                    mudarSenha: false,
+                    adicionarColaborador: true,
+                    nome: '',
+                    idColaborador: '',
+                    email: '',
+                    senha: '',
+                    nivel: 1
                 }
             ]
 

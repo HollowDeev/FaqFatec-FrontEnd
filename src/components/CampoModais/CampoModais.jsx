@@ -4,6 +4,7 @@ import ModalPerguntas from "../Modais/ModalPerguntas"
 import ModalTemas from "../Modais/ModalTemas"
 import { useEffect } from "react"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
+import ModalColaboradores from "../Modais/ModalColaboradores"
 
 const CampoModais = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -22,12 +23,19 @@ const CampoModais = () => {
         definirAcaoModal('adicao')
         setIsOpen(true)
       }else if(gerenciamento[1].editarTema){
-        console.log("teste")
         definirTipoModal('tema')
         definirAcaoModal('edicao')
         setIsOpen(true)
       }else if(gerenciamento[1].adicionarTema){
         definirTipoModal('tema')
+        definirAcaoModal('adicao')
+        setIsOpen(true)
+      }else if(gerenciamento[2].mudarSenha){
+        definirTipoModal('colaborador')
+        definirAcaoModal('mudarSenha')
+        setIsOpen(true)
+      }else if(gerenciamento[2].adicionarColaborador){
+        definirTipoModal('colaborador')
         definirAcaoModal('adicao')
         setIsOpen(true)
       }else {
@@ -37,10 +45,16 @@ const CampoModais = () => {
 
     return (
         <>
-          {tipoModal === 'pergunta' ?
+          {tipoModal === 'pergunta' &&
             <ModalPerguntas isOpen={isOpen} acao={acaoModal}/>
-            :
+          }
+
+          {tipoModal === 'tema' &&
             <ModalTemas isOpen={isOpen} acao={acaoModal} />
+          }
+
+          {tipoModal === 'colaborador' &&
+            <ModalColaboradores isOpen={isOpen} acao={acaoModal} />
           }
         </>
     )

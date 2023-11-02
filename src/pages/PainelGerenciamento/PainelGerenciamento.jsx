@@ -1,15 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto" 
 import CardPergunta from "../../components/CardPergunta/CardPergunta";
 import temaContexto from "../../context/TemaContexto";
-import { Calendar, FolderNotchOpen, Folders, Plus } from "@phosphor-icons/react";
+import { Calendar, FolderNotchOpen, Folders, Plus, UserCircleGear } from "@phosphor-icons/react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { temas } from "../../data/temas";
 import Icone from "../../components/Icone/Icone";
-import { useEffect } from "react";
 import CampoModais from "../../components/CampoModais/CampoModais";
 import { useGerenciador } from "../../hooks/useGerenciador";
 import CardTema from '../../components/CardTema/CardTema'
+import { AuthContext } from "../../context/Auth/AuthProvider";
+import CardColaboradores from "../../components/CardColaboradores/CardColaboradores";
 
 
 export default function PainelGerenciamento() {
@@ -24,10 +25,6 @@ export default function PainelGerenciamento() {
   //* Hook com funções de gerenciamento(precisam da função base "gerenciar")
   const gerenciador = useGerenciador()
 
-  //? Para Debbug
-  useEffect(() => {
-    console.log(gerenciamento)
-  }, [gerenciamento])
 
   //* Armazena o item do menu de temas selecionado
   const [itemSelecionado, definirItemSelecionado] = useState('')
@@ -46,21 +43,37 @@ export default function PainelGerenciamento() {
 
   const [painel, definirPainel] = useState("perguntas")
 
-  const alternarPainel = () => {
-    if(painel == "perguntas"){
-      definirPainel('temas')
-    }else {
+  const alternarPainel = (painelDesejado) => {
+    if(painel != painelDesejado){
+      definirPainel(painelDesejado)
+    } else {
       definirPainel('perguntas')
     }
   }
 
   const adicionarItem = () => {
-    if(painel == 'perguntas'){
-      gerenciador.adicionarPergunta(gerenciar)
-    }else {
-      gerenciador.adicionarTema(gerenciar)
+    switch(painel){
+      case 'perguntas':
+        gerenciador.adicionarPergunta(gerenciar)
+        break
+
+      case 'temas':
+        gerenciador.adicionarTema(gerenciar)
+        break
+
+      case 'colaboradores':
+        gerenciador.adicionarColaborador(gerenciar)
+        break
     }
+
   }
+
+  useEffect(() => {
+    console.log(gerenciamento)
+  }, [ gerenciamento ])
+
+  //* Pega os dados do usuario logado
+  const {usuario} = useContext(AuthContext)
 
   return (
     <div className="relative flex ">
@@ -70,14 +83,29 @@ export default function PainelGerenciamento() {
 
       {/* Botoes esquerdo versão desktop */}
       <div className="hidden w-16 lg:flex bg-content1 fixed bottom-[50%] translate-y-[50%] mx-10 flex-col justify-between items-center rounded-full ">
-        <div className="flex flex-col justify-center h-32 ">
-          {painel == 'perguntas' ? 
-            <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel()}>
+        <div className="flex flex-col justify-center h-32 g-5">
+
+          {painel != 'temas' &&
+            <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
               <Folders size={40} color="#fdfcfc" weight="fill" />
             </div>
-            :
-            <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel()}>
+          }
+
+          {painel == 'temas' &&
+            <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
               <Folders size={40} color="#fdfcfc" weight="fill" />
+            </div>
+          }
+
+          {usuario.level == 2 && painel != 'colaboradores' &&
+            <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
+              <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
+            </div>
+          }
+
+          {usuario.level == 2 && painel == 'colaboradores' &&
+            <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
+              <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
             </div>
           }
         </div>
@@ -92,7 +120,7 @@ export default function PainelGerenciamento() {
     
         <div className="w-full flex flex-col items-center mb-20">
         
-          {painel == "perguntas" ?
+          {painel == "perguntas" &&
             <>
               <h1 className="text-2xl sm:text-3xl font-bold my-5">
                 Perguntas
@@ -104,13 +132,25 @@ export default function PainelGerenciamento() {
                  <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" tema={temaSelecionado}/> 
               }
             </>
-            :
+          }
+
+          {painel == 'temas' &&
             <>
               <h1 className="text-2xl sm:text-3xl font-bold my-5">
                 Temas
                 <span className="text-content6"> Online</span>
               </h1>
               <CardTema tipo="gerenciamento" />
+            </>
+          }
+
+          {painel == 'colaboradores' &&
+            <>
+              <h1 className="text-2xl sm:text-3xl font-bold my-5">
+                Colaboradores
+                <span className="text-content6"> Online</span>
+              </h1>
+              <CardColaboradores />
             </>
           }
         </div>
@@ -155,22 +195,37 @@ export default function PainelGerenciamento() {
 
       {/* Menus de ação mobile */}
       <div className="fixed bottom-0 bg-background w-full px-5 flex justify-between items-center lg:hidden">
-        {painel == 'perguntas' ? 
-          <div className="flex flex-1 justify-center cursor-pointer" onClick={() => alternarPainel()}>
-            <div className="hover:bg-content2 rounded-full p-2">
+        <div className="flex flex-1 justify-around">
+
+          {painel != 'temas' &&
+            <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
               <Folders size={35} color="#fdfcfc" weight="fill" />
             </div>
-          </div>
-          :
-          <div className="flex flex-1 justify-center cursor-pointer" onClick={() => alternarPainel()}>
-            <div className="bg-content2 rounded-full p-2">
+          }
+
+          {painel == 'temas' &&
+            <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
               <Folders size={35} color="#fdfcfc" weight="fill" />
             </div>
-          </div>
-        }
+          }
+
+          {usuario.level == 2 && painel != 'colaboradores' &&
+            <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
+              <UserCircleGear size={35} color="#f9f1f1" weight="fill" />
+            </div>
+          }
+
+          {usuario.level == 2 && painel == 'colaboradores' &&
+            <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
+              <UserCircleGear size={35} color="#f9f1f1" weight="fill" />
+            </div>
+          }
+        </div>
+
         <div className="p-2 bg-content6 rounded-full relative bottom-8 border-8 border-background cursor-pointer" onClick={() => adicionarItem()}>
           <Plus size={40} color="#fdfcfc" weight="bold" />
         </div>
+
         <div className="flex flex-1 justify-around">
           <Calendar size={35} color="#fdfcfc" weight="fill" />
           <Dropdown className={tema} backdrop="blur">
