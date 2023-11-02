@@ -67,7 +67,7 @@ const ModalTemas = ({isOpen, acao}) => {
             <div className='mt-8'>
               <Select
                 labelPlacement='outside'
-                label="Tema:"
+                label="Icone:"
                 items={icones}
                 className="text-foreground"
                 selectedKeys={icone}

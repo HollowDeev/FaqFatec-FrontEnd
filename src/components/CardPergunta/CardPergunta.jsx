@@ -161,7 +161,7 @@ export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
                                                         <GearSix size={24} color="#070707" weight="bold" />
                                                     </Button>
                                                 </DropdownTrigger>
-                                                <DropdownMenu className={tema} onAction={(acao) => selecao(acao, pergunta)}>
+                                                <DropdownMenu onAction={(acao) => selecao(acao, pergunta)}>
                                                     <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
                                                     <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
                                                 </DropdownMenu>

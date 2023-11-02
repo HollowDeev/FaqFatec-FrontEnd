@@ -1,5 +1,6 @@
 export const usuarios = [
     {
+        id: '1',
         nome: 'Leandro',
         email: 'leandro@gmail.com',
         senha: 'leandro',
@@ -7,10 +8,19 @@ export const usuarios = [
         token: '123'
     },
     {
-        nome: 'marcia',
+        id: '2',
+        nome: 'Marcia Regina Reggiolli',
         email: 'marcia@gmail.com',
         senha: 'marcia',
         level: 1,
         token: '321'
+    },
+    {
+        id: '3',
+        nome: 'José Gonçalves Pinto Júnior',
+        email: 'junior@gmail.com',
+        senha: 'junior',
+        level: 1,
+        token: '543'
     }
 ]
