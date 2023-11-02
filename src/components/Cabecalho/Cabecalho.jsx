@@ -4,9 +4,11 @@ import LogoFatec from "../../assets/logo.png"
 import { Bell, User,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
 import temaContexto from "../../context/TemaContexto"
+import { Link } from "react-router-dom"
 
 
 export const Cabecalho = () => {
+
 
   const {usuario} = useContext(AuthContext)
   const {tema} = useContext(temaContexto)
@@ -18,7 +20,7 @@ export const Cabecalho = () => {
   return (
     <header className="p-5 flex items-center justify-between  sm:justify-normal sm:gap-5 md:justify-between">
 
-        <img src={LogoFatec} alt="Fatec Itapira" className="w-24" />
+        <Link to='/'><img src={LogoFatec} alt="Fatec Itapira" className="w-24" /></Link>
 
         <div className="flex gap-4 items-center sm:w-full sm:justify-between md:hidden">
           
@@ -42,26 +44,21 @@ export const Cabecalho = () => {
           <BarraPesquisa/>
         </div>
 
-        {levelUsuario == 0 ? 
-          <>
+        <>
+          <div className="md:w-12 md:ml-10 hidden md:flex">
+            <div className="rounded-full bg-foreground p-2 ">
+              <User size={24} color={content1} weight="fill" />
+            </div>
+          </div>
+        </>
+        
+        {/* <>
             <div className="md:w-12 md:ml-10 hidden md:flex">
               <div className="rounded-full bg-content5 p-2 ">
                 <Bell size={24} color="#fdfcfc" weight="fill" />
               </div>
             </div>
-          </>
-
-          : 
-
-          <>
-            <div className="md:w-12 md:ml-10 hidden md:flex">
-              <div className="rounded-full bg-foreground p-2 ">
-                <User size={24} color={content1} weight="fill" />
-              </div>
-            </div>
-          </>
-        }
-
+        </> */}
         
 
     </header>
