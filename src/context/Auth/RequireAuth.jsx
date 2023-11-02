@@ -9,6 +9,7 @@ const RequireAuth = ({children, level=0}) => {
 
     const { checarAutorizacao } = useContext(AuthContext)
     const [loading, setLoading] = useState(true)
+   
     const navigate = useNavigate()
 
     useEffect(() => {

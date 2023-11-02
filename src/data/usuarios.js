@@ -22,5 +22,13 @@ export const usuarios = [
         senha: 'junior',
         level: 1,
         token: '543'
+    },
+    {
+        id: '4',
+        nome: 'Thauã Felipe dos Santos',
+        email: 'thaua@gmail.com',
+        senha: 'thaua',
+        level: 0,
+        token: '345'
     }
 ]
