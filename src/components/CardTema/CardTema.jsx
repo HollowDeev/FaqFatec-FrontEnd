@@ -10,6 +10,7 @@ import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
 import temaContexto from "../../context/TemaContexto"
 import dataContexto from "../../context/Data/dataContexto"
+import CardTemaSkeleton from "./CardTemaSkeleton"
 
 const CardTema = ({tipo = 'visualizacao'}) => {
 
@@ -36,11 +37,11 @@ const CardTema = ({tipo = 'visualizacao'}) => {
             
             return (
               <div className="flex gap-5 flex-wrap justify-center px-1">
-                  {dbTemas != null &&
+                  {dbTemas != null ?
                     
                     <>
                         {dbTemas.map(({tema, icone, id}) => 
-                    
+                        
                         <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 p-5 text-center flex flex-col justify-between items-center hover:translate-y-[-20px] cursor-pointer transition-transform" key={id} onClick={() => definirTema(tema)}>
                                 <MediaQuery maxWidth={640}>
                                     <Icone icone={icone} tamanho={70}/>
@@ -54,6 +55,10 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                             </div>
                         )}
                     </>
+
+                    :
+
+                    <CardTemaSkeleton />
                   
                   }
                   
@@ -110,3 +115,4 @@ CardTema.propTypes = {
 }
 
 export default CardTema
+

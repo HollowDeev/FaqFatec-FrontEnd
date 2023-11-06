@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton } from "@nextui-org/react"
+import { Accordion, AccordionItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
 import { Eye, EyeClosed, GearSix, PencilSimpleLine, Trash } from "@phosphor-icons/react"
 import { perguntas } from "../../data/perguntas"
 import PropTypes from 'prop-types'
