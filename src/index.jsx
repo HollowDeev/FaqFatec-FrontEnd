@@ -9,20 +9,23 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/Auth/AuthProvider'
 import  GerenciadorProvider  from './context/Gerenciador/gerenciadorProvider'
 import PaginaHomeProvider from './context/PaginaHome/PaginaHomeProvider'
+import DataProvider from './context/Data/dataProvider.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <AuthProvider>
-    <PaginaHomeProvider>
-      <GerenciadorProvider>
-        <BrowserRouter>
-          <NextUIProvider>
-            <TemaProvider>
-              <Main/>
-            </TemaProvider>
-          </NextUIProvider>
-        </BrowserRouter>
-      </GerenciadorProvider>
-    </PaginaHomeProvider>
-  </AuthProvider>
+  <DataProvider>
+    <AuthProvider>
+      <PaginaHomeProvider>
+        <GerenciadorProvider>
+          <BrowserRouter>
+            <NextUIProvider>
+              <TemaProvider>
+                <Main/>
+              </TemaProvider>
+            </NextUIProvider>
+          </BrowserRouter>
+        </GerenciadorProvider>
+      </PaginaHomeProvider>
+    </AuthProvider>
+  </DataProvider>
 )
