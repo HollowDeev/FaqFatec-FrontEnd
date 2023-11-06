@@ -4,42 +4,54 @@ import CardPergunta from "../../components/CardPergunta/CardPergunta";
 import temaContexto from "../../context/TemaContexto";
 import { Calendar, FolderNotchOpen, Folders, Plus, UserCircleGear } from "@phosphor-icons/react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { temas } from "../../data/temas";
+
 import Icone from "../../components/Icone/Icone";
 import CampoModais from "../../components/CampoModais/CampoModais";
 import { useGerenciador } from "../../hooks/useGerenciador";
 import CardTema from '../../components/CardTema/CardTema'
 import { AuthContext } from "../../context/Auth/AuthProvider";
 import CardColaboradores from "../../components/CardColaboradores/CardColaboradores";
+import dataContexto from "../../context/Data/dataContexto";
+
 
 
 export default function PainelGerenciamento() {
 
-  //* Contexto do tema - light / dark
+  // Contexto do tema - light / dark
   const {tema} = useContext(temaContexto)
   const foregroundColor = tema == "dark" ? "#ECEDEE" : "#11181C"
 
-  //* Contexto gerenciamento de items - gerenciamento -> objeto / gerenciar -> função base para gerenciar
+  // Contexto gerenciamento de items - gerenciamento -> objeto / gerenciar -> função base para gerenciar
   const {gerenciamento, gerenciar} = useGerenciadorContexto()
 
-  //* Hook com funções de gerenciamento(precisam da função base "gerenciar")
+  // Hook com funções de gerenciamento(precisam da função base "gerenciar")
   const gerenciador = useGerenciador()
 
+  const {dbTemas} = useContext(dataContexto)
 
-  //* Armazena o item do menu de temas selecionado
+
+  // Armazena o item do menu de temas selecionado
   const [itemSelecionado, definirItemSelecionado] = useState('')
 
-  //* Armazena o tema selecionado
+  // Armazena o tema selecionado
   const [temaSelecionado, definirTemaSelecionado] = useState('todos')
 
-  //* Temas possiveis para a filtragem
-  const temasParaFiltragem = [
-    {
-      nome: "todos",
-      icone: "Cards"
-    },
-    ...temas,
-  ]
+  // Temas possiveis para a filtragem
+  const [temasParaFiltragem, definirTemasParaFiltragem] = useState([]) 
+
+  useEffect(() => {
+    if(dbTemas != null){
+      const temas = [
+        {
+          tema: "todos",
+          icone: "Cards"
+        },
+        ...dbTemas,
+      ]
+      definirTemasParaFiltragem(temas)
+    }
+
+  }, [dbTemas])
 
   const [painel, definirPainel] = useState("perguntas")
 
@@ -67,6 +79,10 @@ export default function PainelGerenciamento() {
     }
 
   }
+
+  useEffect(()=> {
+    console.log(temaSelecionado)
+  }, [temaSelecionado])
 
   useEffect(() => {
     console.log(gerenciamento)
@@ -129,7 +145,7 @@ export default function PainelGerenciamento() {
               {temaSelecionado == "todos" ? 
                  <CardPergunta cor={foregroundColor} tipo="gerenciamento" /> 
                 :
-                 <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" tema={temaSelecionado}/> 
+                 <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" temaParaFiltro={temaSelecionado}/> 
               }
             </>
           }
@@ -173,19 +189,19 @@ export default function PainelGerenciamento() {
               onSelectionChange={definirItemSelecionado}
               onAction={(key) => definirTemaSelecionado(key)}
             >
-              {(tema) => (
+              {({tema, icone}) => (
                 <DropdownItem 
-                  className="text-foreground"
-                  key={tema.nome}
-                  startContent={<Icone icone={tema.icone} tamanho={20} />}
-                >
-                  {tema.nome.toUpperCase()}
-                </DropdownItem>
-              )
-              }
+                className="text-foreground"
+                key={tema}
+                startContent={<Icone icone={icone} tamanho={20}/>}
+              >
+                {tema.toUpperCase()}
+              </DropdownItem>
+              )}
               
             </DropdownMenu>
           </Dropdown>
+          
         }
 
         <div className="bg-content2 rounded-full p-4 hover:opacity-70 transition-all cursor-pointer">
