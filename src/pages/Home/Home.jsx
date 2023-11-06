@@ -1,13 +1,31 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import CardPergunta from "../../components/CardPergunta/CardPergunta"
 import CardTema from "../../components/CardTema/CardTema"
 import { ArrowFatLineLeft } from "@phosphor-icons/react"
 import paginaHomeContexto from "../../context/PaginaHome/PaginaHomeContexto"
+import { AuthContext } from "../../context/Auth/AuthProvider"
 
 
 const Home = () => {
 
   const {temaPagina, definirTema} = useContext(paginaHomeContexto)
+  const [alunoLogado, definirALunoLogado] = useState(false)
+
+  const {checarAutorizacao} = useContext(AuthContext)
+
+  useEffect(() => {
+    const verificar = async () => {
+      const userData = await checarAutorizacao()
+
+      if(userData && userData.level == 0){
+        definirALunoLogado(true)
+        
+      }
+    }
+
+    verificar()
+  }, [])
+
 
   return (
     <div className="lg:w-[1000px] xl:w-[1300px] m-auto sm:px-20 flex flex-col ">
@@ -47,7 +65,12 @@ const Home = () => {
               <p>Voltar aos temas</p>
             </a>
           </div>
-          <CardPergunta filtro="tema" tema={temaPagina}/> 
+          <CardPergunta filtro="tema" temaParaFiltro={temaPagina}/> 
+          {alunoLogado && 
+          
+          <p>Sugerir pergunta</p>
+          
+          }
         </div>
       </>
     }

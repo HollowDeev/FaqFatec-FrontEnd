@@ -7,6 +7,7 @@ import { useContext } from "react"
 import temaContexto from "../../context/TemaContexto"
 import { useGerenciador } from "../../hooks/useGerenciador"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
+import dataContexto from "../../context/Data/dataContexto"
 
 CardPergunta.defaultProps = {
     limite: 0,
@@ -18,14 +19,16 @@ CardPergunta.defaultProps = {
 CardPergunta.propTypes = {
     limite: PropTypes.number,
     filtro: PropTypes.string,
-    tema: PropTypes.string,
+    temaParaFiltro: PropTypes.string,
     cor: PropTypes.string,
     tipo: PropTypes.string
 }
 
-export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
+export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo }) {
 
     const { tema: temaSistema } = useContext(temaContexto)
+
+    const {dbPerguntas} = useContext(dataContexto)
 
     const { gerenciar } = useGerenciadorContexto()
     const gerenciador = useGerenciador()
@@ -43,59 +46,67 @@ export default function CardPergunta({ limite, tema, filtro, cor, tipo }) {
                 case "limite":
 
                     return (
-                        <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }} >
-                            {
-                                perguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
-                                    <AccordionItem
-                                        key={pergunta.id}
-                                        title={pergunta.titulo}
-                                        subtitle={pergunta.tema.toUpperCase()}
-                                        startContent={
-                                            <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
-                                        }
+                        <>
+                            {dbPerguntas != null &&
+                                <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }} >
+                                    {
+                                        dbPerguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
+                                            <AccordionItem
+                                                key={pergunta.id}
+                                                title={pergunta.pergunta}
+                                                subtitle={pergunta.tema.toUpperCase()}
+                                                startContent={
+                                                    <Icone icone={pergunta.icone} cor={cor} tamanho={50} />
+                                                }
 
-                                        indicator={
-                                            ({ isOpen }) => isOpen
-                                                ?
-                                                <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
-                                                :
-                                                <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
-                                        }
-                                        disableIndicatorAnimation
-                                    >
-                                        <p>{pergunta.resposta}</p>
-                                    </AccordionItem>
-                                ))
+                                                indicator={
+                                                    ({ isOpen }) => isOpen
+                                                        ?
+                                                        <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                                        :
+                                                        <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                                }
+                                                disableIndicatorAnimation
+                                            >
+                                                <p>{pergunta.resposta}</p>
+                                            </AccordionItem>
+                                        ))
+                                    }
+                                </Accordion>
                             }
-                        </Accordion>
+                        </>
                     )
 
                 case 'tema':
                     return (
-                        <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
-                            {
-                                perguntas.filter((pergunta) => pergunta.tema == tema).map((pergunta) => (
-                                    <AccordionItem
-                                        key={pergunta.id}
-                                        title={pergunta.titulo}
-                                        subtitle={pergunta.tema.toUpperCase()}
-                                        startContent={
-                                            <Icone tema={pergunta.tema} cor={cor} tamanho={50} />
-                                        }
-                                        indicator={
-                                            ({ isOpen }) => isOpen
-                                                ?
-                                                <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
-                                                :
-                                                <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
-                                        }
-                                        disableIndicatorAnimation
-                                    >
-                                        <p>{pergunta.resposta}</p>
-                                    </AccordionItem>
-                                ))
+                        <>
+                            {dbPerguntas != null &&
+                                <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
+                                    {
+                                        dbPerguntas.filter(({tema}) => tema == temaParaFiltro).map(({tema, pergunta, resposta, icone, id}) => (
+                                            <AccordionItem
+                                                key={id}
+                                                title={pergunta}
+                                                subtitle={tema.toUpperCase()}
+                                                startContent={
+                                                    <Icone icone={icone} cor={cor} tamanho={50} />
+                                                }
+                                                indicator={
+                                                    ({ isOpen }) => isOpen
+                                                        ?
+                                                        <Eye size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                                        :
+                                                        <EyeClosed size={25} color={temaSistema == "dark" ? '#ffff' : "#000"} weight="bold" />
+                                                }
+                                                disableIndicatorAnimation
+                                            >
+                                                <p>{resposta}</p>
+                                            </AccordionItem>
+                                        ))
+                                    }
+                                </Accordion>
                             }
-                        </Accordion>
+                        </>
                     )
 
 

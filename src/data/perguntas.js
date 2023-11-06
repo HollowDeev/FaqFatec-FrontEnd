@@ -8,7 +8,7 @@ export const perguntas = [
     {
         id: "2",
         titulo: "Como fazer minha rematrícula?",
-        resposta: "Para fazer a rematrícula o aluno deve acessar o sistema SIGA (Sistema Integrado de Gestão Acadêmica) dentro do prazo de rematrícula, conforme previsão do Calendário de Escolar e clicar em Rematrícula. Cabe lembrar que a rematrícula só estará liberada após a entrega de todos os documentos originais solicitados pela secretaria, e após a confirmação de recebimento do e-mail com as instruções para a rematrícula.O acesso ao SIGA pode ser feito pelo seguinte link https://siga.cps.sp.gov.br/aluno/login.aspx e o Calendário Escolar poderá ser consultado em https://fatecitapira.edu.br",
+        resposta: "Para fazer a rematrícula o aluno deve acessar o sistema SIGA (Sistema Integrado de Gestão Acadêmica) dentro do prazo de rematrícula, conforme previsão do Calendário de Escolar e clicar em Rematrícula. Cabe lembrar que a rematrícula só estará liberada após a entrega de todos os documentos originais solicitados pela secretaria, e após a confirmação de recebimento do e-mail com as instruções para a rematrícula.O acesso ao SIGA pode ser feito pelo seguinte link <a href=' https://siga.cps.sp.gov.br/aluno/login.aspx'> https://siga.cps.sp.gov.br/aluno/login.aspx</a> e o Calendário Escolar poderá ser consultado em https://fatecitapira.edu.br",
         tema: 'geral'
     },
     {

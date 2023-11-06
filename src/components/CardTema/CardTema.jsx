@@ -9,10 +9,14 @@ import { useGerenciador } from "../../hooks/useGerenciador"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
 import temaContexto from "../../context/TemaContexto"
+import dataContexto from "../../context/Data/dataContexto"
 
 const CardTema = ({tipo = 'visualizacao'}) => {
 
     const {tema: temaSistema} = useContext(temaContexto)
+
+    
+    const {dbTemas} = useContext(dataContexto)
 
     //* Contexto para definir o tema de visualização na PAGINA HOME
     const {definirTema} = useContext(paginaHomeContexto)
@@ -32,20 +36,26 @@ const CardTema = ({tipo = 'visualizacao'}) => {
             
             return (
               <div className="flex gap-5 flex-wrap justify-center px-1">
-                  {temas.map((tema) => 
+                  {dbTemas != null &&
+                    
+                    <>
+                        {dbTemas.map(({tema, icone, id}) => 
+                    
+                        <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 p-5 text-center flex flex-col justify-between items-center hover:translate-y-[-20px] cursor-pointer transition-transform" key={id} onClick={() => definirTema(tema)}>
+                                <MediaQuery maxWidth={640}>
+                                    <Icone icone={icone} tamanho={70}/>
+                                </MediaQuery>
+                
+                                <MediaQuery minWidth={640}>
+                                    <Icone tema={tema} tamanho={100}/>
+                                </MediaQuery>
+                
+                                <h1 className="text-2xl font-extrabold">{tema.toUpperCase()}</h1>
+                            </div>
+                        )}
+                    </>
                   
-                      <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 p-5 text-center flex flex-col justify-between items-center hover:translate-y-[-20px] cursor-pointer transition-transform" key={tema.id} onClick={() => definirTema(tema.nome)}>
-                          <MediaQuery maxWidth={640}>
-                              <Icone tema={tema.nome} tamanho={70}/>
-                          </MediaQuery>
-          
-                          <MediaQuery minWidth={640}>
-                              <Icone tema={tema.nome} tamanho={100}/>
-                          </MediaQuery>
-          
-                          <h1 className="text-2xl font-extrabold">{tema.nome.toUpperCase()}</h1>
-                      </div>
-                  )}
+                  }
                   
               </div>
             )
