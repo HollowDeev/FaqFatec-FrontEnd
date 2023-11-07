@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useContext, useEffect, useState} from 'react'
 import { AuthContext } from './AuthProvider'
 import { useNavigate } from 'react-router'
+import CardPerguntaSkeleton from '../../components/CardPergunta/CardPerguntaSkeleton'
 
 
 const RequireAuth = ({children, level=0}) => {
@@ -21,8 +22,9 @@ const RequireAuth = ({children, level=0}) => {
                 return
             }
 
-            if(userdataResponse.level < level){
+            if(userdataResponse && userdataResponse.level < level){
                 navigate('/')
+                console.log('teste')
                 return
             }
 
@@ -35,6 +37,12 @@ const RequireAuth = ({children, level=0}) => {
 
     if(loading === false){
         return children
+    }else {
+        return (
+            <div className='w-full lg:w-[900px] xl:w-[1250px] m-auto'>
+                <CardPerguntaSkeleton />
+            </div>
+        )
     }
 }
 

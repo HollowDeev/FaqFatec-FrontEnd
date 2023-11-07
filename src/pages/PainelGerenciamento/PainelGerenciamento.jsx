@@ -80,10 +80,6 @@ export default function PainelGerenciamento() {
 
   }
 
-  useEffect(()=> {
-    console.log(temaSelecionado)
-  }, [temaSelecionado])
-
   useEffect(() => {
     console.log(gerenciamento)
   }, [ gerenciamento ])
@@ -113,13 +109,13 @@ export default function PainelGerenciamento() {
             </div>
           }
 
-          {usuario.level == 2 && painel != 'colaboradores' &&
+          {usuario && usuario.level == 2 && painel != 'colaboradores' &&
             <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
               <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
             </div>
           }
 
-          {usuario.level == 2 && painel == 'colaboradores' &&
+          {usuario && usuario.level == 2 && painel == 'colaboradores' &&
             <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
               <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
             </div>
@@ -225,13 +221,13 @@ export default function PainelGerenciamento() {
             </div>
           }
 
-          {usuario.level == 2 && painel != 'colaboradores' &&
+          {usuario && usuario.level == 2 && painel != 'colaboradores' &&
             <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
               <UserCircleGear size={35} color="#f9f1f1" weight="fill" />
             </div>
           }
 
-          {usuario.level == 2 && painel == 'colaboradores' &&
+          {usuario && usuario.level == 2 && painel == 'colaboradores' &&
             <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
               <UserCircleGear size={35} color="#f9f1f1" weight="fill" />
             </div>
