@@ -37,7 +37,7 @@ const reducer = (state, action) => {
                     editarPergunta: true,
                     adicionarPergunta: false,
                     idPergunta: action.pergunta.id,
-                    pergunta: action.pergunta.titulo,
+                    pergunta: action.pergunta.pergunta,
                     resposta: action.pergunta.resposta,
                     tema: action.pergunta.tema
                 },
@@ -94,7 +94,7 @@ const reducer = (state, action) => {
                     editarTema: true,
                     adicionarTema: false,
                     idTema: action.tema.id,
-                    nome: action.tema.nome,
+                    nome: action.tema.tema,
                     icone: action.tema.icone
                 },
                 state[2]
