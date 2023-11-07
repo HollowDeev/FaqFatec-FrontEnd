@@ -24,7 +24,7 @@ export const AuthProvider = ({children}) => {
   }, [])
 
   const checarAutorizacao = async () => {
-    const tokenSalvo = localStorage.getItem("token")
+      const tokenSalvo = localStorage.getItem("token")
 
       if(tokenSalvo){
         const userData = await api.validarToken(tokenSalvo)

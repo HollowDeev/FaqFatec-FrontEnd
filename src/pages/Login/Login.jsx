@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
-import { useNavigate } from "react-router"
 import { Button, Input } from "@nextui-org/react"
 import { Eye, EyeSlash } from "@phosphor-icons/react"
+import { useNavigate } from "react-router-dom"
+// import { useEffect } from "react"
 
 
 export const Login = () => {
@@ -11,14 +12,13 @@ export const Login = () => {
     const [erro, setErro] = useState("")
 
     const navigate = useNavigate()
+    const {entrar} = useContext(AuthContext)
 
-    const {autorizacao, entrar} = useContext(AuthContext)
-
-    useEffect(() => {
-        if(autorizacao){
-            navigate('/')
-        }
-    },[autorizacao, navigate])
+    // useEffect(() => {
+    //     if(autorizacao){
+    //         navigate('/')
+    //     }
+    // },[autorizacao, navigate])
 
     const handleButton = async ()  => {
         try{

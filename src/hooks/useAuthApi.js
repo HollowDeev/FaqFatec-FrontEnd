@@ -1,15 +1,20 @@
-import { usuarios } from "../data/usuarios"
+import axios from "axios"
 
 export const useAuthApi = () => ({
 
     validarToken: async (token) => {
-        const usuario = usuarios.find(user => user.token === token)
+        const usuarioResponse = await axios.get('http://127.0.0.1:8000/api/l2/me', {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
 
-        if(usuario){
-            return Promise.resolve({
-                nome: usuario.nome,
-                email: usuario.email,
-                level: usuario.level,
+        if(usuarioResponse.data){
+            return ({
+                id:  usuarioResponse.data.id,
+                nome: usuarioResponse.data.name,
+                level:  usuarioResponse.data.level,
+                email:  usuarioResponse.data.email,
             }) 
         }else {
             return null
@@ -17,16 +22,24 @@ export const useAuthApi = () => ({
     },
 
     entrar: async (email, senha) => {
-
-        const usuario = usuarios.find(user => user.email === email && user.senha === senha)
-        if(usuario){
-            return Promise.resolve({
-                nome: usuario.nome,
-                email: usuario.email,
-                level: usuario.level,
-                token: usuario.token
+        try{
+            const response = await axios.post('http://127.0.0.1:8000/api/login', {
+                email: email,
+                password: senha
             })
-        }else {
+
+            const responseData = await response.data
+            
+            const usuario = {
+                id:  responseData.user.id,
+                nome: responseData.user.name,
+                level:  responseData.user.level,
+                email:  responseData.user.email,
+                token: responseData.token
+            }
+
+            return(usuario)
+        } catch{
             return Promise.reject(new Error("Usuário inválido"))
         }
 
