@@ -24,9 +24,13 @@ const DataProvider = ({children}) => {
         definirDados()
     }, [])
 
+    const recarregarDados = () => {
+        definirDados()
+    }
+
 
   return (
-    <dataContexto.Provider value={{dbPerguntas, dbTemas, dbIcones}}>
+    <dataContexto.Provider value={{dbPerguntas, dbTemas, dbIcones, recarregarDados}}>
         {children}
     </dataContexto.Provider>
   )
