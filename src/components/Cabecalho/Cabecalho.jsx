@@ -1,21 +1,40 @@
 import { useContext } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
-import { Bell, User,  } from "@phosphor-icons/react"
+import { SignOut, User, UserGear,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
 import temaContexto from "../../context/TemaContexto"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
 
 
 export const Cabecalho = () => {
 
 
-  const {usuario} = useContext(AuthContext)
+  const {usuario, sair} = useContext(AuthContext)
   const {tema} = useContext(temaContexto)
+
+  const navigate = useNavigate()
 
   const content1 = tema == "dark" ? "#18181B" : "#fff"
 
-  let levelUsuario = usuario === null ? 0 : usuario.level
+  const handleAction = (acao) => {
+    switch(acao){
+      case 'sair':
+        sair()
+        navigate('/')
+        break
+
+      case 'painelADM':
+        navigate('/adm')
+        break
+
+      case 'entrar':
+        navigate('/login')
+        break
+        
+    }
+  }
 
   return (
     <header className="p-5 flex items-center justify-between  sm:justify-normal sm:gap-5 md:justify-between">
@@ -28,15 +47,23 @@ export const Cabecalho = () => {
             <BarraPesquisa/>
           </div>
           
-          {levelUsuario == 0 ? 
-            <div className="rounded-full bg-content5 p-2 ">
-              <Bell size={24} color="#fdfcfc" weight="fill" />
-            </div>
-            :
-            <div className="rounded-full bg-foreground p-2  w-10 ">
-              <User size={24} color={content1} weight="fill" />
-            </div>
-          }
+          <Dropdown>
+            <DropdownTrigger>
+              <div className="rounded-full bg-foreground p-2  w-10 ">
+                <User size={24} color={content1} weight="fill" />
+              </div>
+            </DropdownTrigger>
+            <DropdownMenu>
+              {usuario && usuario.level > 0 && 
+                <DropdownItem>
+                  Painel Gerenciamento
+                </DropdownItem>
+              }
+              <DropdownItem>
+                Sair
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
 
         </div>
 
@@ -46,20 +73,36 @@ export const Cabecalho = () => {
 
         <>
           <div className="md:w-12 md:ml-10 hidden md:flex">
-            <div className="rounded-full bg-foreground p-2 ">
-              <User size={24} color={content1} weight="fill" />
-            </div>
+            <Dropdown className={tema}>
+              <DropdownTrigger>
+                <div className="rounded-full bg-foreground p-2 cursor-pointer">
+                  <User size={24} color={content1} weight="fill" />
+                </div>
+              </DropdownTrigger>
+              <DropdownMenu onAction={(acao) => handleAction(acao)}>
+                {usuario && usuario.level > 0 && 
+                  <DropdownItem className="text-foreground" startContent={
+                    <UserGear size={20} color="#f9f1f1" weight="fill" />
+                  } key='painelADM'>
+                    Painel Gerenciamento
+                  </DropdownItem>
+                }
+                {usuario ?
+                  <DropdownItem className="text-danger" startContent={
+                    <SignOut size={20} color="#FF000F" weight="fill" />
+                  } key='sair'>
+                    Sair
+                  </DropdownItem>
+                  :
+                  <DropdownItem className="text-success" key='entrar'>
+                    Entrar
+                  </DropdownItem>
+                }
+              </DropdownMenu>
+            </Dropdown>
           </div>
         </>
-        
-        {/* <>
-            <div className="md:w-12 md:ml-10 hidden md:flex">
-              <div className="rounded-full bg-content5 p-2 ">
-                <Bell size={24} color="#fdfcfc" weight="fill" />
-              </div>
-            </div>
-        </> */}
-        
+
 
     </header>
   )
