@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
-import { SignOut, User, UserGear,  } from "@phosphor-icons/react"
+import { SignIn, SignOut, User, UserGear,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
 import temaContexto from "../../context/TemaContexto"
 import { Link, useNavigate } from "react-router-dom"
@@ -48,21 +48,28 @@ export const Cabecalho = () => {
           </div>
           
           <Dropdown>
-            <DropdownTrigger>
-              <div className="rounded-full bg-foreground p-2  w-10 ">
-                <User size={24} color={content1} weight="fill" />
-              </div>
-            </DropdownTrigger>
-            <DropdownMenu>
-              {usuario && usuario.level > 0 && 
-                <DropdownItem>
-                  Painel Gerenciamento
-                </DropdownItem>
-              }
-              <DropdownItem>
-                Sair
-              </DropdownItem>
-            </DropdownMenu>
+            <DropdownMenu onAction={(acao) => handleAction(acao)}>
+                {usuario && usuario.level > 0 && 
+                  <DropdownItem className="text-foreground" startContent={
+                    <UserGear size={20} color="#f9f1f1" weight="fill" />
+                  } key='painelADM'>
+                    Painel Gerenciamento
+                  </DropdownItem>
+                }
+                {usuario ?
+                  <DropdownItem className="text-danger" startContent={
+                    <SignOut size={20} color="#FF000F" weight="fill" />
+                  } key='sair'>
+                    Sair
+                  </DropdownItem>
+                  :
+                  <DropdownItem className="text-success" key='entrar' startContent={
+                    <SignIn size={20} color="#17c964" weight="fill" />
+                  }>
+                    Entrar
+                  </DropdownItem>
+                }
+              </DropdownMenu>
           </Dropdown>
 
         </div>
@@ -94,7 +101,9 @@ export const Cabecalho = () => {
                     Sair
                   </DropdownItem>
                   :
-                  <DropdownItem className="text-success" key='entrar'>
+                  <DropdownItem className="text-success" key='entrar' startContent={
+                    <SignIn size={20} color="#17c964" weight="fill" />
+                  }>
                     Entrar
                   </DropdownItem>
                 }
