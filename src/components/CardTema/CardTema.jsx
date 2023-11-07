@@ -11,11 +11,18 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-o
 import temaContexto from "../../context/TemaContexto"
 import dataContexto from "../../context/Data/dataContexto"
 import CardTemaSkeleton from "./CardTemaSkeleton"
+import { useActionsApi } from "../../hooks/useActionsApi"
+import { AuthContext } from "../../context/Auth/AuthProvider"
 
 const CardTema = ({tipo = 'visualizacao'}) => {
 
     const {tema: temaSistema} = useContext(temaContexto)
 
+    const actionsApi = useActionsApi()
+
+    const {parametrosRequisicao} = useContext(AuthContext)
+
+    const {recarregarDados} = useContext(dataContexto)
     
     const {dbTemas} = useContext(dataContexto)
 
@@ -25,10 +32,16 @@ const CardTema = ({tipo = 'visualizacao'}) => {
     const {gerenciar} = useGerenciadorContexto()
     const gerenciador = useGerenciador()
 
-    const selecionar = (acao, tema) => {
+    const selecionar = async (acao, tema) => {
         switch(acao){
             case 'editar':
                 gerenciador.editarTema(gerenciar, tema)
+                break
+
+            case 'excluir':
+                await actionsApi.deletarTema(tema.id, parametrosRequisicao)
+                recarregarDados()
+                break
         }
     }
 
@@ -48,7 +61,7 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                                 </MediaQuery>
                 
                                 <MediaQuery minWidth={640}>
-                                    <Icone tema={tema} tamanho={100}/>
+                                    <Icone icone={icone} tamanho={100}/>
                                 </MediaQuery>
                 
                                 <h1 className="text-2xl font-extrabold">{tema.toUpperCase()}</h1>

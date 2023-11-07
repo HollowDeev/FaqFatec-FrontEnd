@@ -8,11 +8,10 @@ import EditorTexto from '../EditorTexto/EditorTexto'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { Folders, Upload, XCircle } from '@phosphor-icons/react'
-import { temas } from '../../data/temas'
 import Icone from '../Icone/Icone'
-
-
-
+import { useActionsApi } from '../../hooks/useActionsApi'
+import { AuthContext } from '../../context/Auth/AuthProvider'
+import dataContexto from '../../context/Data/dataContexto'
 
 
 // eslint-disable-next-line react/prop-types
@@ -20,9 +19,17 @@ const ModalPerguntas = ({isOpen, acao}) => {
   
   const {tema: temaSistema} = useContext(temaContexto)
 
+  const {dbTemas, recarregarDados} = useContext(dataContexto)
+
   const { onOpenChange } = useDisclosure()
   const {gerenciamento, gerenciar} = useGerenciadorContexto()
   const gerenciador = useGerenciador()
+
+  // Parametros de URL e Token para as funcoes de servico
+  const {parametrosRequisicao} = useContext(AuthContext)
+
+  // Funcoes de servico
+  const actionsApi = useActionsApi()
 
   const [pergunta, definirPergunta] = useState('')
   const [resposta, definirResposta] = useState('')
@@ -39,10 +46,10 @@ const ModalPerguntas = ({isOpen, acao}) => {
     gerenciador.fechar(gerenciar)
   }
 
-  const btnFinalizar = () => {
-    console.log(pergunta)
-    console.log(resposta)
-    console.log(tema.currentKey)
+  const btnFinalizar = async () => {
+    await actionsApi.adicionarPergunta(pergunta, resposta, tema.currentKey, parametrosRequisicao)
+    recarregarDados()
+
     gerenciador.fechar(gerenciar)
   }
 
@@ -78,20 +85,22 @@ const ModalPerguntas = ({isOpen, acao}) => {
               />
             </div>
             <div className='mt-8'>
-              <Select
+              {dbTemas != null && (
+                <Select
                 labelPlacement='outside'
                 label="Tema:"
-                items={temas}
+                items={dbTemas}
                 className="text-foreground"
                 selectedKeys={tema}
                 onSelectionChange={definirTema}
                 startContent={<Folders size={25} color="#fdfcfc" weight="fill" />}
                 description="Selecione o tema dessa pergunta"
               >
-                {
-                  (tema) => <SelectItem key={tema.nome} startContent={<Icone icone={tema.icone} tamanho={25}/>}>{tema.nome.toUpperCase()}</SelectItem>
-                }
-              </Select>
+                  {
+                    (tema) => <SelectItem key={tema.id} startContent={<Icone icone={tema.icone} tamanho={25}/>}>{tema.tema.toUpperCase()}</SelectItem>
+                  }
+                </Select>
+              )}
             </div>
           </ModalBody>
           <ModalFooter>

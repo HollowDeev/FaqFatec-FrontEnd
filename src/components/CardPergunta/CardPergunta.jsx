@@ -9,6 +9,8 @@ import { useGerenciador } from "../../hooks/useGerenciador"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 import dataContexto from "../../context/Data/dataContexto"
 import CardPerguntaSkeleton from "./CardPerguntaSkeleton"
+import { useActionsApi } from "../../hooks/useActionsApi"
+import { AuthContext } from "../../context/Auth/AuthProvider"
 
 CardPergunta.defaultProps = {
     limite: 0,
@@ -31,13 +33,24 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
     const {dbPerguntas} = useContext(dataContexto)
 
+    const {parametrosRequisicao} = useContext(AuthContext)
+    const actionsApi = useActionsApi()
+    const {recarregarDados} = useContext(dataContexto)
+
     const { gerenciar } = useGerenciadorContexto()
     const gerenciador = useGerenciador()
 
     //* Chamada no select de gerenciamento - Excluir / Editar pergunta
-    const selecao = (acao, pergunta) => {
-        if(acao == "editar"){
-            gerenciador.editarPerguntas(gerenciar, pergunta)
+    const selecao = async(acao, pergunta) => {
+        switch(acao){
+            case 'editar':
+                gerenciador.editarPerguntas(gerenciar, pergunta)
+                break
+            
+            case 'excluir':
+                await actionsApi.deletarPergunta(pergunta.id, parametrosRequisicao)
+                recarregarDados()
+                break
         }
     }
 

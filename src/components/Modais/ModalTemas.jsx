@@ -8,7 +8,9 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { StackSimple, Textbox, Upload, XCircle } from '@phosphor-icons/react'
 import Icone from '../Icone/Icone'
-import { icones } from '../../data/icones'
+import dataContexto from '../../context/Data/dataContexto'
+import { useActionsApi } from '../../hooks/useActionsApi'
+import { AuthContext } from '../../context/Auth/AuthProvider'
 
 
 
@@ -16,6 +18,11 @@ import { icones } from '../../data/icones'
 const ModalTemas = ({isOpen, acao}) => {
   
   const {tema: temaSistema} = useContext(temaContexto)
+
+  const {parametrosRequisicao} = useContext(AuthContext)
+
+  const {dbIcones, recarregarDados} = useContext(dataContexto)
+  const actionsApi = useActionsApi()
 
   const { onOpenChange } = useDisclosure()
 
@@ -34,9 +41,9 @@ const ModalTemas = ({isOpen, acao}) => {
     gerenciador.fechar(gerenciar)
   }
 
-  const btnFinalizar = () => {
-    console.log(nome.toLowerCase())
-    console.log(icone.currentKey)
+  const btnFinalizar = async () => {
+    await actionsApi.adicionarTema(nome.toUpperCase(), icone.currentKey, parametrosRequisicao)
+    recarregarDados()
     gerenciador.fechar(gerenciar)
   }
 
@@ -65,10 +72,11 @@ const ModalTemas = ({isOpen, acao}) => {
               />
             </div>
             <div className='mt-8'>
-              <Select
+              {dbIcones && (
+                <Select
                 labelPlacement='outside'
                 label="Icone:"
-                items={icones}
+                items={dbIcones}
                 className="text-foreground"
                 selectedKeys={icone}
                 onSelectionChange={definirIcone}
@@ -77,9 +85,10 @@ const ModalTemas = ({isOpen, acao}) => {
                 isRequired
               >
                 {
-                  ({icone,nome}) => <SelectItem key={nome} startContent={<Icone icone={icone} tamanho={25}/>}>{nome}</SelectItem>
+                  ({icone}) => <SelectItem key={icone} startContent={<Icone icone={icone} tamanho={25}/>}>{icone}</SelectItem>
                 }
               </Select>
+              )}
             </div>
           </ModalBody>
           <ModalFooter>
