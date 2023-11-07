@@ -22,7 +22,7 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         <Route path="/adm" element={
-          <RequireAuth level='1'>
+          <RequireAuth level={1}>
             <PainelGerenciamento />
           </RequireAuth>
         }/>
