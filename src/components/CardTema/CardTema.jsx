@@ -1,5 +1,5 @@
 import MediaQuery from "react-responsive"
-import { temas } from "../../data/temas"
+
 import Icone from "../Icone/Icone"
 import { useContext } from "react"
 import paginaHomeContexto from "../../context/PaginaHome/PaginaHomeContexto"
@@ -67,43 +67,49 @@ const CardTema = ({tipo = 'visualizacao'}) => {
         case 'gerenciamento':
             return (
                 <div className="flex gap-5 flex-wrap justify-center px-1">
-                    {temas.map((tema) => 
+                    {dbTemas != null ?
+                        <>
+                            {dbTemas.map(({tema, icone, id}) => 
+                        
+                                <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 sm:p-5 relative text-center flex flex-col justify-between items-center" key={id} onClick={() => definirTema(tema)}>
+                                    
+                                    <MediaQuery maxWidth={640}>
+                                        <Icone icone={icone} tamanho={70} />
+                                    </MediaQuery>
                     
-                        <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 sm:p-5 relative text-center flex flex-col justify-between items-center" key={tema.id} onClick={() => definirTema(tema.nome)}>
-                            
-                            <MediaQuery maxWidth={640}>
-                                <Icone tema={tema.nome} tamanho={70} />
-                            </MediaQuery>
-            
-                            <MediaQuery minWidth={640}>
-                                <Dropdown className={`text-foreground ${temaSistema}`}>
+                                    <MediaQuery minWidth={640}>
+                                        <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                <DropdownTrigger >
+                                                    <div className="absolute w-8 h-8 bg-content6 top-2 right-2 rounded-xl cursor-pointer flex justify-center items-center hover:bg-opacity-70 transition-all">
+                                                        <GearSix size={24} color="#070707" weight="bold" />
+                                                    </div>
+                                                </DropdownTrigger>
+                                                <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, {tema, icone, id})}>
+                                                    <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                    <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                </DropdownMenu>
+                                        </Dropdown>
+                                        <Icone icone={icone} tamanho={100}/>
+                                    </MediaQuery>
+                    
+                                    <h1 className="text-2xl font-extrabold mx-1 sm:m-0">{tema.toUpperCase()}</h1>
+                                
+                                    
+                                    <Dropdown className={`text-foreground ${temaSistema}`}>
                                         <DropdownTrigger >
-                                            <div className="absolute w-8 h-8 bg-content6 top-2 right-2 rounded-xl cursor-pointer flex justify-center items-center hover:bg-opacity-70 transition-all">
-                                                <GearSix size={24} color="#070707" weight="bold" />
-                                            </div>
+                                            <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden">GERENCIAR</div>
                                         </DropdownTrigger>
                                         <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, tema)}>
                                             <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
                                             <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
                                         </DropdownMenu>
-                                </Dropdown>
-                                <Icone tema={tema.nome} tamanho={100}/>
-                            </MediaQuery>
-            
-                            <h1 className="text-2xl font-extrabold mx-1 sm:m-0">{tema.nome.toUpperCase()}</h1>
-                           
-                            
-                            <Dropdown className={`text-foreground ${temaSistema}`}>
-                                <DropdownTrigger >
-                                    <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden">GERENCIAR</div>
-                                </DropdownTrigger>
-                                <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, tema)}>
-                                    <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
-                                    <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </div>
-                    )}
+                                    </Dropdown>
+                                </div>
+                            )}
+                        </>
+                        :
+                        <CardTemaSkeleton />
+                    }
                     
                 </div>
               )

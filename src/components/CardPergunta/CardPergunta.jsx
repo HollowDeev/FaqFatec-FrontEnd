@@ -83,7 +83,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 case 'tema':
                     return (
                         <>
-                            {dbPerguntas != null &&
+                            {dbPerguntas != null ?
                                 <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                                     {
                                         dbPerguntas.filter(({tema}) => tema == temaParaFiltro).map(({tema, pergunta, resposta, icone, id}) => (
@@ -108,6 +108,8 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                         ))
                                     }
                                 </Accordion>
+                                :
+                                <CardPerguntaSkeleton />
                             }
                         </>
                     )
@@ -116,7 +118,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 case 'nenhum':
                     return (
                         <>
-                            {dbPerguntas != null && (
+                            {dbPerguntas != null ? (
                             <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                                 {
                                     perguntas.map(({ id, titulo, tema, resposta }) => (
@@ -145,8 +147,10 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                         </AccordionItem>
                                     ))
                                 }
-                            </Accordion>
-                            )}
+                            </Accordion>)
+                            :
+                            <CardPerguntaSkeleton />
+                            }
                         </>
                     )
 
@@ -160,7 +164,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 case "nenhum":
                     return (
                         <>
-                            {dbPerguntas != null &&
+                            {dbPerguntas != null ?
                                 <div className="w-full flex flex-col gap-10">
 
                                     {dbPerguntas.map(({pergunta, id, icone, tema, resposta}) => (
@@ -208,6 +212,8 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                     }
 
                                 </div>
+                                :
+                                <CardPerguntaSkeleton />
                             }
                         </>
                     )
@@ -216,7 +222,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                     console.log(temaParaFiltro)
                     return (
                         <>
-                            {dbPerguntas != null &&
+                            {dbPerguntas != null ?
                             
                                 <div className="w-full flex flex-col gap-10">
 
@@ -267,7 +273,8 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                     }
 
                                 </div>
-                            
+                                :
+                                <CardPerguntaSkeleton />
                             }
                         </>
                     )
