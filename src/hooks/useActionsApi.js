@@ -2,7 +2,6 @@ import axios from "axios"
 
 export const useActionsApi = () => ({
 
-
     adicionarPergunta: async (pergunta, resposta, tema, {baseURL, headers, user_id}) => {
         await axios.post(`${baseURL}/pr`, {
                 pergunta, 
@@ -34,5 +33,13 @@ export const useActionsApi = () => ({
     deletarTema: async(temaId, {baseURL, headers}) => {
         await axios.delete(`${baseURL}/tema/${temaId}`, {headers: headers})
         // console.log(temaId)
+    },
+
+    listarColaboradores: async({baseURL, headers}) => {
+        const response = await axios.get(`${baseURL}/users`, {headers: headers})
+        const colaboradores = response.data
+
+        return colaboradores
     }
+    
 })
