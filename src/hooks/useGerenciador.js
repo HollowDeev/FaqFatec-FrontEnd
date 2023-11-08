@@ -24,6 +24,10 @@ export const useGerenciador = () => ({
         return dispatch({type: 'adicionarColaborador'})
     },
 
+    buscarColaboradores: (dispatch) => {
+        return dispatch({type: 'buscarColaboradores'})
+    },
+
     fechar: (dispatch) => {
         return dispatch({type: "fechar"})
     }

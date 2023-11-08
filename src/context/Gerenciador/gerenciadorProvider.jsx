@@ -1,6 +1,7 @@
 import P from "prop-types"
 import gerenciadorContexto from "./gerenciadorContexto"
 import { useReducer } from "react"
+import { useState } from "react"
 
 const valorInicial = [
     {
@@ -152,8 +153,10 @@ const GerenciadorProvider = ({children}) => {
 
     const [gerenciamento, gerenciar] = useReducer(reducer, valorInicial)
 
+    const [buscarColaboradores, definirBuscaColaboradores] = useState(true)
+
     return (
-        <gerenciadorContexto.Provider value={{gerenciamento, gerenciar}}>
+        <gerenciadorContexto.Provider value={{gerenciamento, gerenciar, buscarColaboradores, definirBuscaColaboradores}}>
             {children}
         </gerenciadorContexto.Provider>
     )

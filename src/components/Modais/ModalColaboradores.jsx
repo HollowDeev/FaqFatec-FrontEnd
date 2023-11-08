@@ -19,7 +19,7 @@ const ModalColaboradores = ({isOpen, acao}) => {
 
   const { onOpenChange } = useDisclosure()
 
-  const {gerenciamento, gerenciar} = useGerenciadorContexto()
+  const {gerenciamento, gerenciar, definirBuscaColaboradores} = useGerenciadorContexto()
   const gerenciador = useGerenciador()
 
   const actionsApi = useActionsApi()
@@ -68,12 +68,13 @@ const ModalColaboradores = ({isOpen, acao}) => {
   }
 
   const btnFinalizar = async () => {
-    await actionsApi.adicionarColaboradores(nome.toUpperCase(), email, senha, parametrosRequisicao)
+    await actionsApi.adicionarColaboradores(nome, email, senha, parametrosRequisicao)
     definirEmail(null)
     definirNome(null)
     definirSenha(null)
     definirConfirmarSenha(null)
     gerenciador.fechar(gerenciar)
+    definirBuscaColaboradores(true)
   }
 
   switch(acao){
