@@ -7,7 +7,8 @@ import { useGerenciador } from '../../hooks/useGerenciador'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { EnvelopeSimple, Eye, EyeSlash, Password, Textbox, Upload, XCircle } from '@phosphor-icons/react'
-
+import { AuthContext } from '../../context/Auth/AuthProvider'
+import { useActionsApi } from '../../hooks/useActionsApi'
 
 
 
@@ -20,6 +21,9 @@ const ModalColaboradores = ({isOpen, acao}) => {
 
   const {gerenciamento, gerenciar} = useGerenciadorContexto()
   const gerenciador = useGerenciador()
+
+  const actionsApi = useActionsApi()
+  const {parametrosRequisicao} = useContext(AuthContext)
 
   // Estados para os dados necessarios para o gerenciamento
   const [nome, definirNome] = useState(null)
@@ -63,10 +67,12 @@ const ModalColaboradores = ({isOpen, acao}) => {
     gerenciador.fechar(gerenciar)
   }
 
-  const btnFinalizar = () => {
-    console.log(nome.toLowerCase())
-    console.log(email)
-    console.log(senha)
+  const btnFinalizar = async () => {
+    await actionsApi.adicionarColaboradores(nome.toUpperCase(), email, senha, parametrosRequisicao)
+    definirEmail(null)
+    definirNome(null)
+    definirSenha(null)
+    definirConfirmarSenha(null)
     gerenciador.fechar(gerenciar)
   }
 

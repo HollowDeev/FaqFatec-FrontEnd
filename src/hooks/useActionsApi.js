@@ -40,6 +40,15 @@ export const useActionsApi = () => ({
         const colaboradores = response.data
 
         return colaboradores
+    },
+
+    adicionarColaboradores: async(nome, email, senha, {baseURL, headers}) => {
+        await axios.post(`${baseURL}/user`, {
+            name: nome,
+            level: 1,
+            email,
+            password: senha
+        }, {headers: headers})
     }
     
 })
