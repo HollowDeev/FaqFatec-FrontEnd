@@ -49,6 +49,10 @@ export const useActionsApi = () => ({
             email,
             password: senha
         }, {headers: headers})
+    },
+
+    removerColaboradores: async(colaborador_id, {baseURL, headers}) => {
+        await axios.delete(`${baseURL}/user/${colaborador_id}`, {headers: headers})
     }
     
 })

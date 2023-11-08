@@ -7,8 +7,7 @@ import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 import { useGerenciador } from "../../hooks/useGerenciador"
 import { useActionsApi } from "../../hooks/useActionsApi"
 import { AuthContext } from "../../context/Auth/AuthProvider"
-import { useEffect } from "react"
-import { useState } from "react"
+import { useEffect,useState } from "react"
 import CardColaboradoresSkeleton from "./CardColaboradoresSkeleton"
 
 
@@ -21,28 +20,46 @@ const CardColaboradores = () => {
 
     const [colaboradores, definirColaboradores] = useState()
 
-
-    const {gerenciar} = useGerenciadorContexto()
+    const {gerenciar, buscarColaboradores, definirBuscaColaboradores} = useGerenciadorContexto()
     const gerenciador = useGerenciador()
 
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
-        const buscarColaboradores = async () => {
+        const iniciarBusca = async () => {
             const colaboradores = await actionsApi.listarColaboradores(parametrosRequisicao)
             definirColaboradores(colaboradores)
+            definirBuscaColaboradores(false)
+            setLoading(false)
         }
-        buscarColaboradores()
-    }, [])
+        if(buscarColaboradores == true){
+            iniciarBusca()
+        }
+    }, [buscarColaboradores, actionsApi, parametrosRequisicao, definirBuscaColaboradores, setLoading])
+
+    const removerColaboradores = async(colaborador_id) => {
+        await actionsApi.removerColaboradores(colaborador_id, parametrosRequisicao)
+
+        definirBuscaColaboradores(true)
+        setLoading(true)
+    }
 
     const selecao = (acao, colaborador) => {
         switch(acao){
             case 'mudarSenha':
                 gerenciador.mudarSenha(gerenciar, colaborador)
+                break
+
+            case 'remover':
+                setLoading(true)
+                console.log('1')
+                removerColaboradores(colaborador.id)
+                break
         }
     }
 
   return (
     <>
-        {colaboradores != null ? (
+        {colaboradores != null && !loading? (
         <div  className="w-full flex flex-col gap-5" key='1'>
             {colaboradores.map((colaboradorDados) => (
                 <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static" key={colaboradorDados.id}>
