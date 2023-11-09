@@ -1,4 +1,4 @@
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, useDisclosure } from '@nextui-org/react'
 import P from 'prop-types'
 import { useContext } from 'react'
 import temaContexto from '../../context/TemaContexto'
@@ -21,6 +21,8 @@ const ModalTemas = ({isOpen, acao}) => {
 
   const {parametrosRequisicao} = useContext(AuthContext)
 
+  const [loading, setLoading] = useState(false)
+
   const {dbIcones, recarregarDados} = useContext(dataContexto)
   const actionsApi = useActionsApi()
 
@@ -42,9 +44,13 @@ const ModalTemas = ({isOpen, acao}) => {
   }
 
   const btnFinalizar = async () => {
-    await actionsApi.adicionarTema(nome.toUpperCase(), icone.currentKey, parametrosRequisicao)
-    recarregarDados()
-    gerenciador.fechar(gerenciar)
+    if(!loading){
+      setLoading(true)
+      await actionsApi.adicionarTema(nome.toUpperCase(), icone.currentKey, parametrosRequisicao)
+      recarregarDados()
+      gerenciador.fechar(gerenciar)
+      setLoading(false)
+    }
   }
 
   return (
@@ -103,8 +109,10 @@ const ModalTemas = ({isOpen, acao}) => {
 
             <Button onPress={onClose} onClick={btnFinalizar}
               variant='flat' color='success' className='text-xl p-6'
-              endContent={
-                <Upload size={48} color="#17C964" weight="fill" />
+              endContent={ loading ? 
+                <Spinner color='success' />
+              : 
+                <Upload size={48} color="#17C964" weight="fill" /> 
               }
             >
               {acao == 'edicao' ? 'Salvar' : "Adicionar"}

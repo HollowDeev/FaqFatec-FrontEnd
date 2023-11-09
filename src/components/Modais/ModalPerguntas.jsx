@@ -48,12 +48,14 @@ const ModalPerguntas = ({isOpen, acao}) => {
   }
 
   const btnFinalizar = async () => {
-    definirLoading(true)
-    await actionsApi.adicionarPergunta(pergunta, resposta, tema.currentKey, parametrosRequisicao)
-    recarregarDados() 
+    if(!loading){
+      definirLoading(true)
+      await actionsApi.adicionarPergunta(pergunta, resposta, tema.currentKey, parametrosRequisicao)
+      recarregarDados() 
 
-    definirLoading(false)
-    gerenciador.fechar(gerenciar)
+      definirLoading(false)
+      gerenciador.fechar(gerenciar)
+    }
   }
 
   return (
