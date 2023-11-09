@@ -1,4 +1,4 @@
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, useDisclosure } from '@nextui-org/react'
 import P from 'prop-types'
 import { useContext } from 'react'
 import temaContexto from '../../context/TemaContexto'
@@ -31,6 +31,8 @@ const ModalPerguntas = ({isOpen, acao}) => {
   // Funcoes de servico
   const actionsApi = useActionsApi()
 
+  const [loading, definirLoading] = useState(false)
+
   const [pergunta, definirPergunta] = useState('')
   const [resposta, definirResposta] = useState('')
   const [tema, definirTema] = useState(new Set([]))
@@ -39,7 +41,6 @@ const ModalPerguntas = ({isOpen, acao}) => {
     definirPergunta(gerenciamento[0].pergunta)
     definirResposta(gerenciamento[0].resposta)
     definirTema(new Set([gerenciamento[0].tema]))
-    
   }, [gerenciamento])
 
   const btnCancelar = () => {
@@ -47,9 +48,11 @@ const ModalPerguntas = ({isOpen, acao}) => {
   }
 
   const btnFinalizar = async () => {
+    definirLoading(true)
     await actionsApi.adicionarPergunta(pergunta, resposta, tema.currentKey, parametrosRequisicao)
-    recarregarDados()
+    recarregarDados() 
 
+    definirLoading(false)
     gerenciador.fechar(gerenciar)
   }
 
@@ -115,8 +118,10 @@ const ModalPerguntas = ({isOpen, acao}) => {
 
             <Button onPress={onClose} onClick={btnFinalizar}
               variant='flat' color='success' className='text-xl p-6'
-              endContent={
-                <Upload size={48} color="#17C964" weight="fill" />
+              endContent={ loading ? 
+                <Spinner color='success' />
+              : 
+                <Upload size={48} color="#17C964" weight="fill" /> 
               }
             >
               {acao == 'edicao' ? 'Salvar' : "Publicar"}

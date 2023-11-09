@@ -178,7 +178,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                     return (
                         <>
                             {dbPerguntas != null ?
-                                <div className="w-full flex flex-col gap-10">
+                                <div className="w-full flex flex-col gap-10" key='pai'>
 
                                     {dbPerguntas.map(({pergunta, id, icone, tema, resposta}) => (
                                         <>
