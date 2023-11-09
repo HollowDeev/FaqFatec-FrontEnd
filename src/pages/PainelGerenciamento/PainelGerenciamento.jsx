@@ -22,7 +22,7 @@ export default function PainelGerenciamento() {
   const foregroundColor = tema == "dark" ? "#ECEDEE" : "#11181C"
 
   // Contexto gerenciamento de items - gerenciamento -> objeto / gerenciar -> função base para gerenciar
-  const {gerenciamento, gerenciar} = useGerenciadorContexto()
+  const {gerenciamento, gerenciar, definirBuscaColaboradores} = useGerenciadorContexto()
 
   // Hook com funções de gerenciamento(precisam da função base "gerenciar")
   const gerenciador = useGerenciador()
@@ -57,6 +57,9 @@ export default function PainelGerenciamento() {
 
   const alternarPainel = (painelDesejado) => {
     if(painel != painelDesejado){
+      if(painelDesejado){
+        definirBuscaColaboradores(true)
+      }
       definirPainel(painelDesejado)
     } else {
       definirPainel('perguntas')

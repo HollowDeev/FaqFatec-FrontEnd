@@ -9,7 +9,7 @@ export const AuthProvider = ({children}) => {
   const api = useAuthApi()
  
   const [usuario, definirUsuario] = useState(null)
-  const [parametrosRequisicao, definirParametrosRequisicao] = useState({})
+  const [parametrosRequisicao, definirParametrosRequisicao] = useState(null)
 
   const armazenarToken = (token) => {
     localStorage.setItem("token", token)
@@ -42,7 +42,7 @@ export const AuthProvider = ({children}) => {
     
   }
 
-  const definirParametros = (level, token, id) => {
+  const definirParametros =  (level, token, id) => {
     const parametros = {
       baseURL: `http://127.0.0.1:8000/api/l${level}`,
       headers: {
@@ -66,6 +66,7 @@ export const AuthProvider = ({children}) => {
   const sair = () => {
     armazenarToken('')
     definirUsuario(null)
+    definirParametrosRequisicao(null)
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner, useDisclosure } from '@nextui-org/react'
 import P from 'prop-types'
 import { useContext } from 'react'
 import temaContexto from '../../context/TemaContexto'
@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import { EnvelopeSimple, Eye, EyeSlash, Password, Textbox, Upload, XCircle } from '@phosphor-icons/react'
 import { AuthContext } from '../../context/Auth/AuthProvider'
 import { useActionsApi } from '../../hooks/useActionsApi'
+import dataContexto from '../../context/Data/dataContexto'
 
 
 
@@ -19,11 +20,14 @@ const ModalColaboradores = ({isOpen, acao}) => {
 
   const { onOpenChange } = useDisclosure()
 
-  const {gerenciamento, gerenciar, definirBuscaColaboradores} = useGerenciadorContexto()
+  const {gerenciamento, gerenciar} = useGerenciadorContexto()
   const gerenciador = useGerenciador()
 
   const actionsApi = useActionsApi()
   const {parametrosRequisicao} = useContext(AuthContext)
+
+  const {recarregarDadosColaboradores} = useContext(dataContexto)
+  const [loading, setLoading] = useState(false)
 
   // Estados para os dados necessarios para o gerenciamento
   const [nome, definirNome] = useState(null)
@@ -68,13 +72,15 @@ const ModalColaboradores = ({isOpen, acao}) => {
   }
 
   const btnFinalizar = async () => {
+    setLoading(true)
     await actionsApi.adicionarColaboradores(nome, email, senha, parametrosRequisicao)
     definirEmail(null)
     definirNome(null)
     definirSenha(null)
     definirConfirmarSenha(null)
+    setLoading(false)
     gerenciador.fechar(gerenciar)
-    definirBuscaColaboradores(true)
+    recarregarDadosColaboradores()
   }
 
   switch(acao){
@@ -131,8 +137,10 @@ const ModalColaboradores = ({isOpen, acao}) => {
     
                 <Button onPress={onClose} onClick={btnFinalizar}
                   variant='flat' color='success' className='text-xl p-6'
-                  endContent={
-                    <Upload size={48} color="#17C964" weight="fill" />
+                  endContent={ loading ? 
+                    <Spinner color='success' />
+                  : 
+                    <Upload size={48} color="#17C964" weight="fill" /> 
                   }
                 >
                   Salvar
@@ -204,8 +212,10 @@ const ModalColaboradores = ({isOpen, acao}) => {
     
                 <Button onPress={onClose} onClick={btnFinalizar}
                   variant='flat' color='success' className='text-xl p-6'
-                  endContent={
-                    <Upload size={48} color="#17C964" weight="fill" />
+                  endContent={ loading ? 
+                    <Spinner color='success' />
+                  : 
+                    <Upload size={48} color="#17C964" weight="fill" /> 
                   }
                 >
                   Cadastrar

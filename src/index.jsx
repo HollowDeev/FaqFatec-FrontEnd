@@ -13,8 +13,8 @@ import DataProvider from './context/Data/dataProvider.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <DataProvider>
-    <AuthProvider>
+  <AuthProvider>
+    <DataProvider>
       <PaginaHomeProvider>
         <GerenciadorProvider>
           <BrowserRouter>
@@ -26,6 +26,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           </BrowserRouter>
         </GerenciadorProvider>
       </PaginaHomeProvider>
-    </AuthProvider>
-  </DataProvider>
+    </DataProvider>
+  </AuthProvider>
 )

@@ -35,13 +35,6 @@ export const useActionsApi = () => ({
         // console.log(temaId)
     },
 
-    listarColaboradores: async({baseURL, headers}) => {
-        const response = await axios.get(`${baseURL}/users`, {headers: headers})
-        const colaboradores = response.data
-
-        return colaboradores
-    },
-
     adicionarColaboradores: async(nome, email, senha, {baseURL, headers}) => {
         await axios.post(`${baseURL}/user`, {
             name: nome,

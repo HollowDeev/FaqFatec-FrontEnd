@@ -7,8 +7,9 @@ import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 import { useGerenciador } from "../../hooks/useGerenciador"
 import { useActionsApi } from "../../hooks/useActionsApi"
 import { AuthContext } from "../../context/Auth/AuthProvider"
-import { useEffect,useState } from "react"
+import { useState } from "react"
 import CardColaboradoresSkeleton from "./CardColaboradoresSkeleton"
+import dataContexto from "../../context/Data/dataContexto"
 
 
 const CardColaboradores = () => {
@@ -18,29 +19,18 @@ const CardColaboradores = () => {
     const actionsApi = useActionsApi()
     const {parametrosRequisicao} = useContext(AuthContext)
 
-    const [colaboradores, definirColaboradores] = useState()
+    const {dbColaboradores, recarregarDadosColaboradores} = useContext(dataContexto)
 
-    const {gerenciar, buscarColaboradores, definirBuscaColaboradores} = useGerenciadorContexto()
+    const {gerenciar} = useGerenciadorContexto()
     const gerenciador = useGerenciador()
 
     const [loading, setLoading] = useState(false)
-    useEffect(() => {
-        const iniciarBusca = async () => {
-            const colaboradores = await actionsApi.listarColaboradores(parametrosRequisicao)
-            definirColaboradores(colaboradores)
-            definirBuscaColaboradores(false)
-            setLoading(false)
-        }
-        if(buscarColaboradores == true){
-            iniciarBusca()
-        }
-    }, [buscarColaboradores, actionsApi, parametrosRequisicao, definirBuscaColaboradores, setLoading])
+    
 
     const removerColaboradores = async(colaborador_id) => {
         await actionsApi.removerColaboradores(colaborador_id, parametrosRequisicao)
-
-        definirBuscaColaboradores(true)
-        setLoading(true)
+        setLoading(false)
+        recarregarDadosColaboradores()
     }
 
     const selecao = (acao, colaborador) => {
@@ -51,17 +41,17 @@ const CardColaboradores = () => {
 
             case 'remover':
                 setLoading(true)
-                console.log('1')
                 removerColaboradores(colaborador.id)
                 break
         }
     }
 
+
   return (
     <>
-        {colaboradores != null && !loading? (
+        {dbColaboradores != null && !loading? (
         <div  className="w-full flex flex-col gap-5" key='1'>
-            {colaboradores.map((colaboradorDados) => (
+            {dbColaboradores.map((colaboradorDados) => (
                 <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static" key={colaboradorDados.id}>
 
                     <div className="flex items-center h-auto gap-3 relative">
