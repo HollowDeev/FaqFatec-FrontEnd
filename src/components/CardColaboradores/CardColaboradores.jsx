@@ -28,7 +28,9 @@ const CardColaboradores = () => {
     
 
     const removerColaboradores = async(colaborador_id) => {
+        console.log('teste')
         await actionsApi.removerColaboradores(colaborador_id, parametrosRequisicao)
+        console.log('teste2')
         setLoading(false)
         recarregarDadosColaboradores()
     }

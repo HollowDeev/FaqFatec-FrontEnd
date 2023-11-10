@@ -48,8 +48,8 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 break
             
             case 'excluir':
-                await actionsApi.deletarPergunta(pergunta.id, parametrosRequisicao)
                 recarregarDados()
+                await actionsApi.deletarPergunta(pergunta.id, parametrosRequisicao)
                 break
         }
     }
