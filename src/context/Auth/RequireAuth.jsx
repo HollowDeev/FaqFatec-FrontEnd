@@ -24,7 +24,6 @@ const RequireAuth = ({children, level=0}) => {
 
             if(userdataResponse && userdataResponse.level < level){
                 navigate('/')
-                console.log('teste')
                 return
             }
 
