@@ -3,20 +3,24 @@ import axios from "axios"
 export const useAuthApi = () => ({
 
     validarToken: async (token) => {
-        const usuarioResponse = await axios.get('http://127.0.0.1:8000/api/l2/me', {
-            headers: {
-                "Authorization": `Bearer ${token}`
+        try{
+            const usuarioResponse = await axios.get('http://127.0.0.1:8000/api/l2/me', {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+    
+            if(usuarioResponse.data){
+                return ({
+                    id:  usuarioResponse.data.id,
+                    nome: usuarioResponse.data.name,
+                    level:  usuarioResponse.data.level,
+                    email:  usuarioResponse.data.email,
+                }) 
+            }else {
+                return null
             }
-        })
-
-        if(usuarioResponse.data){
-            return ({
-                id:  usuarioResponse.data.id,
-                nome: usuarioResponse.data.name,
-                level:  usuarioResponse.data.level,
-                email:  usuarioResponse.data.email,
-            }) 
-        }else {
+        } catch{
             return null
         }
     },

@@ -12,10 +12,16 @@ import CardTema from '../../components/CardTema/CardTema'
 import { AuthContext } from "../../context/Auth/AuthProvider";
 import CardColaboradores from "../../components/CardColaboradores/CardColaboradores";
 import dataContexto from "../../context/Data/dataContexto";
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function PainelGerenciamento() {
+
+  const {checarAutorizacao} = useContext(AuthContext)
+  const [loading, setLoading] = useState(true)
+
+  const navigate = useNavigate()
 
   // Contexto do tema - light / dark
   const {tema} = useContext(temaContexto)
@@ -29,7 +35,6 @@ export default function PainelGerenciamento() {
 
   const {dbTemas} = useContext(dataContexto)
 
-
   // Armazena o item do menu de temas selecionado
   const [itemSelecionado, definirItemSelecionado] = useState('')
 
@@ -38,6 +43,25 @@ export default function PainelGerenciamento() {
 
   // Temas possiveis para a filtragem
   const [temasParaFiltragem, definirTemasParaFiltragem] = useState([]) 
+
+  useEffect(() => {
+    const verificar = async() => {
+      setLoading(true)
+      const dadosUsuario = await checarAutorizacao()
+
+      if(!dadosUsuario){
+        navigate('/login')
+        return
+      } else if(dadosUsuario && dadosUsuario.level < 2){
+        navigate('/')
+        return
+      } else {
+        setLoading(false)
+      }
+    }
+
+    verificar()
+  }, [])
 
   useEffect(() => {
     if(dbTemas != null){
@@ -91,7 +115,11 @@ export default function PainelGerenciamento() {
   const {usuario} = useContext(AuthContext)
 
   return (
-    <div className="relative flex ">
+
+  <>
+    {loading &&
+      
+      <div className="relative flex ">
 
       {/* Modais */}
       <CampoModais />
@@ -269,7 +297,10 @@ export default function PainelGerenciamento() {
         </div>
       </div> 
       
-    </div>
+      </div>
+
+    }
+  </>
 
   )
 }
