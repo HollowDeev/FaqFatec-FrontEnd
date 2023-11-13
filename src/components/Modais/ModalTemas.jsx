@@ -46,7 +46,14 @@ const ModalTemas = ({isOpen, acao}) => {
   const btnFinalizar = async () => {
     if(!loading){
       setLoading(true)
-      await actionsApi.adicionarTema(nome.toUpperCase(), icone.currentKey, parametrosRequisicao)
+      if(gerenciamento[1].editarTema){
+        if(parametrosRequisicao){
+          const idTema = gerenciamento[1].idTema
+          await actionsApi.salvarEdicaoTema(idTema, nome, icone.currentKey, parametrosRequisicao)
+        }
+      }else {
+        await actionsApi.adicionarTema(nome.toUpperCase(), icone.currentKey, parametrosRequisicao)
+      }
       recarregarDados()
       gerenciador.fechar(gerenciar)
       setLoading(false)

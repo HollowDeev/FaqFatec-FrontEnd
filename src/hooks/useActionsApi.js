@@ -54,6 +54,13 @@ export const useActionsApi = () => ({
 
     removerColaboradores: async(colaborador_id, {baseURL, headers}) => {
         await axios.delete(`${baseURL}/user/${colaborador_id}`, {headers: headers})
+    },
+
+    salvarEdicaoTema: async(id, tema, icone, {baseURL, headers}) => {
+        await axios.patch(`${baseURL}/tema/${id}`, {
+            tema,
+            icone
+        }, {headers:headers})
     }
     
 })

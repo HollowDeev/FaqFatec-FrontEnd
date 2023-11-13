@@ -39,8 +39,8 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                 break
 
             case 'excluir':
-                recarregarDados()
                 await actionsApi.deletarTema(tema.id, parametrosRequisicao)
+                recarregarDados()
                 break
         }
     }
