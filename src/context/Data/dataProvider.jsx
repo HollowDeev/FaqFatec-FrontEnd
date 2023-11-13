@@ -18,11 +18,10 @@ const DataProvider = ({children}) => {
 
     const definirDados = async () => {
         const dados = await api.buscarDados()
-        console.log('teste1')
         
         definirDbIcones(dados.icones)
         definirDbPerguntas(dados.perguntas.original)
-        definirDbTemas(dados.temas)
+        definirDbTemas(dados.temas.original)
     }
 
     const definirDadosColaboradores = async() => {

@@ -40,7 +40,12 @@ const ModalPerguntas = ({isOpen, acao}) => {
   useEffect(() => {
     definirPergunta(gerenciamento[0].pergunta)
     definirResposta(gerenciamento[0].resposta)
-    definirTema(new Set([gerenciamento[0].tema]))
+    let tema
+    if(gerenciamento[0].tema != ''){
+      tema = dbTemas.filter((tema) => tema.tema == gerenciamento[0].tema).map((tema) => tema.id.toString())
+      definirTema(new Set([tema[0]]))
+    }
+    
   }, [gerenciamento])
 
   const btnCancelar = () => {
@@ -50,7 +55,17 @@ const ModalPerguntas = ({isOpen, acao}) => {
   const btnFinalizar = async () => {
     if(!loading){
       definirLoading(true)
-      await actionsApi.adicionarPergunta(pergunta, resposta, tema.currentKey, parametrosRequisicao)
+
+      if(gerenciamento[0].editarPergunta){
+        if(parametrosRequisicao){
+          const idPergunta = gerenciamento[0].idPergunta
+          console.log(tema.currentKey)
+          await actionsApi.salvarEdicaoPergunta(pergunta, resposta, Number(tema.currentKey), idPergunta, parametrosRequisicao)
+        }
+      }else {
+        await actionsApi.adicionarPergunta(pergunta, resposta, tema.currentKey, parametrosRequisicao)
+      }
+      
       recarregarDados() 
 
       definirLoading(false)

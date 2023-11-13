@@ -20,6 +20,14 @@ export const useActionsApi = () => ({
         console.log(perguntaId)
     },
 
+    salvarEdicaoPergunta: async (pergunta, resposta, tema_id, id, {baseURL, headers}) => {
+        await axios.patch(`${baseURL}/updatepr/${id}`, {
+            pergunta,
+            resposta,
+            tema_id
+        }, {headers:headers})
+    },
+
     adicionarTema: async (tema, icone, {baseURL, headers, user_id}) => {
         await axios.post(`${baseURL}/tema`, {
             tema,
@@ -32,7 +40,7 @@ export const useActionsApi = () => ({
 
     deletarTema: async(temaId, {baseURL, headers}) => {
         await axios.delete(`${baseURL}/tema/${temaId}`, {headers: headers})
-        // console.log(temaId)
+
     },
 
     adicionarColaboradores: async(nome, email, senha, {baseURL, headers}) => {
