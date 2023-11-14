@@ -11,6 +11,7 @@ import dataContexto from "../../context/Data/dataContexto"
 import CardPerguntaSkeleton from "./CardPerguntaSkeleton"
 import { useActionsApi } from "../../hooks/useActionsApi"
 import { AuthContext } from "../../context/Auth/AuthProvider"
+import parse from 'html-react-parser';
 
 CardPergunta.defaultProps = {
     limite: 0,
@@ -205,7 +206,9 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                                     </Dropdown>
                                                 </div>
 
-                                                <p>{resposta}</p>
+                                                <div className="list-disc">
+                                                    {parse(resposta)}
+                                                </div>
 
                                                 
                                                 <Dropdown className={`text-foreground ${temaSistema}`}>

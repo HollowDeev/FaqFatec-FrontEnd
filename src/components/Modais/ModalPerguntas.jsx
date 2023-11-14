@@ -35,7 +35,7 @@ const ModalPerguntas = ({isOpen, acao}) => {
 
   const [pergunta, definirPergunta] = useState('')
   const [resposta, definirResposta] = useState('')
-  const [tema, definirTema] = useState(new Set([]))
+  const [tema, definirTema] = useState('')
 
   useEffect(() => {
     definirPergunta(gerenciamento[0].pergunta)
@@ -43,9 +43,8 @@ const ModalPerguntas = ({isOpen, acao}) => {
     let tema
     if(gerenciamento[0].tema != ''){
       tema = dbTemas.filter((tema) => tema.tema == gerenciamento[0].tema).map((tema) => tema.id.toString())
-      definirTema(new Set([tema[0]]))
-    }
-    
+      definirTema(tema[0])
+    } 
   }, [gerenciamento])
 
   const btnCancelar = () => {
@@ -59,11 +58,10 @@ const ModalPerguntas = ({isOpen, acao}) => {
       if(gerenciamento[0].editarPergunta){
         if(parametrosRequisicao){
           const idPergunta = gerenciamento[0].idPergunta
-          console.log(tema.currentKey)
-          await actionsApi.salvarEdicaoPergunta(pergunta, resposta, Number(tema.currentKey), idPergunta, parametrosRequisicao)
+          await actionsApi.salvarEdicaoPergunta(pergunta, resposta, Number(tema), idPergunta, parametrosRequisicao)
         }
       }else {
-        await actionsApi.adicionarPergunta(pergunta, resposta, tema.currentKey, parametrosRequisicao)
+        await actionsApi.adicionarPergunta(pergunta, resposta, Number(tema), parametrosRequisicao)
       }
       
       recarregarDados() 
@@ -111,8 +109,8 @@ const ModalPerguntas = ({isOpen, acao}) => {
                 label="Tema:"
                 items={dbTemas}
                 className="text-foreground"
-                selectedKeys={tema}
-                onSelectionChange={definirTema}
+                selectedKeys={[tema]}
+                onChange={(e) => definirTema(e.target.value)}
                 startContent={<Folders size={25} color="#fdfcfc" weight="fill" />}
                 description="Selecione o tema dessa pergunta"
               >
