@@ -13,14 +13,11 @@ const RequireAuth = ({children, level=0}) => {
    
     const navigate = useNavigate()
 
-    console.log('teste 2')
-
     useEffect(() => {
         const verificar = async () => {
             const userdataResponse = await checarAutorizacao()
 
             if(!userdataResponse) {
-                console.log('teste')
                 navigate('/login')
                 return
             }
