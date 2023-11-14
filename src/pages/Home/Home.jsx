@@ -4,7 +4,7 @@ import CardTema from "../../components/CardTema/CardTema"
 import { ArrowFatLineLeft } from "@phosphor-icons/react"
 import paginaHomeContexto from "../../context/PaginaHome/PaginaHomeContexto"
 import { AuthContext } from "../../context/Auth/AuthProvider"
-
+import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto"
 
 const Home = () => {
 
@@ -12,6 +12,8 @@ const Home = () => {
   const [alunoLogado, definirALunoLogado] = useState(false)
 
   const {checarAutorizacao} = useContext(AuthContext)
+
+  const {idPesquisa} = useContext(PesquisaContexto)
 
   useEffect(() => {
     const verificar = async () => {
@@ -29,17 +31,24 @@ const Home = () => {
 
   return (
     <div className="lg:w-[1000px] xl:w-[1300px] m-auto sm:px-20 flex flex-col ">
-
     {temaPagina == "inicial" ? 
 
       <>
-        <div className="w-full flex flex-col items-center mb-20">
+        {!idPesquisa ? 
+          <div className="w-full flex flex-col items-center mb-20">
           <h1 className="text-2xl sm:text-3xl font-bold my-5">
             <span className="text-content5">Últimas </span> 
             Perguntas
           </h1>
           <CardPergunta filtro="limite" limite={5}/> 
         </div>
+
+        :
+
+        <div className="w-full flex flex-col items-center mb-20">
+          <CardPergunta filtro="pergunta" idPesquisa={idPesquisa}/> 
+        </div>
+        }
 
         <div className="w-full flex flex-col items-center mb-20">
           <h1 className="text-2xl sm:text-3xl font-bold my-5 text-content5">

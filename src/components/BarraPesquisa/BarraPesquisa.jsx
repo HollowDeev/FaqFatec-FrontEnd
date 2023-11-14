@@ -2,14 +2,26 @@ import { MagnifyingGlass, XCircle } from "@phosphor-icons/react"
 import MediaQuery from "react-responsive"
 
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input} from "@nextui-org/react";
-import { useContext } from "react";
+import {  Autocomplete,  AutocompleteItem} from "@nextui-org/autocomplete";
+import { useContext, useState } from "react";
 import temaContexto from "../../context/TemaContexto";
+import dataContexto from "../../context/Data/dataContexto";
+import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto";
 
 const BarraPesquisa = () => {
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+    const {definirIdParaPesquisa, idPesquisa} = useContext(PesquisaContexto)
     
     const {tema} = useContext(temaContexto)
+
+    const {dbPerguntas} = useContext(dataContexto)
+
+    const pesquisar = (id) => {
+        definirIdParaPesquisa(id);
+    }
+
 
   return (
     <>
@@ -21,12 +33,22 @@ const BarraPesquisa = () => {
 
 
         <MediaQuery minWidth={640}>
-            <div className="w-full max-w-sm bg-content2 rounded-3xl h-8  flex items-center justify-between cursor-text" >
-
-                <MagnifyingGlass size={24} color="#fdfcfc" weight="bold" className="ml-2" />
-                
-                <input  className=" p-2 px-4 w-full bg-content2 rounded-3xl h-8 outline-none" type="text" placeholder="Pesquisar" />
-            </div>
+            {dbPerguntas && 
+                <Autocomplete className="w-[450px]" size="sm" defaultItems={dbPerguntas} onSelectionChange={pesquisar} startContent={
+                    <MagnifyingGlass size={24} color="#fdfcfc" weight="bold" />
+                }
+                inputProps={{
+                    classNames: {
+                        inputWrapper: "rounded-full h-[40px]",
+                    }
+                }}
+                selectedKey={idPesquisa}
+                >
+                    {
+                        ({pergunta, id, icone}) => <AutocompleteItem key={id} >{pergunta}</AutocompleteItem>
+                    }
+                </Autocomplete>
+            }
         </MediaQuery>
 
 
@@ -42,25 +64,26 @@ const BarraPesquisa = () => {
                     <>
                         <ModalHeader></ModalHeader>
                         <ModalBody>
-                            <Input type="text" placeholder="Pesquise uma pergunta" className="text-foreground" />
+                        {dbPerguntas && 
+                            <Autocomplete  size="sm" defaultItems={dbPerguntas} onSelectionChange={pesquisar} startContent={
+                                <MagnifyingGlass size={24} color="#fdfcfc" weight="bold" />
+                            }
+                            selectedKey={idPesquisa}
+                            >
+                                {
+                                    ({pergunta, id, icone}) => <AutocompleteItem key={id} >{pergunta}</AutocompleteItem>
+                                }
+                            </Autocomplete>
+                        }                            
                         </ModalBody>
                         <ModalFooter>
                             <Button 
-                                variant="light" 
+                                variant="ghost" 
                                 color="danger"
                                 endContent={<XCircle size={20}  weight="fill" className="text-content5" />}
                                 onClick={()=> onClose()}
                             >
-                                Cancelar
-                            </Button>
-                            <Button 
-                                variant="shadow" 
-                                color="success"
-                                endContent={ <MagnifyingGlass size={20} weight="bold"
-                                />}
-                                className="font-bold"
-                            >
-                                Pesquisar
+                                Fechar
                             </Button>
                         </ModalFooter>
                     </>

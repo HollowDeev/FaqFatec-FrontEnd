@@ -12,11 +12,14 @@ import CardTema from '../../components/CardTema/CardTema'
 import { AuthContext } from "../../context/Auth/AuthProvider";
 import CardColaboradores from "../../components/CardColaboradores/CardColaboradores";
 import dataContexto from "../../context/Data/dataContexto";
+import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto";
 // import { useNavigate } from "react-router-dom";
 // import CardPerguntaSkeleton from "../../components/CardPergunta/CardPerguntaSkeleton";
 
 
 export default function PainelGerenciamento() {
+
+  const {idPesquisa} = useContext(PesquisaContexto)
 
   const {usuario} = useContext(AuthContext)
   // const [loading, setLoading] = useState(false)
@@ -161,15 +164,27 @@ export default function PainelGerenciamento() {
       
         {painel == "perguntas" &&
           <>
-            <h1 className="text-2xl sm:text-3xl font-bold my-5">
-              Perguntas
-              <span className="text-content6"> Online</span>
-            </h1>
-            {temaSelecionado == "todos" ? 
-               <CardPergunta cor={foregroundColor} tipo="gerenciamento" /> 
-              :
-               <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" temaParaFiltro={temaSelecionado}/> 
-            }
+          {idPesquisa ?
+            <>
+              <h1 className="text-2xl sm:text-3xl font-bold my-5">
+                <span className="text-content6">Resultado </span>
+                Pesquisa
+              </h1>
+              <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro='pergunta' idPesquisa={idPesquisa}/>
+            </>
+            :
+            <>
+              <h1 className="text-2xl sm:text-3xl font-bold my-5">
+                Perguntas
+                <span className="text-content6"> Online</span>
+              </h1>
+              {temaSelecionado == "todos" ? 
+                <CardPergunta cor={foregroundColor} tipo="gerenciamento" /> 
+                : 
+                  <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" temaParaFiltro={temaSelecionado}/> 
+              }
+            </>
+          }
           </>
         }
 

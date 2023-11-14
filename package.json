@@ -11,7 +11,8 @@
     "postinstall": "node ./postinstall.js"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.1.13",
+    "@nextui-org/autocomplete": "^2.0.9",
+    "@nextui-org/react": "^2.2.9",
     "@phosphor-icons/react": "^2.0.10",
     "@tinymce/tinymce-react": "^4.3.0",
     "axios": "^1.6.0",
