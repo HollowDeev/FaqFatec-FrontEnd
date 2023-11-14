@@ -8,6 +8,7 @@ import { Login } from "./pages/Login/Login"
 import { Cabecalho } from "./components/Cabecalho/Cabecalho"
 import Rodape from "./components/Rodape/Rodape"
 import PainelGerenciamento from "./pages/PainelGerenciamento/PainelGerenciamento"
+import RecuperarSenha from "./pages/RecuperarSenha/RecuperarSenha"
 
 function Main() {
 
@@ -26,6 +27,11 @@ function Main() {
             <PainelGerenciamento />
           </RequireAuth>
         }/>
+        <Route path="/recuperarSenha" element={
+          <RequireAuth>
+            <RecuperarSenha />
+          </RequireAuth>
+        } />
 
       </Routes>
 

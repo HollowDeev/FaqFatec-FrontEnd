@@ -31,6 +31,7 @@ export const AuthProvider = ({children}) => {
         const userData = await api.validarToken(tokenSalvo)
 
         if(userData){
+          console.log(userData)
           definirParametros(userData.level, tokenSalvo, userData.id)
           return userData
         } else {
@@ -48,8 +49,11 @@ export const AuthProvider = ({children}) => {
       headers: {
         "Authorization": `Bearer ${token}`
       },
-      user_id: id
+      user_id: id,
+      level: level
     }
+
+    console.log(parametros)
 
     definirParametrosRequisicao(parametros)
   }

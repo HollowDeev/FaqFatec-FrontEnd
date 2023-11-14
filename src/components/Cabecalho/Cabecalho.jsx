@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
-import { SignIn, SignOut, User, UserGear,  } from "@phosphor-icons/react"
+import { Password, SignIn, SignOut, User, UserGear,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
 import temaContexto from "../../context/TemaContexto"
 import { Link, useNavigate } from "react-router-dom"
@@ -32,7 +32,9 @@ export const Cabecalho = () => {
       case 'entrar':
         navigate('/login')
         break
-        
+      
+      case 'trocarSenha':
+        navigate('/recuperarsenha')
     }
   }
 
@@ -102,7 +104,7 @@ export const Cabecalho = () => {
               </DropdownTrigger>
               <DropdownMenu onAction={(acao) => handleAction(acao)}>
                 {usuario &&
-                  <DropdownSection showDivider>
+                  <DropdownSection showDivider title=''>
                     <DropdownItem className="text-foreground">
                       Olá {usuario.nome}, Tudo bem?
                     </DropdownItem>
@@ -114,6 +116,16 @@ export const Cabecalho = () => {
                       <UserGear size={20} color="#f9f1f1" weight="fill" />
                     } key='painelADM'>
                       Painel Gerenciamento
+                    </DropdownItem>
+                  }
+                  {usuario &&
+                    <DropdownItem 
+                      startContent={
+                        <Password size={20} color="#f9f1f1" />
+                      } 
+                      key='trocarSenha'
+                      className="text-foreground">
+                        Esqueceu a senha?
                     </DropdownItem>
                   }
                   {usuario ?

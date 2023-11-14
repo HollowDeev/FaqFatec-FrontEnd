@@ -72,16 +72,21 @@ const ModalColaboradores = ({isOpen, acao}) => {
   }
 
   const btnFinalizar = async () => {
-    if(!loading){
+    if(!loading && !erro){
       setLoading(true)
-      await actionsApi.adicionarColaboradores(nome, email, senha, parametrosRequisicao)
+      if(gerenciamento[2].mudarSenha){
+        const id = gerenciamento[2].idColaborador
+        await actionsApi.mudarSenha( senha, parametrosRequisicao, id)
+      }else {
+        await actionsApi.adicionarColaboradores(nome, email, senha, parametrosRequisicao)
+        recarregarDadosColaboradores()
+      }
       definirEmail(null)
       definirNome(null)
       definirSenha(null)
       definirConfirmarSenha(null)
       setLoading(false)
       gerenciador.fechar(gerenciar)
-      recarregarDadosColaboradores()
     }
   }
 

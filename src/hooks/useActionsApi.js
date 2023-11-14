@@ -61,6 +61,20 @@ export const useActionsApi = () => ({
             tema,
             icone
         }, {headers:headers})
+    },
+
+    mudarSenha: async(senha, {baseURL, headers, user_id, level}, id = false) => {
+        if(!id){
+            await axios.patch(`${baseURL}/user/${user_id}`, {
+                password: senha
+            }, {headers: headers})
+        }else {
+            if(level == 2){
+                await axios.patch(`${baseURL}/user/${id}`, {
+                    password: senha
+                }, {headers: headers})
+            }
+        }
     }
     
 })

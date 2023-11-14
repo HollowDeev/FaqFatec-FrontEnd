@@ -121,7 +121,7 @@ const reducer = (state, action) => {
                 {
                     mudarSenha: true,
                     adicionarColaborador: false,
-                    nome: action.colaborador.nome,
+                    nome: action.colaborador.name,
                     idColaborador: action.colaborador.id,
                     email: '',
                     senha: '',
