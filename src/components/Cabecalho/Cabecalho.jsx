@@ -5,7 +5,7 @@ import { SignIn, SignOut, User, UserGear,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
 import temaContexto from "../../context/TemaContexto"
 import { Link, useNavigate } from "react-router-dom"
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
+import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@nextui-org/react"
 
 
 export const Cabecalho = () => {
@@ -48,7 +48,20 @@ export const Cabecalho = () => {
           </div>
           
           <Dropdown>
+            <DropdownTrigger className={tema}>
+                <div className="rounded-full bg-foreground p-2 cursor-pointer">
+                  <User size={24} color={content1} weight="fill" />
+                </div>
+              </DropdownTrigger>
             <DropdownMenu onAction={(acao) => handleAction(acao)}>
+              {usuario &&
+                <DropdownSection showDivider>
+                  <DropdownItem>
+                    Olá {usuario.nome}, Tudo bem?
+                  </DropdownItem>
+                </DropdownSection>
+              }
+              <DropdownSection title='ações'>
                 {usuario && usuario.level > 0 && 
                   <DropdownItem className="text-foreground" startContent={
                     <UserGear size={20} color="#f9f1f1" weight="fill" />
@@ -69,7 +82,8 @@ export const Cabecalho = () => {
                     Entrar
                   </DropdownItem>
                 }
-              </DropdownMenu>
+              </DropdownSection>    
+            </DropdownMenu>
           </Dropdown>
 
         </div>
@@ -87,26 +101,35 @@ export const Cabecalho = () => {
                 </div>
               </DropdownTrigger>
               <DropdownMenu onAction={(acao) => handleAction(acao)}>
-                {usuario && usuario.level > 0 && 
-                  <DropdownItem className="text-foreground" startContent={
-                    <UserGear size={20} color="#f9f1f1" weight="fill" />
-                  } key='painelADM'>
-                    Painel Gerenciamento
-                  </DropdownItem>
+                {usuario &&
+                  <DropdownSection showDivider>
+                    <DropdownItem className="text-foreground">
+                      Olá {usuario.nome}, Tudo bem?
+                    </DropdownItem>
+                  </DropdownSection>
                 }
-                {usuario ?
-                  <DropdownItem className="text-danger" startContent={
-                    <SignOut size={20} color="#FF000F" weight="fill" />
-                  } key='sair'>
-                    Sair
-                  </DropdownItem>
-                  :
-                  <DropdownItem className="text-success" key='entrar' startContent={
-                    <SignIn size={20} color="#17c964" weight="fill" />
-                  }>
-                    Entrar
-                  </DropdownItem>
-                }
+                <DropdownSection>
+                  {usuario && usuario.level > 0 && 
+                    <DropdownItem className="text-foreground" startContent={
+                      <UserGear size={20} color="#f9f1f1" weight="fill" />
+                    } key='painelADM'>
+                      Painel Gerenciamento
+                    </DropdownItem>
+                  }
+                  {usuario ?
+                    <DropdownItem className="text-danger" startContent={
+                      <SignOut size={20} color="#FF000F" weight="fill" />
+                    } key='sair'>
+                      Sair
+                    </DropdownItem>
+                    :
+                    <DropdownItem className="text-success" key='entrar' startContent={
+                      <SignIn size={20} color="#17c964" weight="fill" />
+                    }>
+                      Entrar
+                    </DropdownItem>
+                  }
+                </DropdownSection>    
               </DropdownMenu>
             </Dropdown>
           </div>
