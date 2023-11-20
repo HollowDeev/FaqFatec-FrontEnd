@@ -64,7 +64,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                     return (
                         <>
                             {dbPerguntas != null ?
-                                <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }} >
+                                <Accordion variant="splitted" itemClasses={{ title: "text-lg sm:text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }} >
                                         {
                                             dbPerguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
                                                 <AccordionItem
