@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
 import { Password, SignIn, SignOut, User, UserGear,  } from "@phosphor-icons/react"
@@ -12,7 +12,13 @@ export const Cabecalho = () => {
 
 
   const {usuario, sair} = useContext(AuthContext)
+  const nomeUsuario = usuario ? usuario.nome.split(' ')[0] : ''
+
   const {tema} = useContext(temaContexto)
+  
+  useEffect(() => {
+
+  }, [usuario])
 
   const navigate = useNavigate()
 
@@ -59,7 +65,7 @@ export const Cabecalho = () => {
               {usuario &&
                 <DropdownSection showDivider>
                   <DropdownItem>
-                    Olá {usuario.nome}, Tudo bem?
+                    Olá {nomeUsuario}, Tudo bem?
                   </DropdownItem>
                 </DropdownSection>
               }
@@ -106,7 +112,7 @@ export const Cabecalho = () => {
                 {usuario &&
                   <DropdownSection showDivider title=''>
                     <DropdownItem className="text-foreground">
-                      Olá {usuario.nome}, Tudo bem?
+                      Olá {nomeUsuario}, Tudo bem?
                     </DropdownItem>
                   </DropdownSection>
                 }
