@@ -20,7 +20,7 @@ const DataProvider = ({children}) => {
         const dados = await api.buscarDados()
         
         definirDbIcones(dados.icones)
-        definirDbPerguntas(dados.perguntas.original)
+        definirDbPerguntas(dados.perguntasOnline.original)
         definirDbTemas(dados.temas.original)
     }
 

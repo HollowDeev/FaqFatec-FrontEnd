@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
 import { Password, SignIn, SignOut, User, UserGear,  } from "@phosphor-icons/react"
@@ -15,10 +15,6 @@ export const Cabecalho = () => {
   const nomeUsuario = usuario ? usuario.nome.split(' ')[0] : ''
 
   const {tema} = useContext(temaContexto)
-  
-  useEffect(() => {
-
-  }, [usuario])
 
   const navigate = useNavigate()
 

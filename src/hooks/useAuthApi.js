@@ -12,10 +12,10 @@ export const useAuthApi = () => ({
     
             if(usuarioResponse.data){
                 return ({
-                    id:  usuarioResponse.data.id,
-                    nome: usuarioResponse.data.name,
-                    level:  usuarioResponse.data.level,
-                    email:  usuarioResponse.data.email,
+                    id:  usuarioResponse.data.user.id,
+                    nome: usuarioResponse.data.user.name,
+                    level:  usuarioResponse.data.user.level,
+                    email:  usuarioResponse.data.user.email,
                 }) 
             }else {
                 return null

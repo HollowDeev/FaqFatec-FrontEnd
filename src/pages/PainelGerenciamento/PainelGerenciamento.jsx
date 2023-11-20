@@ -31,7 +31,7 @@ export default function PainelGerenciamento() {
   const foregroundColor = tema == "dark" ? "#ECEDEE" : "#11181C"
 
   // Contexto gerenciamento de items - gerenciamento -> objeto / gerenciar -> função base para gerenciar
-  const {gerenciamento, gerenciar, definirBuscaColaboradores} = useGerenciadorContexto()
+  const { gerenciar, definirBuscaColaboradores} = useGerenciadorContexto()
 
   // Hook com funções de gerenciamento(precisam da função base "gerenciar")
   const gerenciador = useGerenciador()
@@ -111,11 +111,10 @@ export default function PainelGerenciamento() {
 
   }
 
-  useEffect(() => {
-    console.log(gerenciamento)
-  }, [ gerenciamento ])
-
-
+  // useEffect(() => {
+  //   console.log(gerenciamento)
+  // }, [ gerenciamento ])
+  
   return (
 
     <div className="relative flex ">
