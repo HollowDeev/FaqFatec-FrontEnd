@@ -5,15 +5,23 @@ import { ArrowFatLineLeft } from "@phosphor-icons/react"
 import paginaHomeContexto from "../../context/PaginaHome/PaginaHomeContexto"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto"
+import { Button, Spinner, Textarea } from "@nextui-org/react"
+import { useActionsApi } from "../../hooks/useActionsApi"
 
 const Home = () => {
 
   const {temaPagina, definirTema} = useContext(paginaHomeContexto)
-  const [alunoLogado, definirALunoLogado] = useState(false)
+  const {parametrosRequisicao} = useContext(AuthContext)
 
+  const [alunoLogado, definirALunoLogado] = useState(false)
   const {checarAutorizacao} = useContext(AuthContext)
 
+  const [pergunta, definirPergunta] = useState('')
+  const [loading, definirLoading] = useState(false)
+
   const {idPesquisa} = useContext(PesquisaContexto)
+
+  const actionsApi = useActionsApi()
 
   useEffect(() => {
     const verificar = async () => {
@@ -21,12 +29,20 @@ const Home = () => {
 
       if(userData && userData.level == 0){
         definirALunoLogado(true)
-        
       }
     }
-
     verificar()
   }, [])
+
+  const pesquisar = async() => {
+    if(parametrosRequisicao){
+      definirLoading(true)
+      await actionsApi.perguntar(pergunta, parametrosRequisicao)
+      definirPergunta('')
+      alert('Pergunta adicionada com sucesso')
+      definirLoading(false)
+    }
+  }
 
 
   return (
@@ -77,7 +93,39 @@ const Home = () => {
           <CardPergunta filtro="tema" temaParaFiltro={temaPagina}/> 
           {alunoLogado && 
           
-          <p>Sugerir pergunta</p>
+          <div className="px-2 w-full mt-10">
+            <div className="bg-content2 w-full flex flex-col gap-10 bg-opacity-60 backdrop-blur-sm rounded-2xl px-2 sm:p-5 py-5 ">
+              <div className="flex flex-col gap-4">
+                <h1 className="text-4xl font-bold md:border-l-8 md:pl-3">
+                  <span className="text-content5 font-extrabold">NÃO ENCONTROU</span> UMA RESPOSTA PARA A SUA DÚVIDA?
+                </h1>
+                <p className="px-2 py-1 bg-content5 inline">
+                  Então nos envie-a que iremos responder o mais rápido possível!
+                </p>
+              </div>
+              <Textarea 
+                label="Qual a sua dúvida?" 
+                placeholder="Nos conte com detalhes, para que possamos entender e saná-la da melhor forma possível!"
+                labelPlacement="outside"
+                value={pergunta}
+                onValueChange={definirPergunta}
+              />
+
+              {pergunta != '' && !loading ?
+              <Button color="success" className="w-full md:w-min font-bold relative" onClick={() => pesquisar()}>
+                Perguntar
+              </Button>
+              :
+              <Button color="success" variant="ghost" isDisabled className="w-full md:w-min font-bold relative" onClick={() => pesquisar()}>
+                Perguntar
+              </Button>
+              }
+
+              {loading && 
+                <Spinner color='success' className="md:absolute md:bottom-5 md:left-[50%] md:translate-x-[-50%]"/>
+              }
+            </div>
+          </div>
           
           }
         </div>

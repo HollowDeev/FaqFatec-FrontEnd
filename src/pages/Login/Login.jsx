@@ -42,7 +42,9 @@ export const Login = () => {
         
         {loading === false ? 
             <>
-                <h1>login</h1>
+                <h1 className="text-3xl font-bold">
+                    <span className="text-content6">Login</span> 
+                </h1>
                 <hr />
                 <form className="flex flex-col gap-2 w-[300px]">
                     <Input type="text" label="email" isRequired size="sm" onChange={(e) => setEmail(e.target.value)}

@@ -75,6 +75,26 @@ export const useActionsApi = () => ({
                 }, {headers: headers})
             }
         }
+    },
+
+    criarConta: async(nome, email, senha) => {
+        try{
+            await axios.post('http://127.0.0.1:8000/api/user', {
+                name: nome,
+                level: 0,
+                email,
+                password: senha
+            })
+        }catch(e){
+            throw new Error(e)
+        }
+    },
+
+    perguntar: async(pergunta, {baseURL, headers, user_id}) => {
+        await axios.post(`${baseURL}/pergs`, {
+            user_id,
+            pergunta
+        }, {headers: headers})
     }
     
 })
