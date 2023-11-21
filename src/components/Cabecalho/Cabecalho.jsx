@@ -25,6 +25,7 @@ export const Cabecalho = () => {
     switch(acao){
       case 'sair':
         sair()
+        window.location.reload(true)
         navigate('/')
         break
 
