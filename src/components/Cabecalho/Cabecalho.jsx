@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
-import { Password, SignIn, SignOut, User, UserGear,  } from "@phosphor-icons/react"
+import { Password, SignIn, SignOut, User, UserCirclePlus, UserGear,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
 import temaContexto from "../../context/TemaContexto"
 import { Link, useNavigate } from "react-router-dom"
@@ -37,6 +37,10 @@ export const Cabecalho = () => {
       
       case 'trocarSenha':
         navigate('/recuperarsenha')
+        break
+
+      case 'registrar':
+        navigate('/registrar')
     }
   }
 
@@ -86,6 +90,13 @@ export const Cabecalho = () => {
                     Entrar
                   </DropdownItem>
                 }
+                {!usuario &&
+                    <DropdownItem className="text-foreground" key='registrar' startContent={
+                        <UserCirclePlus size={20} color="#f9f1f1" />
+                      }>
+                        Criar Conta
+                    </DropdownItem>
+                  }
               </DropdownSection>    
             </DropdownMenu>
           </Dropdown>
@@ -141,6 +152,13 @@ export const Cabecalho = () => {
                       <SignIn size={20} color="#17c964" weight="fill" />
                     }>
                       Entrar
+                    </DropdownItem>
+                  }
+                  {!usuario &&
+                    <DropdownItem className="text-foreground" key='registrar' startContent={
+                        <UserCirclePlus size={20} color="#f9f1f1" />
+                      }>
+                        Criar Conta
                     </DropdownItem>
                   }
                 </DropdownSection>    

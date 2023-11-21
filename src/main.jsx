@@ -9,6 +9,7 @@ import { Cabecalho } from "./components/Cabecalho/Cabecalho"
 import Rodape from "./components/Rodape/Rodape"
 import PainelGerenciamento from "./pages/PainelGerenciamento/PainelGerenciamento"
 import RecuperarSenha from "./pages/RecuperarSenha/RecuperarSenha"
+import Registro from "./pages/Registro/Registro"
 
 function Main() {
 
@@ -32,7 +33,9 @@ function Main() {
             <RecuperarSenha />
           </RequireAuth>
         } />
-
+        <Route path="/registrar" element={
+          <Registro />
+        } />
       </Routes>
 
       <Rodape />
