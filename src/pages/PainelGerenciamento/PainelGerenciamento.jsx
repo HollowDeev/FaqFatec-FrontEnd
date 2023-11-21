@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto" 
 import CardPergunta from "../../components/CardPergunta/CardPergunta";
 import temaContexto from "../../context/TemaContexto";
-import { Calendar, FolderNotchOpen, Folders, Plus, UserCircleGear } from "@phosphor-icons/react";
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Calendar, FolderNotchOpen, Folders, Plus, SealQuestion, UserCircleGear } from "@phosphor-icons/react";
+import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 
 import Icone from "../../components/Icone/Icone";
 import CampoModais from "../../components/CampoModais/CampoModais";
@@ -22,9 +22,10 @@ export default function PainelGerenciamento() {
   const {idPesquisa} = useContext(PesquisaContexto)
 
   const {usuario} = useContext(AuthContext)
-  // const [loading, setLoading] = useState(false)
 
-  // const navigate = useNavigate()
+  const {quantasPerguntasNovas, temPerguntasNovas} = useContext(dataContexto)
+
+  console.log(quantasPerguntasNovas)
 
   // Contexto do tema - light / dark
   const {tema} = useContext(temaContexto)
@@ -47,26 +48,6 @@ export default function PainelGerenciamento() {
   // Temas possiveis para a filtragem
   const [temasParaFiltragem, definirTemasParaFiltragem] = useState([]) 
 
-  // useEffect(() => {
-  //   const verificar = async() => {
-  //     setLoading(true)
-  //     const dadosUsuario = await checarAutorizacao()
-
-  //     if(!dadosUsuario){
-  //       navigate('/login')
-  //       return
-  //     } else if(dadosUsuario && dadosUsuario.level < 2){
-  //       navigate('/')
-  //       return
-  //     } else {
-  //       setLoading(false)
-  //     }
-
-  //   }
-
-  //   verificar()
-  // }, [])
-
   useEffect(() => {
     if(dbTemas != null){
       const temas = [
@@ -85,7 +66,7 @@ export default function PainelGerenciamento() {
 
   const alternarPainel = (painelDesejado) => {
     if(painel != painelDesejado){
-      if(painelDesejado){
+      if(painelDesejado == 'colaboradores'){
         definirBuscaColaboradores(true)
       }
       definirPainel(painelDesejado)
@@ -111,9 +92,6 @@ export default function PainelGerenciamento() {
 
   }
 
-  // useEffect(() => {
-  //   console.log(gerenciamento)
-  // }, [ gerenciamento ])
   
   return (
 
@@ -124,7 +102,7 @@ export default function PainelGerenciamento() {
 
     {/* Botoes esquerdo versão desktop */}
     <div className="hidden w-16 lg:flex bg-content1 fixed bottom-[50%] translate-y-[50%] mx-10 flex-col justify-between items-center rounded-full ">
-      <div className="flex flex-col justify-center h-32 g-5">
+      <div className="flex flex-col justify-center h-48 gap-2">
 
         {painel != 'temas' &&
           <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
@@ -136,6 +114,23 @@ export default function PainelGerenciamento() {
           <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
             <Folders size={40} color="#fdfcfc" weight="fill" />
           </div>
+        }
+
+        {painel != 'sugestaoPerguntas' &&
+            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={temPerguntasNovas}>
+              <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
+                <SealQuestion size={40} color="#f9f1f1" weight="fill" />
+              </div>
+            </Badge>
+        }
+
+        {painel == 'sugestaoPerguntas' &&
+            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={temPerguntasNovas}>
+              <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
+                <SealQuestion size={40} color="#f9f1f1" weight="fill" />
+              </div>
+            </Badge>
+          
         }
 
         {usuario && usuario.level == 2 && painel != 'colaboradores' &&
@@ -180,7 +175,7 @@ export default function PainelGerenciamento() {
               {temaSelecionado == "todos" ? 
                 <CardPergunta cor={foregroundColor} tipo="gerenciamento" /> 
                 : 
-                  <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" temaParaFiltro={temaSelecionado}/> 
+                <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" temaParaFiltro={temaSelecionado}/> 
               }
             </>
           }
@@ -204,6 +199,16 @@ export default function PainelGerenciamento() {
               <span className="text-content6"> Online</span>
             </h1>
             <CardColaboradores />
+          </>
+        }
+
+        {painel == 'sugestaoPerguntas' && 
+          <>
+            <h1 className="text-2xl sm:text-3xl font-bold my-5">
+              <span className="text-content6">Novas </span> 
+              Perguntas
+            </h1>
+            <CardPergunta cor={foregroundColor} tipo="gerenciamento" modelo='responder'/> 
           </>
         }
       </div>
@@ -241,9 +246,6 @@ export default function PainelGerenciamento() {
         
       }
 
-      <div className="bg-content2 rounded-full p-4 hover:opacity-70 transition-all cursor-pointer">
-        <Calendar size={35} color="#fdfcfc" weight="fill" />
-      </div>
     </div>
 
     {/* Menus de ação mobile */}

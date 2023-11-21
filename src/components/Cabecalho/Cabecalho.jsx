@@ -1,17 +1,18 @@
 import { useContext } from "react"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import LogoFatec from "../../assets/logo.png"
-import { Password, SignIn, SignOut, User, UserCirclePlus, UserGear,  } from "@phosphor-icons/react"
+import {Password, SignIn, SignOut, User, UserCirclePlus, UserGear,  } from "@phosphor-icons/react"
 import BarraPesquisa from "../BarraPesquisa/BarraPesquisa"
 import temaContexto from "../../context/TemaContexto"
 import { Link, useNavigate } from "react-router-dom"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@nextui-org/react"
+import Notificacao from "../Notificacao/Notificacao"
 
 
 export const Cabecalho = () => {
 
 
-  const {usuario, sair} = useContext(AuthContext)
+  const {usuario, sair, perguntasAtualizadas} = useContext(AuthContext)
   const nomeUsuario = usuario ? usuario.nome.split(' ')[0] : ''
 
   const {tema} = useContext(temaContexto)
@@ -55,6 +56,7 @@ export const Cabecalho = () => {
             <BarraPesquisa/>
           </div>
           
+
           <Dropdown>
             <DropdownTrigger className={tema}>
                 <div className="rounded-full bg-foreground p-2 cursor-pointer">
@@ -109,7 +111,10 @@ export const Cabecalho = () => {
 
         <>
           <div className="md:w-12 md:ml-10 hidden md:flex">
-            <Dropdown className={tema}>
+          {perguntasAtualizadas && perguntasAtualizadas.length != 0 ?
+            <Notificacao />
+           :
+           <Dropdown className={tema}>
               <DropdownTrigger>
                 <div className="rounded-full bg-foreground p-2 cursor-pointer">
                   <User size={24} color={content1} weight="fill" />
@@ -164,6 +169,7 @@ export const Cabecalho = () => {
                 </DropdownSection>    
               </DropdownMenu>
             </Dropdown>
+          }
           </div>
         </>
 

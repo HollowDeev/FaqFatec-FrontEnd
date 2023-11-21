@@ -4,19 +4,27 @@ export const useAuthApi = () => ({
 
     validarToken: async (token) => {
         try{
-            const usuarioResponse = await axios.get('http://127.0.0.1:8000/api/l2/me', {
+            const responseData = await axios.get('http://127.0.0.1:8000/api/l2/me', {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             })
+
+            console.log(responseData.data)
     
-            if(usuarioResponse.data){
-                return ({
-                    id:  usuarioResponse.data.user.id,
-                    nome: usuarioResponse.data.user.name,
-                    level:  usuarioResponse.data.user.level,
-                    email:  usuarioResponse.data.user.email,
-                }) 
+            if(responseData.data){
+                const usuario = {
+                    id:  responseData.data.user.id,
+                    nome: responseData.data.user.name,
+                    level:  responseData.data.user.level,
+                    email:  responseData.data.user.email,
+                }
+
+                const pergunta = responseData.data.perguntas
+                
+                console.log({usuario, pergunta})
+
+                return ({usuario, pergunta}) 
             }else {
                 return null
             }
@@ -42,7 +50,9 @@ export const useAuthApi = () => ({
                 token: responseData.token
             }
 
-            return(usuario)
+            const pergunta = responseData.pergunta
+
+            return({usuario, pergunta})
         } catch{
             return Promise.reject(new Error("Usuário inválido"))
         }

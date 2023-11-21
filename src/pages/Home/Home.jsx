@@ -19,7 +19,7 @@ const Home = () => {
   const [pergunta, definirPergunta] = useState('')
   const [loading, definirLoading] = useState(false)
 
-  const {idPesquisa} = useContext(PesquisaContexto)
+  const {idPesquisa, definirIdParaPesquisa} = useContext(PesquisaContexto)
 
   const actionsApi = useActionsApi()
 
@@ -62,6 +62,11 @@ const Home = () => {
         :
 
         <div className="w-full flex flex-col items-center mb-20">
+          <a className="flex items-center gap-2 mb-5 cursor-pointer hover:translate-x-[-10px] transition-transform" 
+            onClick={() => definirIdParaPesquisa(null)}>
+              <ArrowFatLineLeft size={24} color="#fdfcfc" weight="duotone" />
+              <p>Voltar para as perguntas</p>
+            </a>
           <CardPergunta filtro="pergunta" idPesquisa={idPesquisa}/> 
         </div>
         }

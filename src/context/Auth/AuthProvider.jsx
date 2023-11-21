@@ -10,6 +10,7 @@ export const AuthProvider = ({children}) => {
  
   const [usuario, definirUsuario] = useState(null)
   const [parametrosRequisicao, definirParametrosRequisicao] = useState(null)
+  const [perguntasAtualizadas, definirPerguntasAtualizadas] = useState([])
 
   const armazenarToken = (token) => {
     localStorage.setItem("token", token)
@@ -17,9 +18,13 @@ export const AuthProvider = ({children}) => {
 
   useEffect(()  => {
     const validarToken = async () => {
-      const userData = await checarAutorizacao()
-      definirUsuario(userData)
+      const data = await checarAutorizacao()
+      definirUsuario(data.usuario)
+      definirPerguntasAtualizadas(data.pergunta)
+      console.log(data)
     }
+
+    console.log(perguntasAtualizadas)
 
     validarToken()
   }, [])
@@ -28,11 +33,11 @@ export const AuthProvider = ({children}) => {
       const tokenSalvo = localStorage.getItem("token")
 
       if(tokenSalvo){
-        const userData = await api.validarToken(tokenSalvo)
-        
-        if(userData){
-          definirParametros(userData.level, tokenSalvo, userData.id)
-          return userData
+        const data = await api.validarToken(tokenSalvo)
+
+        if(data){
+          definirParametros(data.usuario.level, tokenSalvo, data.usuario.id)
+          return data
         } else {
           return null
         }
@@ -56,11 +61,13 @@ export const AuthProvider = ({children}) => {
   }
  
   const entrar = async (email, senha) => {
-    const userData = await api.entrar(email, senha)
-    if(userData){
-      definirUsuario(userData)
-      armazenarToken(userData.token)
-      definirParametros(userData.level, userData.token, userData.id)
+    const data = await api.entrar(email, senha)
+    if(data){
+
+      definirUsuario(data.usuario)
+      armazenarToken(data.usuario.token)
+      definirParametros(data.usuario.level, data.usuario.token, data.usuario.id)
+      definirPerguntasAtualizadas(data.pergunta)
     }
   }
 
@@ -71,7 +78,7 @@ export const AuthProvider = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{usuario, entrar, sair, checarAutorizacao, parametrosRequisicao}}>
+    <AuthContext.Provider value={{usuario, entrar, sair, checarAutorizacao, parametrosRequisicao, perguntasAtualizadas}}>
       {children}
     </AuthContext.Provider>
   )

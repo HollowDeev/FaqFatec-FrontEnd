@@ -9,9 +9,14 @@ import { AuthContext } from '../Auth/AuthProvider'
 const DataProvider = ({children}) => {
 
     const [dbTemas, definirDbTemas] = useState(null)
-    const [dbPerguntas, definirDbPerguntas] = useState(null)
     const [dbIcones, definirDbIcones] = useState(null)
     const [dbColaboradores, definirDbColaboradores] = useState(null)
+
+    const [dbPerguntas, definirDbPerguntas] = useState(null)
+    const [dbPerguntasNovas, definirDbPerguntasNovas] = useState(null)
+
+    const [temPerguntasNovas, definirEstadoPerguntasNovas] = useState(false)
+    const [quantasPerguntasNovas, definirQuantidadePerguntasNovas] = useState(0)
 
     const api = useDataApi()
     const {parametrosRequisicao, usuario} = useContext(AuthContext)
@@ -21,13 +26,20 @@ const DataProvider = ({children}) => {
         
         definirDbIcones(dados.icones)
         definirDbPerguntas(dados.perguntasOnline.original)
+        definirDbPerguntasNovas(dados.perguntasAluno.original)
         definirDbTemas(dados.temas.original)
+
+        // console.log(dados.perguntasAluno.original)
+
+        if(dbPerguntasNovas.length != 0){
+            definirEstadoPerguntasNovas(true)
+            definirQuantidadePerguntasNovas(dbPerguntasNovas.length)
+        }
     }
 
     const definirDadosColaboradores = async() => {
         if(parametrosRequisicao && usuario.level == 2){
             const colaboradores = await api.buscarColaboradores(parametrosRequisicao)
-            console.log(colaboradores)
             definirDbColaboradores(colaboradores)
         }
     }
@@ -54,7 +66,7 @@ const DataProvider = ({children}) => {
     }
 
   return (
-    <dataContexto.Provider value={{dbPerguntas, dbTemas, dbIcones, dbColaboradores, recarregarDados, recarregarDadosColaboradores}}>
+    <dataContexto.Provider value={{dbPerguntas, dbPerguntasNovas, dbTemas, dbIcones, dbColaboradores, recarregarDados, recarregarDadosColaboradores, temPerguntasNovas, quantasPerguntasNovas}}>
         {children}
     </dataContexto.Provider>
   )
