@@ -17,7 +17,7 @@ export const useActionsApi = () => ({
 
     deletarPergunta: async (perguntaId, {baseURL, headers}) => {
         await axios.delete(`${baseURL}/delpr/${perguntaId}`, {headers: headers})
-        console.log(perguntaId)
+
     },
 
     salvarEdicaoPergunta: async (pergunta, resposta, tema_id, id, {baseURL, headers}) => {
@@ -27,6 +27,10 @@ export const useActionsApi = () => ({
             tema_id,
             pergunta_estado: 1
         }, {headers:headers})
+    },
+
+    marcarPerguntaVisualizada: async(id, {baseURL, headers}) => {
+        await axios.post(`${baseURL}/visualizado/${id}`,{}, {headers:headers})
     },
 
     adicionarTema: async (tema, icone, {baseURL, headers, user_id}) => {

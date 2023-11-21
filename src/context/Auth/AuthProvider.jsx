@@ -21,13 +21,14 @@ export const AuthProvider = ({children}) => {
       const data = await checarAutorizacao()
       definirUsuario(data.usuario)
       definirPerguntasAtualizadas(data.pergunta)
-      console.log(data)
     }
-
-    console.log(perguntasAtualizadas)
 
     validarToken()
   }, [])
+
+  const removerUmaPerguntaAtualizada = (id) => {
+    definirPerguntasAtualizadas((prev) => prev.filter((pergunta) => pergunta.id != id))
+  }
 
   const checarAutorizacao = async () => {
       const tokenSalvo = localStorage.getItem("token")
@@ -78,7 +79,7 @@ export const AuthProvider = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{usuario, entrar, sair, checarAutorizacao, parametrosRequisicao, perguntasAtualizadas}}>
+    <AuthContext.Provider value={{usuario, entrar, sair, checarAutorizacao, parametrosRequisicao, perguntasAtualizadas, removerUmaPerguntaAtualizada}}>
       {children}
     </AuthContext.Provider>
   )

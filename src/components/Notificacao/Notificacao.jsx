@@ -8,10 +8,11 @@ import CardPergunta from "../CardPergunta/CardPergunta"
 
 const Notificacao = () => {
     
-    const [notificacaoAberta, definirEstadoNotificacao] = useState(true)
+    const [notificacaoAberta, definirEstadoNotificacao] = useState(false)
 
   const {tema} = useContext(temaContexto)
   const content1 = tema == "dark" ? "#18181B" : "#fff"
+
   const {perguntasAtualizadas} = useContext(AuthContext)
 
   return (

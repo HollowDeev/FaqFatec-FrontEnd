@@ -1,6 +1,5 @@
 import { Accordion, AccordionItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
 import { Books, Eye, EyeClosed, GearSix, PencilSimpleLine, Trash } from "@phosphor-icons/react"
-import { perguntas } from "../../data/perguntas"
 import PropTypes from 'prop-types'
 import Icone from "../Icone/Icone"
 import { useContext } from "react"
@@ -38,7 +37,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
     const {dbPerguntas, dbPerguntasNovas} = useContext(dataContexto)
 
-    const {parametrosRequisicao, perguntasAtualizadas} = useContext(AuthContext)
+    const {parametrosRequisicao, perguntasAtualizadas, removerUmaPerguntaAtualizada} = useContext(AuthContext)
     const actionsApi = useActionsApi()
     const {recarregarDados} = useContext(dataContexto)
 
@@ -47,8 +46,11 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
     const {definirIdParaPesquisa} = useContext(PesquisaContexto)
 
-    const visualizarPergunta = (id) => {
+    // Marcar pergunta das notificacoes como visualizada
+    const visualizarPergunta = async (id) => {
         definirIdParaPesquisa(id)
+        removerUmaPerguntaAtualizada(id)
+        await actionsApi.marcarPerguntaVisualizada(id, parametrosRequisicao)
     }
 
     // Chamada no select de gerenciamento - Excluir / Editar pergunta
@@ -187,7 +189,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                             {dbPerguntas != null ? (
                             <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                                 {
-                                    perguntas.map(({ id, titulo, tema, resposta }) => (
+                                    dbPerguntas.map(({ id, titulo, tema, resposta }) => (
                                         <AccordionItem
                                             key={id}
                                             title={titulo}
