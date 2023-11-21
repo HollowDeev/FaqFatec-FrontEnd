@@ -3,24 +3,32 @@ import { AuthContext } from "../../context/Auth/AuthProvider"
 import { Button, Input, Progress } from "@nextui-org/react"
 import { Eye, EyeSlash } from "@phosphor-icons/react"
 import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 // import { useEffect } from "react"
 
 
 export const Login = () => {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
-    const [erro, setErro] = useState("")
+    const [erro, definirErro] = useState("")
 
     const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
     const {entrar} = useContext(AuthContext)
 
-    // useEffect(() => {
-    //     if(autorizacao){
-    //         navigate('/')
-    //     }
-    // },[autorizacao, navigate])
+    useEffect(() => {
+        
+        const formatoEmailValido = /@fatec\.sp\.gov\.br$/.test(email);
+
+        if (!formatoEmailValido && email.includes('@')) {
+          definirErro('O email deve ser do domínio @fatec.sp.gov.br');
+        } else {
+          definirErro('');
+        }
+
+    }, [ email])
+
 
     const handleButton = async ()  => {
         setLoading(true)
@@ -28,7 +36,7 @@ export const Login = () => {
             await entrar(email, senha)
             navigate('/')
         }catch(e){
-            setErro(e.message)
+            definirErro(e.message)
         }
         setLoading(false)
     }

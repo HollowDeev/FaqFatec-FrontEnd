@@ -9,17 +9,16 @@ const Registro = () => {
     const [confirmarSenhaVisivel, definirConfirmarSenhaVisivel] = useState()
     const [senhaVisivel, definirSenhaVisivel] = useState()
 
-    const [nome, definirNome] = useState()
-    const [email, definirEmail] = useState()
+    const [nome, definirNome] = useState("")
+    const [email, definirEmail] = useState("")
     const [senha, definirSenha] = useState('')
     const [confirmarSenha, definirConfirmarSenha] = useState('')
 
     const [senhasIguais, definirSenhasIguais] = useState(false)
+    const [mensagemErroSenha, definirMensagemErroSenha] = useState('')
 
-    const [erro, definirErro] = useState(false)
-
-    const [mensagemErro, definirMensagemErro] = useState('')
-
+    const [mensagemErroEmail, definirMensagemErroEmail] = useState('')
+    
     const [loading, definirLoading] = useState(false)
 
     const actionsApi = useActionsApi()
@@ -30,31 +29,33 @@ const Registro = () => {
 
     useEffect(() => {
         if(confirmarSenha != '' && senha != confirmarSenha){
-           definirErro(true)
-           definirMensagemErro('As senhas são diferentes')
+           definirMensagemErroSenha('As senhas são diferentes')
            definirSenhasIguais(false)
         }else if(confirmarSenha != '' && senha != '' && senha == confirmarSenha){
             definirSenhasIguais(true)
-            definirErro(false)
-            definirMensagemErro('')
+            definirMensagemErroSenha('')
         }else{
             definirSenhasIguais(false)
-            definirErro(false)
-            definirMensagemErro('')
         }
+
+        const formatoEmailValido = /@fatec\.sp\.gov\.br$/.test(email);
+
+        if (!formatoEmailValido && email.includes('@')) {
+          definirMensagemErroEmail('O email deve ser do domínio @fatec.sp.gov.br');
+        } else {
+          definirMensagemErroEmail('');
+        }
+
     }, [senha, confirmarSenha, nome, email])
+    
 
     const handleButton = async() => {
-      try{
-        if(nome != '' && email != '' && senha != '' && confirmarSenha != ''){
-          definirLoading(true)
-          await actionsApi.criarConta(nome, email, senha)
-          definirLoading(false)
-          navigate('/login')
-        }
-      }catch(e){
-        definirErro(true)
-        definirMensagemErro(e)
+      const cadastroAutorizado = nome !== '' && email !== '' && senha !== '' && confirmarSenha !== '' && mensagemErroEmail == ''
+      if(cadastroAutorizado){
+        definirLoading(true)
+        await actionsApi.criarConta(nome, email, senha)
+        definirLoading(false)
+        navigate('/login')
       }
     }
 
@@ -74,8 +75,7 @@ const Registro = () => {
                 
                 value={nome}
                 onChange={(e) => definirNome(e.target.value)}
-                isInvalid={erro}
-                errorMessage={mensagemErro}
+
                 />
 
                 <Input label='Email :' placeholder="Insira seu email" size='lg' startContent={
@@ -86,8 +86,8 @@ const Registro = () => {
                 
                 value={email}
                 onChange={(e) => definirEmail(e.target.value)}
-                isInvalid={erro}
-                errorMessage={mensagemErro}
+                isInvalid={mensagemErroEmail ? true : false}
+                errorMessage={mensagemErroEmail}
                 />
 
                 <Input label='Senha :' placeholder="Insira a senha" size='lg' startContent={
@@ -105,8 +105,8 @@ const Registro = () => {
                     </button>}
                 value={senha}
                 onChange={(e) => definirSenha(e.target.value)}
-                isInvalid={erro}
-                errorMessage={mensagemErro}
+                isInvalid={mensagemErroSenha ? true : false}
+                errorMessage={mensagemErroSenha}
                 />
 
                 <Input label='Confirme a Senha :' placeholder="Insira novamente a senha" size='lg' startContent={
@@ -124,8 +124,8 @@ const Registro = () => {
                     </button>}
                 value={confirmarSenha}
                 onChange={(e) => definirConfirmarSenha(e.target.value)}
-                isInvalid={erro}
-                errorMessage={mensagemErro}
+                isInvalid={mensagemErroSenha ? true : false}
+                errorMessage={mensagemErroSenha}
                 />
             </div>
             {senhasIguais ? 

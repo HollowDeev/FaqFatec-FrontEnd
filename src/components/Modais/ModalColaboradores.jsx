@@ -30,10 +30,10 @@ const ModalColaboradores = ({isOpen, acao}) => {
   const [loading, setLoading] = useState(false)
 
   // Estados para os dados necessarios para o gerenciamento
-  const [nome, definirNome] = useState(null)
-  const [email, definirEmail] = useState(null)
-  const [senha, definirSenha] = useState(null)
-  const [confirmarSenha, definirConfirmarSenha] = useState(null)
+  const [nome, definirNome] = useState('')
+  const [email, definirEmail] = useState('')
+  const [senha, definirSenha] = useState('')
+  const [confirmarSenha, definirConfirmarSenha] = useState('')
 
   // Estados de erro
   const [erro, definirErro] = useState(false)
@@ -54,7 +54,19 @@ const ModalColaboradores = ({isOpen, acao}) => {
       definirErro(false)
       definirMensageErro()
     }
-  }, [senha, confirmarSenha])
+
+    const formatoEmailValido = /@fatec\.sp\.gov\.br$/.test(email);
+
+    if (!formatoEmailValido && email.includes('@')) {
+      
+      definirErro(true)
+      definirErro('O email deve ser do domínio @fatec.sp.gov.br');
+      console.log(true)
+    } else {
+      definirErro(false)
+      definirErro('');
+    }
+  }, [senha, confirmarSenha, email])
 
   // Sistema para armazenar o nome pelo contexto, em caso de troca de senha
   useEffect(() => {
@@ -64,10 +76,10 @@ const ModalColaboradores = ({isOpen, acao}) => {
 
   // Funções de ação - Cancelar e salvar/adicionar
   const btnCancelar = () => {
-    definirEmail(null)
-    definirNome(null)
-    definirSenha(null)
-    definirConfirmarSenha(null)
+    definirEmail('')
+    definirNome('')
+    definirSenha('')
+    definirConfirmarSenha('')
     gerenciador.fechar(gerenciar)
   }
 
