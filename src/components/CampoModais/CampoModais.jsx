@@ -22,6 +22,10 @@ const CampoModais = () => {
         definirTipoModal('pergunta')
         definirAcaoModal('adicao')
         setIsOpen(true)
+      }else if(gerenciamento[0].responderPergunta){
+        definirTipoModal('pergunta')
+        definirAcaoModal('responder')
+        setIsOpen(true)
       }else if(gerenciamento[1].editarTema){
         definirTipoModal('tema')
         definirAcaoModal('edicao')

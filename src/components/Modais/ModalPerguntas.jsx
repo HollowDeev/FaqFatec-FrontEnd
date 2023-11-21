@@ -55,8 +55,8 @@ const ModalPerguntas = ({isOpen, acao}) => {
     if(!loading){
       definirLoading(true)
 
-      if(gerenciamento[0].editarPergunta){
-        if(parametrosRequisicao){
+      if(gerenciamento[0].editarPergunta || gerenciamento[0].responderPergunta){
+        if(parametrosRequisicao && tema != '' && pergunta != '' && resposta != ''){
           const idPergunta = gerenciamento[0].idPergunta
           await actionsApi.salvarEdicaoPergunta(pergunta, resposta, Number(tema), idPergunta, parametrosRequisicao)
         }
@@ -82,9 +82,14 @@ const ModalPerguntas = ({isOpen, acao}) => {
                 <span className="text-content6">Editar </span>
                 Pergunta
               </h1>
-              :
+              : acao == 'adicao' ?
               <h1 className="text-2xl sm:text-3xl font-bold my-5 text-foreground">
                 <span className="text-content6">Adicionar </span>
+                Pergunta
+              </h1>
+              :
+              <h1 className="text-2xl sm:text-3xl font-bold my-5 text-foreground">
+                <span className="text-content6">Responde </span>
                 Pergunta
               </h1>
             }

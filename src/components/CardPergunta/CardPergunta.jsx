@@ -1,5 +1,5 @@
 import { Accordion, AccordionItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
-import { Eye, EyeClosed, GearSix, PencilSimpleLine, Trash } from "@phosphor-icons/react"
+import { Books, Eye, EyeClosed, GearSix, PencilSimpleLine, Trash } from "@phosphor-icons/react"
 import { perguntas } from "../../data/perguntas"
 import PropTypes from 'prop-types'
 import Icone from "../Icone/Icone"
@@ -12,12 +12,14 @@ import CardPerguntaSkeleton from "./CardPerguntaSkeleton"
 import { useActionsApi } from "../../hooks/useActionsApi"
 import { AuthContext } from "../../context/Auth/AuthProvider"
 import parse from 'html-react-parser';
+import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto"
 
 CardPergunta.defaultProps = {
     limite: 0,
     filtro: 'nenhum',
     cor: '#771212',
-    tipo: "visualizacao"
+    tipo: "visualizacao",
+    modelo: 'edicao'
 }
 
 CardPergunta.propTypes = {
@@ -26,23 +28,30 @@ CardPergunta.propTypes = {
     temaParaFiltro: PropTypes.string,
     cor: PropTypes.string,
     tipo: PropTypes.string,
-    idPesquisa: PropTypes.number
+    idPesquisa: PropTypes.number,
+    modelo: PropTypes.string
 }
 
-export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo, idPesquisa }) {
+export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo, idPesquisa, modelo }) {
 
     const { tema: temaSistema } = useContext(temaContexto)
 
-    const {dbPerguntas} = useContext(dataContexto)
+    const {dbPerguntas, dbPerguntasNovas} = useContext(dataContexto)
 
-    const {parametrosRequisicao} = useContext(AuthContext)
+    const {parametrosRequisicao, perguntasAtualizadas} = useContext(AuthContext)
     const actionsApi = useActionsApi()
     const {recarregarDados} = useContext(dataContexto)
 
     const { gerenciar } = useGerenciadorContexto()
     const gerenciador = useGerenciador()
 
-    //* Chamada no select de gerenciamento - Excluir / Editar pergunta
+    const {definirIdParaPesquisa} = useContext(PesquisaContexto)
+
+    const visualizarPergunta = (id) => {
+        definirIdParaPesquisa(id)
+    }
+
+    // Chamada no select de gerenciamento - Excluir / Editar pergunta
     const selecao = async(acao, pergunta) => {
         switch(acao){
             case 'editar':
@@ -53,6 +62,9 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 await actionsApi.deletarPergunta(pergunta.id, parametrosRequisicao)
                 recarregarDados()
                 break
+
+            case 'responder':
+                gerenciador.responderPergunta(gerenciar, pergunta)
         }
     }
 
@@ -216,189 +228,280 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
 
         case "gerenciamento":
-            switch (filtro) {
-                case "nenhum":
-                    return (
-                        <>
-                            {dbPerguntas != null ?
-                                <div className="w-full flex flex-col gap-10" key='pai'>
+            switch(modelo){
+                case 'edicao':
+                    switch (filtro) {
+                        case "nenhum":
+                            return (
+                                <>
+                                    {dbPerguntas != null ?
+                                        <div className="w-full flex flex-col gap-10" key='pai'>
 
-                                    {dbPerguntas.map(({pergunta, id, icone, tema, resposta}) => (
-                                        <>
-                                            <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" key={id}>
+                                            {dbPerguntas.map(({pergunta, id, icone, tema, resposta}) => (
+                                                <>
+                                                    <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" key={id}>
 
-                                                <div className="flex items-center h-auto gap-3 relative">
-                                                    <div>
-                                                        <Icone icone={icone} cor={cor} tamanho={50} />
-                                                    </div>
-                                                    <div>
-                                                        <h1 className="text-2xl font-bold">{pergunta}</h1>
-                                                        <p className="opacity-50 font-light">{tema}</p>
-                                                    </div>
-                                                    <Dropdown className={`text-foreground ${temaSistema}`}>
-                                                        <DropdownTrigger>
-                                                            <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
-                                                                <GearSix size={24} color="#070707" weight="bold" />
-                                                            </Button>
-                                                        </DropdownTrigger>
-                                                        <DropdownMenu onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
-                                                            <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
-                                                            <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
-                                                        </DropdownMenu>
-                                                    </Dropdown>
-                                                </div>
-
-                                                <div>
-                                                    {parse(resposta)}
-                                                </div>
-
-                                                
-                                                <Dropdown className={`text-foreground ${temaSistema}`}>
-                                                        <DropdownTrigger>
-                                                            <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
-                                                                GERENCIAR
+                                                        <div className="flex items-center h-auto gap-3 relative">
+                                                            <div>
+                                                                <Icone icone={icone} cor={cor} tamanho={50} />
                                                             </div>
-                                                        </DropdownTrigger>
-                                                        <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
-                                                            <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
-                                                            <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
-                                                        </DropdownMenu>
-                                                    </Dropdown>
-                                            </div>
-                                        </>
-                                    ))
-                                    }
-
-                                </div>
-                                :
-                                <CardPerguntaSkeleton />
-                            }
-                        </>
-                    )
-
-                case "tema":
-                    return (
-                        <>
-                            {dbPerguntas != null ?
-                            
-                                <div className="w-full flex flex-col gap-10">
-
-                                    {dbPerguntas.filter(({tema}) => tema == temaParaFiltro).map(({pergunta, id, icone, tema, resposta}) => (
-                                        <>
-                                            <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" 
-                                                key={id}
-                                            >
-
-                                                <div className="flex items-center h-auto gap-3 relative">
-                                                    <div>
-                                                        <Icone icone={icone} cor={cor} tamanho={50} />
-                                                    </div>
-                                                    <div>
-                                                        <h1 className="text-2xl font-bold">{pergunta}</h1>
-                                                        <p className="opacity-50 font-light">{tema}</p>
-                                                    </div>
-                                                    <Dropdown className={`text-foreground ${temaSistema}`}>
-                                                        <DropdownTrigger>
-                                                            <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
-                                                                <GearSix size={24} color="#070707" weight="bold" />
-                                                            </Button>
-                                                        </DropdownTrigger>
-                                                        <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
-                                                            <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
-                                                            <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
-                                                        </DropdownMenu>
-                                                    </Dropdown>
-                                                </div>
-
-                                                <div>
-                                                    {parse(resposta)}
-                                                </div>
-
-
-                                                <Dropdown className={`text-foreground ${temaSistema}`}>
-                                                        <DropdownTrigger>
-                                                            <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
-                                                                GERENCIAR
+                                                            <div>
+                                                                <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                                <p className="opacity-50 font-light">{tema}</p>
                                                             </div>
-                                                        </DropdownTrigger>
-                                                        <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
-                                                            <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
-                                                            <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
-                                                        </DropdownMenu>
-                                                    </Dropdown>
-                                            </div>
-                                        </>
-                                    ))
+                                                            <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                                <DropdownTrigger>
+                                                                    <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                                        <GearSix size={24} color="#070707" weight="bold" />
+                                                                    </Button>
+                                                                </DropdownTrigger>
+                                                                <DropdownMenu onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
+                                                                    <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                                    <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                                </DropdownMenu>
+                                                            </Dropdown>
+                                                        </div>
+
+                                                        <div>
+                                                            {parse(resposta)}
+                                                        </div>
+
+                                                        
+                                                        <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                                <DropdownTrigger>
+                                                                    <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                                        GERENCIAR
+                                                                    </div>
+                                                                </DropdownTrigger>
+                                                                <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
+                                                                    <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                                    <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                                </DropdownMenu>
+                                                            </Dropdown>
+                                                    </div>
+                                                </>
+                                            ))
+                                            }
+
+                                        </div>
+                                        :
+                                        <CardPerguntaSkeleton />
                                     }
+                                </>
+                            )
 
-                                </div>
-                                :
-                                <CardPerguntaSkeleton />
-                            }
-                        </>
-                    )
+                        case "tema":
+                            return (
+                                <>
+                                    {dbPerguntas != null ?
+                                    
+                                        <div className="w-full flex flex-col gap-10">
 
-                case "pergunta":
-                return (
-                    <>
-                        {dbPerguntas != null ?
-                        
-                            <div className="w-full flex flex-col gap-10">
-                                {dbPerguntas.filter(({id}) => id == idPesquisa).map(({pergunta, id, icone, tema, resposta}) => (
-                                    <>
-                                        <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" 
-                                            key={id}
-                                        >
+                                            {dbPerguntas.filter(({tema}) => tema == temaParaFiltro).map(({pergunta, id, icone, tema, resposta}) => (
+                                                <>
+                                                    <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" 
+                                                        key={id}
+                                                    >
+
+                                                        <div className="flex items-center h-auto gap-3 relative">
+                                                            <div>
+                                                                <Icone icone={icone} cor={cor} tamanho={50} />
+                                                            </div>
+                                                            <div>
+                                                                <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                                <p className="opacity-50 font-light">{tema}</p>
+                                                            </div>
+                                                            <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                                <DropdownTrigger>
+                                                                    <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                                        <GearSix size={24} color="#070707" weight="bold" />
+                                                                    </Button>
+                                                                </DropdownTrigger>
+                                                                <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
+                                                                    <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                                    <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                                </DropdownMenu>
+                                                            </Dropdown>
+                                                        </div>
+
+                                                        <div>
+                                                            {parse(resposta)}
+                                                        </div>
+
+
+                                                        <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                                <DropdownTrigger>
+                                                                    <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                                        GERENCIAR
+                                                                    </div>
+                                                                </DropdownTrigger>
+                                                                <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
+                                                                    <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                                    <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                                </DropdownMenu>
+                                                            </Dropdown>
+                                                    </div>
+                                                </>
+                                            ))
+                                            }
+
+                                        </div>
+                                        :
+                                        <CardPerguntaSkeleton />
+                                    }
+                                </>
+                            )
+
+                        case "pergunta":
+                        return (
+                            <>
+                                {dbPerguntas != null ?
+                                
+                                    <div className="w-full flex flex-col gap-10">
+                                        {dbPerguntas.filter(({id}) => id == idPesquisa).map(({pergunta, id, icone, tema, resposta}) => (
+                                            <>
+                                                <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" 
+                                                    key={id}
+                                                >
+
+                                                    <div className="flex items-center h-auto gap-3 relative">
+                                                        <div>
+                                                            <Icone icone={icone} cor={cor} tamanho={50} />
+                                                        </div>
+                                                        <div>
+                                                            <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                            <p className="opacity-50 font-light">{tema}</p>
+                                                        </div>
+                                                        <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                            <DropdownTrigger>
+                                                                <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                                    <GearSix size={24} color="#070707" weight="bold" />
+                                                                </Button>
+                                                            </DropdownTrigger>
+                                                            <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
+                                                                <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                                <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                            </DropdownMenu>
+                                                        </Dropdown>
+                                                    </div>
+
+                                                    <div>
+                                                        {parse(resposta)}
+                                                    </div>
+
+
+                                                    <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                            <DropdownTrigger>
+                                                                <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                                    GERENCIAR
+                                                                </div>
+                                                            </DropdownTrigger>
+                                                            <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
+                                                                <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                                <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                            </DropdownMenu>
+                                                        </Dropdown>
+                                                </div>
+                                            </>
+                                        ))
+                                        }
+
+                                    </div>
+                                    :
+                                    <CardPerguntaSkeleton />
+                                }
+                            </>
+                        )
+                    }
+                break
+
+                case 'responder':
+                    case 'nenhum':
+                        return (
+                            <>
+                                {dbPerguntasNovas != null ?
+                                    <div className="w-full flex flex-col gap-10" key='pai'>
+
+                                        {dbPerguntasNovas.map(({pergunta, id}) => (
+                                            <>
+                                                <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static break-words" key={id}>
+
+                                                    <div className="flex items-center h-auto gap-3 relative">
+                                                        <div>
+                                                            <Books size={50} color="#f9f1f1" />
+                                                        </div>
+                                                        <div>
+                                                            <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                        </div>
+                                                        <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                            <DropdownTrigger>
+                                                                <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                                    <GearSix size={24} color="#070707" weight="bold" />
+                                                                </Button>
+                                                            </DropdownTrigger>
+                                                            <DropdownMenu onAction={(acao) => selecao(acao, {pergunta, id})}>
+                                                                <DropdownItem key='responder' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Responder</DropdownItem>
+                                                                <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                            </DropdownMenu>
+                                                        </Dropdown>
+                                                    </div>
+
+                                                    
+                                                    <Dropdown className={`text-foreground ${temaSistema}`}>
+                                                            <DropdownTrigger>
+                                                                <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                                    GERENCIAR
+                                                                </div>
+                                                            </DropdownTrigger>
+                                                            <DropdownMenu className={temaSistema} onAction={(acao) => selecao(acao, {pergunta, id})}>
+                                                                <DropdownItem key='responder' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Responder</DropdownItem>
+                                                                <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
+                                                            </DropdownMenu>
+                                                        </Dropdown>
+                                                </div>
+                                            </>
+                                        ))
+                                        }
+
+                                    </div>
+                                    :
+                                    <CardPerguntaSkeleton />
+                                }
+                            </>
+                        )
+            }
+            break
+
+        case 'notificacao':
+            return (
+                <>
+                    {perguntasAtualizadas != null ?
+                        <div className="text-lg sm:text-2xl font-bold flex flex-col gap-3" key='pai'>
+                                {
+                                    perguntasAtualizadas.map(({pergunta, id}) => (
+                                        <div className="w-full h-auto bg-content2 bg-opacity-50 backdrop-blur-sm rounded-2xl flex justify-between gap-5 p-3 static break-words hover:translate-y-1 transition-all cursor-pointer" key={id} onClick={() => visualizarPergunta(id)}>
 
                                             <div className="flex items-center h-auto gap-3 relative">
                                                 <div>
-                                                    <Icone icone={icone} cor={cor} tamanho={50} />
+                                                    <Books size={36} color="#f9f1f1" />
                                                 </div>
                                                 <div>
                                                     <h1 className="text-2xl font-bold">{pergunta}</h1>
-                                                    <p className="opacity-50 font-light">{tema}</p>
                                                 </div>
-                                                <Dropdown className={`text-foreground ${temaSistema}`}>
-                                                    <DropdownTrigger>
-                                                        <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
-                                                            <GearSix size={24} color="#070707" weight="bold" />
-                                                        </Button>
-                                                    </DropdownTrigger>
-                                                    <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
-                                                        <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
-                                                        <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
-                                                    </DropdownMenu>
-                                                </Dropdown>
+                                            </div>
+                                            <div className="p-1 bg-content6 rounded-xl flex items-center">
+                                                <Eye size={25} color="#0D0D0D" weight="fill" />
                                             </div>
 
-                                            <div>
-                                                {parse(resposta)}
-                                            </div>
-
-
-                                            <Dropdown className={`text-foreground ${temaSistema}`}>
-                                                    <DropdownTrigger>
-                                                        <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
-                                                            GERENCIAR
-                                                        </div>
-                                                    </DropdownTrigger>
-                                                    <DropdownMenu className={tema} onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
-                                                        <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
-                                                        <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
-                                                    </DropdownMenu>
-                                                </Dropdown>
                                         </div>
-                                    </>
-                                ))
+                                    ))
                                 }
-
-                            </div>
-                            :
-                            <CardPerguntaSkeleton />
-                        }
-                    </>
-                )
-            }
+                        </div> 
+                    :
+                    <CardPerguntaSkeleton />
+                    }
+                </>
+            )
 
     }
 

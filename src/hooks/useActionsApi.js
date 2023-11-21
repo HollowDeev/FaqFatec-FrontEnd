@@ -24,7 +24,8 @@ export const useActionsApi = () => ({
         await axios.patch(`${baseURL}/updatepr/${id}`, {
             pergunta,
             resposta,
-            tema_id
+            tema_id,
+            pergunta_estado: 1
         }, {headers:headers})
     },
 

@@ -7,6 +7,7 @@ const valorInicial = [
     {
         editarPergunta: false,
         adicionarPergunta: false,
+        responderPergunta: false,
         idPergunta: null,
         pergunta: '',
         resposta: '',
@@ -37,6 +38,7 @@ const reducer = (state, action) => {
                 {
                     editarPergunta: true,
                     adicionarPergunta: false,
+                    responderPergunta: false,
                     idPergunta: action.pergunta.id,
                     pergunta: action.pergunta.pergunta,
                     resposta: action.pergunta.resposta,
@@ -51,6 +53,7 @@ const reducer = (state, action) => {
             {
                 editarPergunta: false,
                 adicionarPergunta: true,
+                responderPergunta: false,
                 idPergunta: null,
                 pergunta: '',
                 resposta: '',
@@ -60,11 +63,27 @@ const reducer = (state, action) => {
             state[2]   
         ]
 
+        case 'responderPergunta':
+            return [
+                {
+                    editarPergunta: false,
+                    adicionarPergunta: true,
+                    responderPergunta: true,
+                    idPergunta: action.pergunta.id,
+                    pergunta: action.pergunta.pergunta,
+                    resposta: '',
+                    tema: ''
+                },
+                state[1],
+                state[2]   
+            ]
+
         case 'fechar':
             return [
                 {
                     editarPergunta: false,
                     adicionarPergunta: false,
+                    responderPergunta: false,
                     idPergunta: null,
                     pergunta: '',
                     resposta: '',
