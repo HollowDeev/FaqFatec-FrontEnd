@@ -23,12 +23,14 @@ const DataProvider = ({children}) => {
 
     const definirDados = async () => {
         const dados = await api.buscarDados()
-        
+
         definirDbIcones(dados.icones)
         definirDbPerguntas(dados.perguntasOnline.original)
         definirDbPerguntasNovas(dados.perguntasAluno.original)
         definirDbTemas(dados.temas.original)
+        
     }
+
 
     useEffect(()=> {
         if(dbPerguntasNovas.length != 0){

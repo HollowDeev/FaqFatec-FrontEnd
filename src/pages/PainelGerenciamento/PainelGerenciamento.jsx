@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto" 
 import CardPergunta from "../../components/CardPergunta/CardPergunta";
 import temaContexto from "../../context/TemaContexto";
-import { Calendar, FolderNotchOpen, Folders, Plus, SealQuestion, UserCircleGear } from "@phosphor-icons/react";
+import { FolderNotchOpen, Folders, Plus, SealQuestion, UserCircleGear } from "@phosphor-icons/react";
 import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 
 import Icone from "../../components/Icone/Icone";
@@ -245,19 +245,24 @@ export default function PainelGerenciamento() {
     </div>
 
     {/* Menus de ação mobile */}
-    <div className="fixed bottom-0 bg-background w-full px-5 flex justify-between items-center lg:hidden">
+    <div className="fixed bottom-0 bg-background w-full px-5 flex justify-between items-center lg:hidden z-50">
       <div className="flex flex-1 justify-around">
 
-        {painel != 'temas' &&
-          <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
-            <Folders size={35} color="#fdfcfc" weight="fill" />
-          </div>
+        {painel != 'sugestaoPerguntas' &&
+            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
+              <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
+                <SealQuestion size={35} color="#f9f1f1" weight="fill" />
+              </div>
+            </Badge>
         }
 
-        {painel == 'temas' &&
-          <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
-            <Folders size={35} color="#fdfcfc" weight="fill" />
-          </div>
+        {painel == 'sugestaoPerguntas' &&
+            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
+              <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
+                <SealQuestion size={35} color="#f9f1f1" weight="fill" />
+              </div>
+            </Badge>
+          
         }
 
         {usuario && usuario.level == 2 && painel != 'colaboradores' &&
@@ -277,8 +282,18 @@ export default function PainelGerenciamento() {
         <Plus size={40} color="#fdfcfc" weight="bold" />
       </div>
 
-      <div className="flex flex-1 justify-around">
-        <Calendar size={35} color="#fdfcfc" weight="fill" />
+      <div className="flex flex-1 justify-around items-center">
+        {painel != 'temas' &&
+          <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
+            <Folders size={35} color="#fdfcfc" weight="fill" />
+          </div>
+        }
+
+        {painel == 'temas' &&
+          <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
+            <Folders size={35} color="#fdfcfc" weight="fill" />
+          </div>
+        }
         <Dropdown className={tema} backdrop="blur">
           <DropdownTrigger>
             <FolderNotchOpen size={35} color="#fdfcfc" weight="fill" />
@@ -289,13 +304,13 @@ export default function PainelGerenciamento() {
           onSelectionChange={definirItemSelecionado}
           onAction={(key) => definirTemaSelecionado(key)}
         >
-          {(tema) => (
+          {({tema, icone}) => (
             <DropdownItem 
               className="text-foreground"
-              key={tema.nome}
-              startContent={<Icone icone={tema.icone} tamanho={20}/>}
+              key={tema}
+              startContent={<Icone icone={icone} tamanho={20}/>}
             >
-              {tema.nome.toUpperCase()}
+              {tema.toUpperCase()}
             </DropdownItem>
           )
           }

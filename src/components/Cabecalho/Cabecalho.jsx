@@ -56,52 +56,66 @@ export const Cabecalho = () => {
             <BarraPesquisa/>
           </div>
           
-
-          <Dropdown>
-            <DropdownTrigger className={tema}>
-                <div className="rounded-full bg-foreground p-2 cursor-pointer">
-                  <User size={24} color={content1} weight="fill" />
-                </div>
-              </DropdownTrigger>
-            <DropdownMenu onAction={(acao) => handleAction(acao)}>
-              {usuario &&
-                <DropdownSection showDivider>
-                  <DropdownItem>
-                    Olá {nomeUsuario}, Tudo bem?
-                  </DropdownItem>
-                </DropdownSection>
-              }
-              <DropdownSection title='ações'>
-                {usuario && usuario.level > 0 && 
-                  <DropdownItem className="text-foreground" startContent={
-                    <UserGear size={20} color="#f9f1f1" weight="fill" />
-                  } key='painelADM'>
-                    Painel Gerenciamento
-                  </DropdownItem>
+          {perguntasAtualizadas && perguntasAtualizadas.length != 0 ?
+            <Notificacao />
+          :
+            <Dropdown className={tema}>
+              <DropdownTrigger>
+                  <div className="rounded-full bg-foreground p-2 cursor-pointer">
+                    <User size={24} color={content1} weight="fill" />
+                  </div>
+                </DropdownTrigger>
+              <DropdownMenu onAction={(acao) => handleAction(acao)}>
+                {usuario &&
+                  <DropdownSection showDivider>
+                    <DropdownItem className="text-foreground">
+                      Olá {nomeUsuario}, Tudo bem?
+                    </DropdownItem>
+                  </DropdownSection>
                 }
-                {usuario ?
-                  <DropdownItem className="text-danger" startContent={
-                    <SignOut size={20} color="#FF000F" weight="fill" />
-                  } key='sair'>
-                    Sair
-                  </DropdownItem>
-                  :
-                  <DropdownItem className="text-success" key='entrar' startContent={
-                    <SignIn size={20} color="#17c964" weight="fill" />
-                  }>
-                    Entrar
-                  </DropdownItem>
-                }
-                {!usuario &&
-                    <DropdownItem className="text-foreground" key='registrar' startContent={
-                        <UserCirclePlus size={20} color="#f9f1f1" />
-                      }>
-                        Criar Conta
+                <DropdownSection title='ações'>
+                  {usuario && usuario.level > 0 && 
+                    <DropdownItem className="text-foreground" startContent={
+                      <UserGear size={20} color="#f9f1f1" weight="fill" />
+                    } key='painelADM'>
+                      Painel Gerenciamento
                     </DropdownItem>
                   }
-              </DropdownSection>    
-            </DropdownMenu>
-          </Dropdown>
+                  {usuario &&
+                      <DropdownItem 
+                        startContent={
+                          <Password size={20} color="#f9f1f1" />
+                        } 
+                        key='trocarSenha'
+                        className="text-foreground">
+                          Esqueceu a senha?
+                      </DropdownItem>
+                  }
+                  {usuario ?
+                    <DropdownItem className="text-danger" startContent={
+                      <SignOut size={20} color="#FF000F" weight="fill" />
+                    } key='sair'>
+                      Sair
+                    </DropdownItem>
+                    :
+                    <DropdownItem className="text-success" key='entrar' startContent={
+                      <SignIn size={20} color="#17c964" weight="fill" />
+                    }>
+                      Entrar
+                    </DropdownItem>
+                  }
+                  {!usuario &&
+                      <DropdownItem className="text-foreground" key='registrar' startContent={
+                          <UserCirclePlus size={20} color="#f9f1f1" />
+                        }>
+                          Criar Conta
+                      </DropdownItem>
+                    }
+                </DropdownSection>    
+              </DropdownMenu>
+            </Dropdown>
+          }
+
 
         </div>
 

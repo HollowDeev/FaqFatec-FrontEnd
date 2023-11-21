@@ -23,7 +23,7 @@ const Notificacao = () => {
             </div>
         </Badge>
         {notificacaoAberta &&
-            <div className="absolute top-20 right-5 z-40 rounded-3xl bg-background p-2 py-3 bg-opacity-75 text-center">
+            <div className="absolute top-20 md:right-5 right-[50%] translate-x-[50%] md:translate-x-0 w-full md:w-auto z-40 rounded-3xl bg-background p-2 py-3 bg-opacity-95 md:bg-opacity-65 text-center">
                <h1 className="text-xl font-bold mb-3">
                 Perguntas 
                 <span className="text-content6"> Atualizadas</span>
