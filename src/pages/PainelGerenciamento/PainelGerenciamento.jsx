@@ -13,8 +13,6 @@ import { AuthContext } from "../../context/Auth/AuthProvider";
 import CardColaboradores from "../../components/CardColaboradores/CardColaboradores";
 import dataContexto from "../../context/Data/dataContexto";
 import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto";
-// import { useNavigate } from "react-router-dom";
-// import CardPerguntaSkeleton from "../../components/CardPergunta/CardPerguntaSkeleton";
 
 
 export default function PainelGerenciamento() {
@@ -24,8 +22,6 @@ export default function PainelGerenciamento() {
   const {usuario} = useContext(AuthContext)
 
   const {quantasPerguntasNovas, temPerguntasNovas} = useContext(dataContexto)
-
-  console.log(quantasPerguntasNovas)
 
   // Contexto do tema - light / dark
   const {tema} = useContext(temaContexto)
@@ -117,7 +113,7 @@ export default function PainelGerenciamento() {
         }
 
         {painel != 'sugestaoPerguntas' &&
-            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={temPerguntasNovas}>
+            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
               <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
                 <SealQuestion size={40} color="#f9f1f1" weight="fill" />
               </div>
@@ -125,7 +121,7 @@ export default function PainelGerenciamento() {
         }
 
         {painel == 'sugestaoPerguntas' &&
-            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={temPerguntasNovas}>
+            <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
               <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
                 <SealQuestion size={40} color="#f9f1f1" weight="fill" />
               </div>

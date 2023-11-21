@@ -25,7 +25,8 @@ const Home = () => {
 
   useEffect(() => {
     const verificar = async () => {
-      const userData = await checarAutorizacao()
+      const data = await checarAutorizacao()
+      const userData = data.usuario
 
       if(userData && userData.level == 0){
         definirALunoLogado(true)

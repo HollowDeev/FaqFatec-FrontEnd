@@ -13,7 +13,7 @@ const DataProvider = ({children}) => {
     const [dbColaboradores, definirDbColaboradores] = useState(null)
 
     const [dbPerguntas, definirDbPerguntas] = useState(null)
-    const [dbPerguntasNovas, definirDbPerguntasNovas] = useState(null)
+    const [dbPerguntasNovas, definirDbPerguntasNovas] = useState([])
 
     const [temPerguntasNovas, definirEstadoPerguntasNovas] = useState(false)
     const [quantasPerguntasNovas, definirQuantidadePerguntasNovas] = useState(0)
@@ -28,14 +28,17 @@ const DataProvider = ({children}) => {
         definirDbPerguntas(dados.perguntasOnline.original)
         definirDbPerguntasNovas(dados.perguntasAluno.original)
         definirDbTemas(dados.temas.original)
+    }
 
-        // console.log(dados.perguntasAluno.original)
-
+    useEffect(()=> {
         if(dbPerguntasNovas.length != 0){
             definirEstadoPerguntasNovas(true)
             definirQuantidadePerguntasNovas(dbPerguntasNovas.length)
+
+        }else {
+            definirEstadoPerguntasNovas(false)
         }
-    }
+    }, [dbPerguntasNovas])
 
     const definirDadosColaboradores = async() => {
         if(parametrosRequisicao && usuario.level == 2){
