@@ -1,4 +1,4 @@
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, useDisclosure } from '@nextui-org/react'
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import P from 'prop-types'
 import { useContext } from 'react'
 import temaContexto from '../../context/TemaContexto'
@@ -7,7 +7,7 @@ import { useGerenciador } from '../../hooks/useGerenciador'
 import EditorTexto from '../EditorTexto/EditorTexto'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { Folders, Upload, XCircle } from '@phosphor-icons/react'
+import { Folders, MoonStars, Sun, Upload, XCircle } from '@phosphor-icons/react'
 import Icone from '../Icone/Icone'
 import { useActionsApi } from '../../hooks/useActionsApi'
 import { AuthContext } from '../../context/Auth/AuthProvider'
@@ -36,10 +36,12 @@ const ModalPerguntas = ({isOpen, acao}) => {
   const [pergunta, definirPergunta] = useState('')
   const [resposta, definirResposta] = useState('')
   const [tema, definirTema] = useState('')
+  const [estadoDaPergunta, definirEstadoDaPergunta] = useState('')
 
   useEffect(() => {
     definirPergunta(gerenciamento[0].pergunta)
     definirResposta(gerenciamento[0].resposta)
+    definirEstadoDaPergunta(gerenciamento[0].estado)
     let tema
     if(gerenciamento[0].tema != ''){
       tema = dbTemas.filter((tema) => tema.tema == gerenciamento[0].tema).map((tema) => tema.id.toString())
@@ -58,7 +60,8 @@ const ModalPerguntas = ({isOpen, acao}) => {
       if(gerenciamento[0].editarPergunta || gerenciamento[0].responderPergunta){
         if(parametrosRequisicao && tema != '' && pergunta != '' && resposta != ''){
           const idPergunta = gerenciamento[0].idPergunta
-          await actionsApi.salvarEdicaoPergunta(pergunta, resposta, Number(tema), idPergunta, parametrosRequisicao)
+          const estado = estadoDaPergunta == 'Online' ? 1 : 0
+          await actionsApi.salvarEdicaoPergunta(pergunta, resposta, estado, Number(tema), idPergunta, parametrosRequisicao)
         }
       }else {
         await actionsApi.adicionarPergunta(pergunta, resposta, Number(tema), parametrosRequisicao)
@@ -126,26 +129,47 @@ const ModalPerguntas = ({isOpen, acao}) => {
               )}
             </div>
           </ModalBody>
-          <ModalFooter>
-            <Button onPress={onClose} onClick={btnCancelar}
-              variant='light' color='danger' className='text-xl p-6'
-              endContent={
-                <XCircle size={25} color="#FF000F" weight="fill" />
-              }
+          <ModalFooter className='flex justify-between items-center'>
+            <Tabs className="font-semibold" variant="bordered" 
+              size="sm" 
+              selectedKey={estadoDaPergunta} 
+              onSelectionChange={definirEstadoDaPergunta}
             >
-              Cancelar
-            </Button>
+              <Tab key="Online" title={
+                <div className="flex items-center space-x-2">
+                  <Sun  size={20} color="#f9f1f1" weight="fill" />
+                  <span>Perguntas Online</span>
+                </div>
+              }></Tab>
+              <Tab key="Offline" title={
+                <div className="flex items-center space-x-2">
+                  <MoonStars size={20} color="#f9f1f1" weight="fill" />
+                  <span>Perguntas Offline</span>
+                </div>
+              }></Tab>
+            </Tabs>
+            
+            <div className='flex gap-2'>
+              <Button onPress={onClose} onClick={btnCancelar}
+                variant='light' color='danger' className='text-xl p-6'
+                endContent={
+                  <XCircle size={25} color="#FF000F" weight="fill" />
+                }
+              >
+                Cancelar
+              </Button>
 
-            <Button onPress={onClose} onClick={btnFinalizar}
-              variant='flat' color='success' className='text-xl p-6'
-              endContent={ loading ? 
-                <Spinner color='success' />
-              : 
-                <Upload size={48} color="#17C964" weight="fill" /> 
-              }
-            >
-              {acao == 'edicao' ? 'Salvar' : "Publicar"}
-            </Button>
+              <Button onPress={onClose} onClick={btnFinalizar}
+                variant='flat' color='success' className='text-xl p-6'
+                endContent={ loading ? 
+                  <Spinner color='success' />
+                : 
+                  <Upload size={48} color="#17C964" weight="fill" /> 
+                }
+              >
+                {acao == 'edicao' ? 'Salvar' : "Publicar"}
+              </Button>
+            </div>
           </ModalFooter>
         </>
       )}

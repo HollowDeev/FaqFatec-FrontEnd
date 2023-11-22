@@ -11,7 +11,8 @@ const valorInicial = [
         idPergunta: null,
         pergunta: '',
         resposta: '',
-        tema: ''
+        tema: '',
+        estado: ''
     },
     {
         editarTema: false,
@@ -42,7 +43,8 @@ const reducer = (state, action) => {
                     idPergunta: action.pergunta.id,
                     pergunta: action.pergunta.pergunta,
                     resposta: action.pergunta.resposta,
-                    tema: action.pergunta.tema
+                    tema: action.pergunta.tema,
+                    estado: action.estado
                 },
                 state[1],
                 state[2]   
@@ -57,7 +59,8 @@ const reducer = (state, action) => {
                 idPergunta: null,
                 pergunta: '',
                 resposta: '',
-                tema: ''
+                tema: '',
+                estado: ''
             },
             state[1],
             state[2]   
@@ -72,7 +75,8 @@ const reducer = (state, action) => {
                     idPergunta: action.pergunta.id,
                     pergunta: action.pergunta.pergunta,
                     resposta: '',
-                    tema: ''
+                    tema: '',
+                    estado: ''
                 },
                 state[1],
                 state[2]   
@@ -87,7 +91,8 @@ const reducer = (state, action) => {
                     idPergunta: null,
                     pergunta: '',
                     resposta: '',
-                    tema: ''
+                    tema: '',
+                    estado: ''
                 },
                 {
                     editarTema: false,

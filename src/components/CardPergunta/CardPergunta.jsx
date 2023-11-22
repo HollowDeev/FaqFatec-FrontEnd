@@ -59,7 +59,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
     const selecao = async(acao, pergunta) => {
         switch(acao){
             case 'editar':
-                gerenciador.editarPerguntas(gerenciar, pergunta)
+                gerenciador.editarPerguntas(gerenciar, pergunta, estado)
                 break
             
             case 'excluir':

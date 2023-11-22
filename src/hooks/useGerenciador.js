@@ -1,7 +1,7 @@
 export const useGerenciador = () => ({
 
-    editarPerguntas: (dispatch, pergunta) => {
-        return dispatch({type: "editarPergunta", pergunta})
+    editarPerguntas: (dispatch, pergunta, estado) => {
+        return dispatch({type: "editarPergunta", pergunta, estado})
     },
 
     adicionarPergunta: (dispatch) => {

@@ -20,12 +20,12 @@ export const useActionsApi = () => ({
 
     },
 
-    salvarEdicaoPergunta: async (pergunta, resposta, tema_id, id, {baseURL, headers}) => {
+    salvarEdicaoPergunta: async (pergunta, resposta, estado, tema_id, id, {baseURL, headers}) => {
         await axios.patch(`${baseURL}/updatepr/${id}`, {
             pergunta,
             resposta,
             tema_id,
-            pergunta_estado: 1
+            pergunta_estado: estado
         }, {headers:headers})
     },
 
