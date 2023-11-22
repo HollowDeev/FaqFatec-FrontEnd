@@ -36,7 +36,7 @@ const ModalPerguntas = ({isOpen, acao}) => {
   const [pergunta, definirPergunta] = useState('')
   const [resposta, definirResposta] = useState('')
   const [tema, definirTema] = useState('')
-  const [estadoDaPergunta, definirEstadoDaPergunta] = useState('')
+  const [estadoDaPergunta, definirEstadoDaPergunta] = useState('Online')
 
   useEffect(() => {
     definirPergunta(gerenciamento[0].pergunta)
@@ -62,11 +62,12 @@ const ModalPerguntas = ({isOpen, acao}) => {
           const idPergunta = gerenciamento[0].idPergunta
           const estado = estadoDaPergunta == 'Online' ? 1 : 0
           await actionsApi.salvarEdicaoPergunta(pergunta, resposta, estado, Number(tema), idPergunta, parametrosRequisicao)
+          console.log(1)
         }
       }else {
         await actionsApi.adicionarPergunta(pergunta, resposta, Number(tema), parametrosRequisicao)
       }
-      
+      console.log(2)
       recarregarDados() 
 
       definirLoading(false)

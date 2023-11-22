@@ -80,7 +80,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
             case 'Offline':
                 definirDbPerguntas(dbPerguntasOffline)
         }
-    }, [estado])
+    }, [estado, dbPerguntasOnline, dbPerguntasOffline])
 
     switch (tipo) {
         case "visualizacao":
