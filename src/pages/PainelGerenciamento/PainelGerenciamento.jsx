@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto" 
 import CardPergunta from "../../components/CardPergunta/CardPergunta";
 import temaContexto from "../../context/TemaContexto";
-import { FolderNotchOpen, Folders, Plus, SealQuestion, UserCircleGear } from "@phosphor-icons/react";
-import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { FolderNotchOpen, Folders, MoonStars, Plus, SealQuestion, Sun, UserCircleGear } from "@phosphor-icons/react";
+import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tabs, Tab} from "@nextui-org/react";
 
 import Icone from "../../components/Icone/Icone";
 import CampoModais from "../../components/CampoModais/CampoModais";
@@ -44,6 +44,9 @@ export default function PainelGerenciamento() {
   // Temas possiveis para a filtragem
   const [temasParaFiltragem, definirTemasParaFiltragem] = useState([]) 
 
+  const [painel, definirPainel] = useState("perguntas")
+  const [estadoDasPerguntas, definirEstadoDasPerguntas] = useState('Online')
+
   useEffect(() => {
     if(dbTemas != null){
       const temas = [
@@ -58,7 +61,6 @@ export default function PainelGerenciamento() {
 
   }, [dbTemas])
 
-  const [painel, definirPainel] = useState("perguntas")
 
   const alternarPainel = (painelDesejado) => {
     if(painel != painelDesejado){
@@ -149,9 +151,34 @@ export default function PainelGerenciamento() {
 
     {/* Painel de perguntas */}
     <div className="w-full lg:w-[900px] xl:w-[1250px] m-auto px-2 sm:px-20 flex flex-col ">
-  
-      <div className="w-full flex flex-col items-center mb-20">
       
+      {painel == 'perguntas' &&
+
+        <div className="w-full flex justify-end ">
+          <Tabs className="absolute top-6 font-bold" variant="bordered" radius="full" 
+
+            size="sm" 
+            selectedKey={estadoDasPerguntas} 
+            onSelectionChange={definirEstadoDasPerguntas}
+          >
+            <Tab key="Online" title={
+              <div className="flex items-center space-x-2">
+                <Sun  size={20} color="#f9f1f1" weight="fill" />
+                <span>Perguntas Online</span>
+              </div>
+            }></Tab>
+            <Tab key="Offline" title={
+              <div className="flex items-center space-x-2">
+                <MoonStars size={20} color="#f9f1f1" weight="fill" />
+                <span>Perguntas Offline</span>
+              </div>
+            }></Tab>
+          </Tabs>
+        </div>
+
+      }
+
+      <div className="w-full flex flex-col items-center mb-20 ">
         {painel == "perguntas" &&
           <>
           {idPesquisa ?
@@ -160,18 +187,23 @@ export default function PainelGerenciamento() {
                 <span className="text-content6">Resultado </span>
                 Pesquisa
               </h1>
-              <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro='pergunta' idPesquisa={idPesquisa}/>
+              <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro='pergunta' estado={estadoDasPerguntas} idPesquisa={idPesquisa}/>
             </>
             :
             <>
               <h1 className="text-2xl sm:text-3xl font-bold my-5">
                 Perguntas
-                <span className="text-content6"> Online</span>
+                {estadoDasPerguntas == 'Online' ?
+                  <span className="text-content6"> {estadoDasPerguntas}</span>
+                :
+                  <span className="text-danger"> {estadoDasPerguntas}</span>
+                }
+                
               </h1>
               {temaSelecionado == "todos" ? 
-                <CardPergunta cor={foregroundColor} tipo="gerenciamento" /> 
+                <CardPergunta cor={foregroundColor} tipo="gerenciamento" estado={estadoDasPerguntas}/> 
                 : 
-                <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro="tema" temaParaFiltro={temaSelecionado}/> 
+                <CardPergunta cor={foregroundColor} tipo="gerenciamento" estado={estadoDasPerguntas} filtro="tema" temaParaFiltro={temaSelecionado}/> 
               }
             </>
           }

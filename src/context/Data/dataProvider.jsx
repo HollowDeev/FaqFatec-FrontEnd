@@ -12,7 +12,8 @@ const DataProvider = ({children}) => {
     const [dbIcones, definirDbIcones] = useState(null)
     const [dbColaboradores, definirDbColaboradores] = useState(null)
 
-    const [dbPerguntas, definirDbPerguntas] = useState(null)
+    const [dbPerguntasOnline, definirDbPerguntasOnline] = useState(null)
+    const [dbPerguntasOffline, definirDbPerguntasOffline] = useState(null)
     const [dbPerguntasNovas, definirDbPerguntasNovas] = useState([])
 
     const [temPerguntasNovas, definirEstadoPerguntasNovas] = useState(false)
@@ -25,10 +26,10 @@ const DataProvider = ({children}) => {
         const dados = await api.buscarDados()
 
         definirDbIcones(dados.icones)
-        definirDbPerguntas(dados.perguntasOnline.original)
+        definirDbPerguntasOnline(dados.perguntasOnline.original)
+        definirDbPerguntasOffline(dados.perguntasOffline.original)
         definirDbPerguntasNovas(dados.perguntasAluno.original)
         definirDbTemas(dados.temas.original)
-        
     }
 
 
@@ -60,7 +61,9 @@ const DataProvider = ({children}) => {
 
     const recarregarDados = () => {
         definirDbIcones(null)
-        definirDbPerguntas(null)
+        definirDbPerguntasOnline(null)
+        definirDbPerguntasOffline(null)
+        definirDbPerguntasNovas([])
         definirDbTemas(null)
         definirDados()
     }
@@ -71,7 +74,7 @@ const DataProvider = ({children}) => {
     }
 
   return (
-    <dataContexto.Provider value={{dbPerguntas, dbPerguntasNovas, dbTemas, dbIcones, dbColaboradores, recarregarDados, recarregarDadosColaboradores, temPerguntasNovas, quantasPerguntasNovas}}>
+    <dataContexto.Provider value={{dbPerguntasOnline, dbPerguntasNovas, dbPerguntasOffline, dbTemas, dbIcones, dbColaboradores, recarregarDados, recarregarDadosColaboradores, temPerguntasNovas, quantasPerguntasNovas}}>
         {children}
     </dataContexto.Provider>
   )

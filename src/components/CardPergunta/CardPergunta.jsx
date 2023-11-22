@@ -1,8 +1,8 @@
-import { Accordion, AccordionItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
+import { Accordion, AccordionItem, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
 import { Books, Eye, EyeClosed, GearSix, PencilSimpleLine, Trash } from "@phosphor-icons/react"
 import PropTypes from 'prop-types'
 import Icone from "../Icone/Icone"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import temaContexto from "../../context/TemaContexto"
 import { useGerenciador } from "../../hooks/useGerenciador"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
@@ -28,14 +28,16 @@ CardPergunta.propTypes = {
     cor: PropTypes.string,
     tipo: PropTypes.string,
     idPesquisa: PropTypes.number,
-    modelo: PropTypes.string
+    modelo: PropTypes.string,
+    estado: PropTypes.string
 }
 
-export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo, idPesquisa, modelo }) {
+export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo, idPesquisa, modelo, estado}) {
 
     const { tema: temaSistema } = useContext(temaContexto)
 
-    const {dbPerguntas, dbPerguntasNovas} = useContext(dataContexto)
+    const {dbPerguntasOnline, dbPerguntasOffline, dbPerguntasNovas} = useContext(dataContexto)
+    const [dbPerguntas, definirDbPerguntas] = useState(dbPerguntasOnline)
 
     const {parametrosRequisicao, perguntasAtualizadas, removerUmaPerguntaAtualizada} = useContext(AuthContext)
     const actionsApi = useActionsApi()
@@ -70,6 +72,16 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
         }
     }
 
+    useEffect(() => {
+        switch(estado){
+            case 'Online':
+                definirDbPerguntas(dbPerguntasOnline)
+            break
+            case 'Offline':
+                definirDbPerguntas(dbPerguntasOffline)
+        }
+    }, [estado])
+
     switch (tipo) {
         case "visualizacao":
             switch (filtro) {
@@ -77,10 +89,10 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
                     return (
                         <>
-                            {dbPerguntas != null ?
+                            {dbPerguntasOnline != null ?
                                 <Accordion variant="splitted" itemClasses={{ title: "text-lg sm:text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }} >
                                         {
-                                            dbPerguntas.filter((pergunta, índice) => índice < limite).map((pergunta) => (
+                                            dbPerguntasOnline.filter((pergunta, índice) => índice < limite).map((pergunta) => (
                                                 <AccordionItem
                                                     key={pergunta.id}
                                                     title={pergunta.pergunta}
@@ -114,10 +126,10 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 case 'tema':
                     return (
                         <>
-                            {dbPerguntas != null ?
+                            {dbPerguntasOnline != null ?
                                 <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                                     {
-                                        dbPerguntas.filter(({tema}) => tema == temaParaFiltro).map(({tema, pergunta, resposta, icone, id}) => (
+                                        dbPerguntasOnline.filter(({tema}) => tema == temaParaFiltro).map(({tema, pergunta, resposta, icone, id}) => (
                                             <AccordionItem
                                                 key={id}
                                                 title={pergunta}
@@ -150,10 +162,10 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 case 'pergunta':
                 return (
                     <>
-                        {dbPerguntas != null ?
+                        {dbPerguntasOnline != null ?
                             <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                                 {
-                                    dbPerguntas.filter(({id}) => id == idPesquisa).map(({tema, pergunta, resposta, icone, id}) => (
+                                    dbPerguntasOnline.filter(({id}) => id == idPesquisa).map(({tema, pergunta, resposta, icone, id}) => (
                                         <AccordionItem
                                             key={id}
                                             title={pergunta}
@@ -186,10 +198,10 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 case 'nenhum':
                     return (
                         <>
-                            {dbPerguntas != null ? (
+                            {dbPerguntasOnline != null ? (
                             <Accordion variant="splitted" itemClasses={{ title: "text-2xl font-bold", base: "group-[.is-splitted]:bg-content2 group-[.is-splitted]:backdrop-blur-sm group-[.is-splitted]:rounded-2xl group-[.is-splitted]:bg-opacity-60" }}>
                                 {
-                                    dbPerguntas.map(({ id, titulo, tema, resposta }) => (
+                                    dbPerguntasOnline.map(({ id, titulo, tema, resposta }) => (
                                         <AccordionItem
                                             key={id}
                                             title={titulo}
@@ -228,7 +240,6 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
             }
             break
 
-
         case "gerenciamento":
             switch(modelo){
                 case 'edicao':
@@ -248,12 +259,15 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                                                 <Icone icone={icone} cor={cor} tamanho={50} />
                                                             </div>
                                                             <div>
-                                                                <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                                <div className="flex items-center gap-5">
+                                                                    <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                                    {estado == 'Offline' && <Chip variant="dot" color="danger">Offline</Chip>}
+                                                                </div>
                                                                 <p className="opacity-50 font-light">{tema}</p>
                                                             </div>
                                                             <Dropdown className={`text-foreground ${temaSistema}`}>
                                                                 <DropdownTrigger>
-                                                                    <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                                    <Button isIconOnly color={estado == 'Online' ? "success" : "danger"} className="hidden sm:flex absolute right-2 z-0" >
                                                                         <GearSix size={24} color="#070707" weight="bold" />
                                                                     </Button>
                                                                 </DropdownTrigger>
@@ -310,12 +324,15 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                                                 <Icone icone={icone} cor={cor} tamanho={50} />
                                                             </div>
                                                             <div>
-                                                                <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                                <div className="flex items-center gap-5">
+                                                                    <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                                    {estado == 'Offline' && <Chip variant="dot" color="danger">Offline</Chip>}
+                                                                </div>
                                                                 <p className="opacity-50 font-light">{tema}</p>
                                                             </div>
                                                             <Dropdown className={`text-foreground ${temaSistema}`}>
                                                                 <DropdownTrigger>
-                                                                    <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                                    <Button isIconOnly color={estado == 'Online' ? "success" : "danger"} className="hidden sm:flex absolute right-2 z-0" >
                                                                         <GearSix size={24} color="#070707" weight="bold" />
                                                                     </Button>
                                                                 </DropdownTrigger>
@@ -371,12 +388,15 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                                             <Icone icone={icone} cor={cor} tamanho={50} />
                                                         </div>
                                                         <div>
-                                                            <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                            <div className="flex items-center gap-5">
+                                                                <h1 className="text-2xl font-bold">{pergunta}</h1>
+                                                                {estado == 'Offline' && <Chip variant="dot" color="danger">Offline</Chip>}
+                                                            </div>
                                                             <p className="opacity-50 font-light">{tema}</p>
                                                         </div>
                                                         <Dropdown className={`text-foreground ${temaSistema}`}>
                                                             <DropdownTrigger>
-                                                                <Button isIconOnly color="success" className="hidden sm:flex absolute right-2 z-0" >
+                                                                <Button isIconOnly color={estado == 'Online' ? "success" : "danger"} className="hidden sm:flex absolute right-2 z-0" >
                                                                     <GearSix size={24} color="#070707" weight="bold" />
                                                                 </Button>
                                                             </DropdownTrigger>

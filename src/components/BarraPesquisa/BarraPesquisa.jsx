@@ -1,12 +1,13 @@
 import { MagnifyingGlass, XCircle } from "@phosphor-icons/react"
 import MediaQuery from "react-responsive"
 
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 import {  Autocomplete,  AutocompleteItem} from "@nextui-org/autocomplete";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import temaContexto from "../../context/TemaContexto";
 import dataContexto from "../../context/Data/dataContexto";
 import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto";
+import { AuthContext } from "../../context/Auth/AuthProvider";
 
 const BarraPesquisa = () => {
 
@@ -15,13 +16,28 @@ const BarraPesquisa = () => {
     const {definirIdParaPesquisa, idPesquisa} = useContext(PesquisaContexto)
     
     const {tema} = useContext(temaContexto)
+    const {usuario} = useContext(AuthContext)
 
-    const {dbPerguntas} = useContext(dataContexto)
+    const {dbPerguntasOnline, dbPerguntasOffline} = useContext(dataContexto)
+    const [dbPerguntas, definirDbPerguntas] = useState(dbPerguntasOnline)
+
 
     const pesquisar = (id) => {
         definirIdParaPesquisa(id);
     }
 
+    useEffect(() => {
+        if(dbPerguntasOnline != null && dbPerguntasOffline != null && usuario && usuario.level > 0) {
+            const pergunta = [
+                ...dbPerguntasOnline,
+                ...dbPerguntasOffline
+            ]
+    
+            definirDbPerguntas(pergunta)
+        } else {
+            definirDbPerguntas(dbPerguntasOnline)
+        }
+    }, [dbPerguntasOnline, dbPerguntasOffline, usuario])
 
   return (
     <>
@@ -45,7 +61,7 @@ const BarraPesquisa = () => {
                 selectedKey={idPesquisa}
                 >
                     {
-                        ({pergunta, id, icone}) => <AutocompleteItem key={id} >{pergunta}</AutocompleteItem>
+                        ({pergunta, id}) => <AutocompleteItem key={id} >{pergunta}</AutocompleteItem>
                     }
                 </Autocomplete>
             }
@@ -71,7 +87,7 @@ const BarraPesquisa = () => {
                             selectedKey={idPesquisa}
                             >
                                 {
-                                    ({pergunta, id, icone}) => <AutocompleteItem key={id} >{pergunta}</AutocompleteItem>
+                                    ({pergunta, id}) => <AutocompleteItem key={id} >{pergunta}</AutocompleteItem>
                                 }
                             </Autocomplete>
                         }                            
