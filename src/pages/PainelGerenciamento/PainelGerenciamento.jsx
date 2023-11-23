@@ -93,7 +93,7 @@ export default function PainelGerenciamento() {
   
   return (
 
-    <div className="relative flex ">
+    <div className="relative flex">
 
     {/* Modais */}
     <CampoModais />
@@ -166,7 +166,7 @@ export default function PainelGerenciamento() {
     </div>
 
     {/* Painel de perguntas */}
-    <div className="w-full lg:w-[900px] xl:w-[1250px] m-auto px-2 sm:px-20 flex flex-col ">
+    <div className="w-full min-h-[100vh] lg:w-[900px] xl:w-[1250px] m-auto px-2 sm:px-20 flex flex-col ">
       
       {painel == 'perguntas' &&
 
