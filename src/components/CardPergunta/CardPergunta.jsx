@@ -323,6 +323,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                         :
                                         <CardPerguntaSkeleton />
                                     }
+
                                 </>
                             )
 
@@ -508,6 +509,15 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                     </div>
                                     :
                                     <CardPerguntaSkeleton />
+                                }
+                                {dbPerguntasNovas && dbPerguntasNovas.length == 0 &&
+                                    <div className=" w-full h-[calc(700px)] flex flex-col md:flex-row gap-10 items-center">
+                                        <img src="../../public/olho2.webp" alt="" className="rounded-full"/>
+                                        <div className="border-l-4 pl-2">
+                                            <h3 className="text-2xl sm:text-4xl font-bold bg-content5 p-2">Nenhuma pergunta para responder agora !</h3>
+                                            <p className="text-xl mt-3">Volte mais tarde...</p>
+                                        </div>
+                                    </div>
                                 }
                             </>
                         )
