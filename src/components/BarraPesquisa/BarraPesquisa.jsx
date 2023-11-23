@@ -8,6 +8,7 @@ import temaContexto from "../../context/TemaContexto";
 import dataContexto from "../../context/Data/dataContexto";
 import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto";
 import { AuthContext } from "../../context/Auth/AuthProvider";
+import BarraPesquisaSkeleton from "./BarraPesquisaSkeleton";
 
 const BarraPesquisa = () => {
 
@@ -49,10 +50,11 @@ const BarraPesquisa = () => {
 
 
         <MediaQuery minWidth={640}>
-            {dbPerguntas && 
+            {dbPerguntas ?
                 <Autocomplete className="w-[450px]" size="sm" defaultItems={dbPerguntas} onSelectionChange={pesquisar} startContent={
                     <MagnifyingGlass size={24} color="#fdfcfc" weight="bold" />
                 }
+                placeholder='Pesquise por uma pergunta e a encostre rapidamente'
                 inputProps={{
                     classNames: {
                         inputWrapper: "rounded-full h-[40px]",
@@ -64,6 +66,8 @@ const BarraPesquisa = () => {
                         ({pergunta, id}) => <AutocompleteItem key={id} >{pergunta}</AutocompleteItem>
                     }
                 </Autocomplete>
+            :
+            <BarraPesquisaSkeleton />
             }
         </MediaQuery>
 
