@@ -3,7 +3,7 @@ import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 import CardPergunta from "../../components/CardPergunta/CardPergunta";
 import temaContexto from "../../context/TemaContexto";
 import { FolderNotchOpen, Folders, MoonStars, Plus, SealQuestion, Sun, UserCircleGear } from "@phosphor-icons/react";
-import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tabs, Tab} from "@nextui-org/react";
+import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tabs, Tab, Tooltip} from "@nextui-org/react";
 
 import Icone from "../../components/Icone/Icone";
 import CampoModais from "../../components/CampoModais/CampoModais";
@@ -103,50 +103,66 @@ export default function PainelGerenciamento() {
       <div className="flex flex-col justify-center h-48 gap-2">
 
         {painel != 'temas' &&
-          <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
-            <Folders size={40} color="#fdfcfc" weight="fill" />
-          </div>
+          <Tooltip  content='Temas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+            <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
+              <Folders size={40} color="#fdfcfc" weight="fill" />
+            </div>
+          </Tooltip>
         }
 
         {painel == 'temas' &&
-          <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
-            <Folders size={40} color="#fdfcfc" weight="fill" />
-          </div>
+          <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+            <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
+              <Folders size={40} color="#fdfcfc" weight="fill" />
+            </div>
+          </Tooltip>
+          
         }
 
         {painel != 'sugestaoPerguntas' &&
             <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
-              <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
-                <SealQuestion size={40} color="#f9f1f1" weight="fill" />
-              </div>
+              <Tooltip content='Novas Perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+                <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
+                  <SealQuestion size={40} color="#f9f1f1" weight="fill" />
+                </div>
+              </Tooltip>
             </Badge>
         }
 
         {painel == 'sugestaoPerguntas' &&
             <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
-              <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
-                <SealQuestion size={40} color="#f9f1f1" weight="fill" />
-              </div>
+              <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+                <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
+                  <SealQuestion size={40} color="#f9f1f1" weight="fill" />
+                </div>
+              </Tooltip>
             </Badge>
-          
         }
 
         {usuario && usuario.level == 2 && painel != 'colaboradores' &&
-          <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
-            <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
-          </div>
+          <Tooltip content='Colaboradores' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+            <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
+              <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
+            </div>
+          </Tooltip>
+          
         }
 
         {usuario && usuario.level == 2 && painel == 'colaboradores' &&
-          <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
-            <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
-          </div>
+          <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+            <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
+              <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
+            </div>
+          </Tooltip>
+
         }
       </div>
 
-      <div className="p-2 bg-content6 hover:bg-opacity-70 transition-all rounded-full flex items-center justify-center border-[10px] border-background2 cursor-pointer " onClick={() => adicionarItem()}>
-        <Plus size={40} color="#fdfcfc" weight="bold" />
-      </div>
+      <Tooltip content='Adicionar' className={`text-foreground ${tema}`} placement="right">
+        <div className="p-2 bg-content6 hover:bg-opacity-70 transition-all rounded-full flex items-center justify-center border-[10px] border-background2 cursor-pointer " onClick={() => adicionarItem()}>
+          <Plus size={40} color="#fdfcfc" weight="bold" />
+        </div>
+      </Tooltip>
     </div>
 
     {/* Painel de perguntas */}
