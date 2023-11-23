@@ -62,12 +62,12 @@ const ModalPerguntas = ({isOpen, acao}) => {
           const idPergunta = gerenciamento[0].idPergunta
           const estado = estadoDaPergunta == 'Online' ? 1 : 0
           await actionsApi.salvarEdicaoPergunta(pergunta, resposta, estado, Number(tema), idPergunta, parametrosRequisicao)
-          console.log(1)
+
         }
       }else {
-        await actionsApi.adicionarPergunta(pergunta, resposta, Number(tema), parametrosRequisicao)
+        const estado = estadoDaPergunta == 'Online' ? 1 : 0
+        await actionsApi.adicionarPergunta(pergunta, resposta, estado, Number(tema), parametrosRequisicao)
       }
-      console.log(2)
       recarregarDados() 
 
       definirLoading(false)

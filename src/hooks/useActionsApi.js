@@ -2,12 +2,13 @@ import axios from "axios"
 
 export const useActionsApi = () => ({
 
-    adicionarPergunta: async (pergunta, resposta, tema, {baseURL, headers, user_id}) => {
+    adicionarPergunta: async (pergunta, resposta, estado, tema, {baseURL, headers, user_id}) => {
         await axios.post(`${baseURL}/pr`, {
                 pergunta, 
                 resposta,
                 tema_id: tema,
-                user_id
+                user_id,
+                pergunta_estado: estado
             }, {
                 headers: headers
             }

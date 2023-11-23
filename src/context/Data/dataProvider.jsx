@@ -25,8 +25,6 @@ const DataProvider = ({children}) => {
     const definirDados = async () => {
         const dados = await api.buscarDados()
 
-        console.log('teste 2')
-
         definirDbIcones(dados.icones)
         definirDbPerguntasOnline(dados.perguntasOnline.original)
         definirDbPerguntasOffline(dados.perguntasOffline.original)

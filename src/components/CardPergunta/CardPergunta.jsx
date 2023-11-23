@@ -1,5 +1,5 @@
 import { Accordion, AccordionItem, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
-import { Books, Eye, EyeClosed, GearSix, PencilSimpleLine, Trash } from "@phosphor-icons/react"
+import { Books, Eye, EyeClosed, GearSix, PencilSimpleLine, ToggleLeft, Trash } from "@phosphor-icons/react"
 import PropTypes from 'prop-types'
 import Icone from "../Icone/Icone"
 import { useContext, useEffect, useState } from "react"
@@ -36,7 +36,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
     const { tema: temaSistema } = useContext(temaContexto)
 
-    const {dbPerguntasOnline, dbPerguntasOffline, dbPerguntasNovas} = useContext(dataContexto)
+    const {dbPerguntasOnline, dbPerguntasOffline, dbPerguntasNovas, dbTemas} = useContext(dataContexto)
     const [dbPerguntas, definirDbPerguntas] = useState(dbPerguntasOnline)
 
     const {parametrosRequisicao, perguntasAtualizadas, removerUmaPerguntaAtualizada} = useContext(AuthContext)
@@ -57,6 +57,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
     // Chamada no select de gerenciamento - Excluir / Editar pergunta
     const selecao = async(acao, pergunta) => {
+        var tema
         switch(acao){
             case 'editar':
                 gerenciador.editarPerguntas(gerenciar, pergunta, estado)
@@ -69,6 +70,17 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
             case 'responder':
                 gerenciador.responderPergunta(gerenciar, pergunta)
+                break
+            case 'tornarOffline':
+                tema = dbTemas.filter((tema) => tema.tema == pergunta.tema).map((tema) => tema.id.toString())
+                await actionsApi.salvarEdicaoPergunta(pergunta.pergunta, pergunta.resposta, 0, Number(tema[0]), pergunta.id, parametrosRequisicao)
+                recarregarDados() 
+                break
+
+            case 'tornarOnline':
+                tema = dbTemas.filter((tema) => tema.tema == pergunta.tema).map((tema) => tema.id.toString())
+                await actionsApi.salvarEdicaoPergunta(pergunta.pergunta, pergunta.resposta, 1, Number(tema[0]), pergunta.id, parametrosRequisicao)
+                recarregarDados() 
         }
     }
 
@@ -273,6 +285,13 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                                                 </DropdownTrigger>
                                                                 <DropdownMenu onAction={(acao) => selecao(acao, {pergunta, id, icone, tema, resposta})}>
                                                                     <DropdownItem key='editar' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                                    <DropdownItem 
+                                                                        key={estado == 'Online' ? "tornarOffline" : 'tornarOnline'} 
+                                                                        startContent={<ToggleLeft size={20} color="#f9f1f1" weight="fill" />}
+                                                                    >
+                                                                        {estado == 'Online' ? "Deixar Offline" : 'Deixar Online'} 
+                                                                    </DropdownItem>
+
                                                                     <DropdownItem key="excluir"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
                                                                 </DropdownMenu>
                                                             </Dropdown>
