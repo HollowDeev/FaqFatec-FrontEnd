@@ -154,8 +154,8 @@ export default function PainelGerenciamento() {
       
       {painel == 'perguntas' &&
 
-        <div className="w-full flex justify-end ">
-          <Tabs className="absolute top-6 font-bold" variant="bordered" radius="full" 
+        <div className="w-full flex xl:justify-end justify-center">
+          <Tabs className="xl:absolute block xl:top-6 top-0 font-bold" variant="bordered" radius="full" 
 
             size="sm" 
             selectedKey={estadoDasPerguntas} 

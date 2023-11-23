@@ -273,9 +273,10 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                                             <div>
                                                                 <div className="flex items-center gap-5">
                                                                     <h1 className="text-2xl font-bold">{pergunta}</h1>
-                                                                    {estado == 'Offline' && <Chip variant="dot" color="danger">Offline</Chip>}
+                                                                    {estado == 'Offline' && <Chip variant="dot" color="danger" className="hidden lg:flex">Offline</Chip>}
                                                                 </div>
                                                                 <p className="opacity-50 font-light">{tema}</p>
+                                                                {estado == 'Offline' && <Chip variant="dot" color="danger" className="lg:hidden">Offline</Chip>}
                                                             </div>
                                                             <Dropdown className={`text-foreground ${temaSistema}`}>
                                                                 <DropdownTrigger>
@@ -304,7 +305,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                                                         
                                                         <Dropdown className={`text-foreground ${temaSistema}`}>
                                                                 <DropdownTrigger>
-                                                                    <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                                    <div className={` ${estado == 'Online' ? "bg-content6 text-background2" : "bg-content5 text-white"} p-2 text-center rounded-b-xl text-xl font-bold sm:hidden`}>
                                                                         GERENCIAR
                                                                     </div>
                                                                 </DropdownTrigger>
