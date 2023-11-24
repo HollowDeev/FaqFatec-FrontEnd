@@ -18,6 +18,8 @@ const Registro = () => {
     const [mensagemErroSenha, definirMensagemErroSenha] = useState('')
 
     const [mensagemErroEmail, definirMensagemErroEmail] = useState('')
+
+    const [erroGlobal, definirErroGlobal] = useState('')
     
     const [loading, definirLoading] = useState(false)
 
@@ -52,10 +54,15 @@ const Registro = () => {
     const handleButton = async() => {
       const cadastroAutorizado = nome !== '' && email !== '' && senha !== '' && confirmarSenha !== '' && mensagemErroEmail == ''
       if(cadastroAutorizado){
-        definirLoading(true)
-        await actionsApi.criarConta(nome, email, senha)
-        definirLoading(false)
-        navigate('/login')
+        try{
+          definirLoading(true)
+          await actionsApi.criarConta(nome, email, senha)
+          definirLoading(false)
+          navigate('/login')
+        }catch(e){
+          definirErroGlobal(e)
+          definirLoading(false)
+        }
       }
     }
 
@@ -128,6 +135,12 @@ const Registro = () => {
                 errorMessage={mensagemErroSenha}
                 />
             </div>
+            {erroGlobal != '' &&
+             <div className="flex items-center gap-2">
+              <p className="bg-content5 px-2">Falha ao criar a conta pois: </p> 
+              <span>{erroGlobal}</span>
+             </div>
+            }
             {senhasIguais ? 
               <Button variant="ghost" color="success" className="font-bold" onClick={() => handleButton()}>Criar Conta</Button>
             :

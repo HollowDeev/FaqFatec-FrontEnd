@@ -92,7 +92,8 @@ export const useActionsApi = () => ({
                 password: senha
             })
         }catch(e){
-            throw new Error(e)
+            // console.log(e)
+            return Promise.reject(e.response.data.errors.email[0])
         }
     },
 
