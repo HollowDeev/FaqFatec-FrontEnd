@@ -13,6 +13,7 @@ import { AuthContext } from "../../context/Auth/AuthProvider";
 import CardColaboradores from "../../components/CardColaboradores/CardColaboradores";
 import dataContexto from "../../context/Data/dataContexto";
 import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto";
+import Alerta from "../../components/Alerta/Alerta";
 
 
 export default function PainelGerenciamento() {
@@ -97,6 +98,8 @@ export default function PainelGerenciamento() {
 
     {/* Modais */}
     <CampoModais />
+
+    <Alerta />
 
     {/* Botoes esquerdo versão desktop */}
     <div className="hidden w-16 lg:flex bg-content1 fixed bottom-[50%] translate-y-[50%] mx-10 flex-col justify-between items-center rounded-full ">

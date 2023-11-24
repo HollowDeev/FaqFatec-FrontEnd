@@ -41,7 +41,6 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
     const {parametrosRequisicao, perguntasAtualizadas, removerUmaPerguntaAtualizada} = useContext(AuthContext)
     const actionsApi = useActionsApi()
-    const {recarregarDados} = useContext(dataContexto)
 
     const { gerenciar } = useGerenciadorContexto()
     const gerenciador = useGerenciador()
@@ -63,24 +62,63 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
                 gerenciador.editarPerguntas(gerenciar, pergunta, estado)
                 break
             
-            case 'excluir':
-                await actionsApi.deletarPergunta(pergunta.id, parametrosRequisicao)
-                recarregarDados()
+            case 'excluir':{
+                const alerta = {
+                    tipo: 'alerta',
+                    titulo: 'Realmente deseja Excluir?',
+                    mensagem: 'Essa pergunta será removida PERMANENTEMENTE do sistema, tem certeza que deseja remover? Você pode optar por deixa-la offline caso não queira que ela apareca para os usuarios.',
+                    funcao: 'excluirPergunta',
+                    dadosFuncao: pergunta.id
+                }
+                gerenciador.exibirAlerta(gerenciar, alerta)
                 break
+            }
+                
 
             case 'responder':
                 gerenciador.responderPergunta(gerenciar, pergunta)
                 break
-            case 'tornarOffline':
-                tema = dbTemas.filter((tema) => tema.tema == pergunta.tema).map((tema) => tema.id.toString())
-                await actionsApi.salvarEdicaoPergunta(pergunta.pergunta, pergunta.resposta, 0, Number(tema[0]), pergunta.id, parametrosRequisicao)
-                recarregarDados() 
-                break
 
-            case 'tornarOnline':
+            case 'tornarOffline':{
                 tema = dbTemas.filter((tema) => tema.tema == pergunta.tema).map((tema) => tema.id.toString())
-                await actionsApi.salvarEdicaoPergunta(pergunta.pergunta, pergunta.resposta, 1, Number(tema[0]), pergunta.id, parametrosRequisicao)
-                recarregarDados() 
+                const alerta = {
+                    tipo: 'alerta',
+                    titulo: 'Realmente deseja deixar essa pergunta Offline?',
+                    mensagem: 'Essa pergunta ficará offline e DEIXARA DE APARECER para os usuarios que acessarem o sistema',
+                    funcao: 'mudarEstadoPergunta',
+                    dadosFuncao: {
+                        pergunta: pergunta.pergunta, 
+                        resposta: pergunta.resposta, 
+                        estado: 0, 
+                        tema_id: Number(tema[0]), 
+                        id: pergunta.id
+                    }
+                }
+
+                gerenciador.exibirAlerta(gerenciar, alerta)
+                break
+            }
+                
+
+            case 'tornarOnline':{
+                tema = dbTemas.filter((tema) => tema.tema == pergunta.tema).map((tema) => tema.id.toString())
+                const alerta = {
+                    tipo: 'alerta',
+                    titulo: 'Realmente deseja deixar essa pergunta Online?',
+                    mensagem: 'Essa pergunta ficará online e APARECERA para todos os usuarios que acessarem o sistema',
+                    funcao: 'mudarEstadoPergunta',
+                    dadosFuncao: {
+                        pergunta: pergunta.pergunta, 
+                        resposta: pergunta.resposta, 
+                        estado: 1, 
+                        tema_id: Number(tema[0]), 
+                        id: pergunta.id
+                    }
+                }
+
+                gerenciador.exibirAlerta(gerenciar, alerta)
+                break
+            }
         }
     }
 

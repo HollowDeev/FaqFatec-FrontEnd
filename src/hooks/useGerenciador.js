@@ -32,6 +32,10 @@ export const useGerenciador = () => ({
         return dispatch({type: 'buscarColaboradores'})
     },
 
+    exibirAlerta: (dispatch, alerta) => {
+        return dispatch({type: 'abrirAlerta', alerta})
+    },
+
     fechar: (dispatch) => {
         return dispatch({type: "fechar"})
     }
