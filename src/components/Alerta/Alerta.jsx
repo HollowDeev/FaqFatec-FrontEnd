@@ -4,7 +4,7 @@ import useGerenciadorContexto from '../../hooks/useGerenciadorContexto';
 import { useContext, useEffect, useState } from 'react';
 import { useGerenciador } from '../../hooks/useGerenciador';
 import temaContexto from '../../context/TemaContexto';
-import { Warning } from '@phosphor-icons/react';
+import { SealCheck, Warning } from '@phosphor-icons/react';
 import { useActionsApi } from '../../hooks/useActionsApi';
 import { AuthContext } from '../../context/Auth/AuthProvider';
 import dataContexto from '../../context/Data/dataContexto';
@@ -24,13 +24,17 @@ const Alerta = () => {
     const [dados, definirDados] = useState(null)
     const [loading, definirLoading] = useState(false)
 
+    const [alertaNotificacao, definirAlertaNotificacao] = useState()
+
     useEffect(()=> {
         definirDados(gerenciamento[3])
     }, [gerenciamento])
 
-    // useEffect(() => {
-    //     console.log(dados)
-    // }, [dados])
+
+    useEffect(() => {
+        dados && dados.tipo == 'notificacao' ? definirAlertaNotificacao(true) : definirAlertaNotificacao(false)
+        
+    }, [dados])
 
     const fechar = () => {
         gerenciador.fechar(gerenciar)
@@ -68,20 +72,22 @@ const Alerta = () => {
   return (
     <>
     {dados &&
-        <Modal isOpen={dados.exibir} className={`${tema} text-foreground`} backdrop='blur' hideCloseButton='true'>
+        <Modal isOpen={dados.exibir} className={`${tema} text-foreground`} backdrop={alertaNotificacao ? 'opaque' : 'blur'} hideCloseButton='true' placement={alertaNotificacao ? "top" : "bottom-center"}>
             <ModalContent>
                 <ModalHeader className='flex items-center gap-3'>
-                    {dados.tipo == 'alerta' &&
+                    {!alertaNotificacao ?
                         <Warning size={30} color="#771212" weight="duotone" />
+                    :
+                        <SealCheck size={30} color="#17c964" weight="duotone" />
                     }
-                    <h1 className='bg-content5 text-foreground px-2 border-l-2'>{dados.titulo}</h1>
+                    <h1 className={`${!alertaNotificacao ? "bg-content5 text-foreground" : "bg-content6 text-background2"} px-2 border-l-2`}>{dados.titulo}</h1>
                 </ModalHeader>
                 <ModalBody>
                     {dados.mensagem}
                 </ModalBody>
                 <ModalFooter>
                     {dados.tipo == 'notificacao' ? 
-                        <Button onClick={() => fechar()} variant='light'>Ok</Button>
+                        <Button onClick={() => fechar()} variant='light' color='success'>Ok</Button>
                     :
                         <div className='flex items-center gap-2'>
                             <Button onClick={() => fechar()} variant='light' >Cancelar</Button>
