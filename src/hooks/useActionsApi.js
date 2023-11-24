@@ -102,6 +102,10 @@ export const useActionsApi = () => ({
             user_id,
             pergunta
         }, {headers: headers})
+    },
+
+    recuperarConta: async(email) => {
+        await axios.post(`http://127.0.0.1:8000/api/esqueci-minha-senha`, {email}, {})
     }
     
 })
