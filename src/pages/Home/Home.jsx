@@ -7,8 +7,14 @@ import { AuthContext } from "../../context/Auth/AuthProvider"
 import PesquisaContexto from "../../context/Pesquisa/PesquisaContexto"
 import { Button, Spinner, Textarea } from "@nextui-org/react"
 import { useActionsApi } from "../../hooks/useActionsApi"
+import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
+import { useGerenciador } from "../../hooks/useGerenciador"
+import Alerta from "../../components/Alerta/Alerta"
 
 const Home = () => {
+
+  const { gerenciar } = useGerenciadorContexto()
+  const gerenciador = useGerenciador()
 
   const {temaPagina, definirTema} = useContext(paginaHomeContexto)
   const {parametrosRequisicao} = useContext(AuthContext)
@@ -40,14 +46,25 @@ const Home = () => {
       definirLoading(true)
       await actionsApi.perguntar(pergunta, parametrosRequisicao)
       definirPergunta('')
-      alert('Pergunta adicionada com sucesso')
+
+      const alerta = {
+        tipo: 'notificacao',
+        titulo: 'Pergunta Enviada!',
+        mensagem: 'Obrigado por nos enviar a sua dúvida! Em breve um administrador irá responde-lá. Fique tranquilo, lhe notificaremos quando sua pergunta for respondida',
+        funcao: '',
+        dadosFuncao: ""
+      }
+      
+      gerenciador.exibirAlerta(gerenciar, alerta)
       definirLoading(false)
     }
   }
 
 
   return (
+    
     <div className="lg:w-[1000px] xl:w-[1300px] m-auto sm:px-20 flex flex-col ">
+    <Alerta />
     {temaPagina == "inicial" ? 
 
       <>
