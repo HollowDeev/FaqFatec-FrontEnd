@@ -17,7 +17,7 @@ import dataContexto from '../../context/Data/dataContexto'
 // eslint-disable-next-line react/prop-types
 const ModalPerguntas = ({isOpen, acao}) => {
   
-  const {tema: temaSistema} = useContext(temaContexto)
+  const { tema: temaSistema, foreground } = useContext(temaContexto)
 
   const {dbTemas, recarregarDados} = useContext(dataContexto)
 
@@ -120,7 +120,7 @@ const ModalPerguntas = ({isOpen, acao}) => {
                 className="text-foreground"
                 selectedKeys={[tema]}
                 onChange={(e) => definirTema(e.target.value)}
-                startContent={<Folders size={25} color="#fdfcfc" weight="fill" />}
+                startContent={<Folders size={25} color={foreground} weight="fill" />}
                 description="Selecione o tema dessa pergunta"
               >
                   {
@@ -138,13 +138,13 @@ const ModalPerguntas = ({isOpen, acao}) => {
             >
               <Tab key="Online" title={
                 <div className="flex items-center space-x-2">
-                  <Sun  size={20} color="#f9f1f1" weight="fill" />
+                  <Sun  size={20} color={foreground} weight="fill" />
                   <span>Perguntas Online</span>
                 </div>
               }></Tab>
               <Tab key="Offline" title={
                 <div className="flex items-center space-x-2">
-                  <MoonStars size={20} color="#f9f1f1" weight="fill" />
+                  <MoonStars size={20} color={foreground} weight="fill" />
                   <span>Perguntas Offline</span>
                 </div>
               }></Tab>
@@ -161,7 +161,7 @@ const ModalPerguntas = ({isOpen, acao}) => {
               </Button>
 
               <Button onPress={onClose} onClick={btnFinalizar}
-                variant='flat' color='success' className='text-xl p-6'
+                variant={temaSistema == 'dark' ? 'flat' : 'bordered'} color='success' className='text-xl p-6'
                 endContent={ loading ? 
                   <Spinner color='success' />
                 : 

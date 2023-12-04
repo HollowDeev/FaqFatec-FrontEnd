@@ -11,6 +11,10 @@ export default {
     extend: {
       fontFamily: {
         "roboto": ["Roboto"] 
+      },
+      backgroundImage: {
+        'dark': "url('./public/bg-cps.png')",
+        'light': "url('./public/bg-cps-light.png')",
       }
     },
   },
@@ -29,6 +33,7 @@ export default {
       light: {
         colors: {
           background2: "#DEDEDE",
+          foreground: '#252A2D',
           content5: "#771212",
           content6: "#17c964",
           danger: "#FF000F"

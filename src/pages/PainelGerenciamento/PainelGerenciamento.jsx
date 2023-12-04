@@ -25,8 +25,7 @@ export default function PainelGerenciamento() {
   const {quantasPerguntasNovas, temPerguntasNovas} = useContext(dataContexto)
 
   // Contexto do tema - light / dark
-  const {tema} = useContext(temaContexto)
-  const foregroundColor = tema == "dark" ? "#ECEDEE" : "#11181C"
+  const {tema, foreground} = useContext(temaContexto)
 
   // Contexto gerenciamento de items - gerenciamento -> objeto / gerenciar -> função base para gerenciar
   const { gerenciar, definirBuscaColaboradores} = useGerenciadorContexto()
@@ -106,17 +105,17 @@ export default function PainelGerenciamento() {
       <div className="flex flex-col justify-center h-48 gap-2">
 
         {painel != 'temas' &&
-          <Tooltip  content='Temas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+          <Tooltip  content='Temas' color="success" className={`font-bold ${tema} text-content1`} placement="right" showArrow>
             <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
-              <Folders size={40} color="#fdfcfc" weight="fill" />
+              <Folders size={40} color={foreground} weight="fill" />
             </div>
           </Tooltip>
         }
 
         {painel == 'temas' &&
-          <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+          <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema} text-content1`} placement="right" showArrow>
             <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('temas')}>
-              <Folders size={40} color="#fdfcfc" weight="fill" />
+              <Folders size={40} color={foreground} weight="fill" />
             </div>
           </Tooltip>
           
@@ -124,9 +123,9 @@ export default function PainelGerenciamento() {
 
         {painel != 'sugestaoPerguntas' &&
             <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
-              <Tooltip content='Novas Perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+              <Tooltip content='Novas Perguntas' color="success" className={`font-bold ${tema} text-content1`} placement="right" showArrow>
                 <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
-                  <SealQuestion size={40} color="#f9f1f1" weight="fill" />
+                  <SealQuestion size={40} color={foreground} weight="fill" />
                 </div>
               </Tooltip>
             </Badge>
@@ -134,27 +133,27 @@ export default function PainelGerenciamento() {
 
         {painel == 'sugestaoPerguntas' &&
             <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
-              <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+              <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema} text-content1`} placement="right" showArrow>
                 <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
-                  <SealQuestion size={40} color="#f9f1f1" weight="fill" />
+                  <SealQuestion size={40} color={foreground} weight="fill" />
                 </div>
               </Tooltip>
             </Badge>
         }
 
         {usuario && usuario.level == 2 && painel != 'colaboradores' &&
-          <Tooltip content='Colaboradores' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+          <Tooltip content='Colaboradores' color="success" className={`font-bold ${tema} text-content1`} placement="right" showArrow>
             <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
-              <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
+              <UserCircleGear size={40} color={foreground} weight="fill" />
             </div>
           </Tooltip>
           
         }
 
         {usuario && usuario.level == 2 && painel == 'colaboradores' &&
-          <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema}`} placement="right" showArrow>
+          <Tooltip content='Voltar para perguntas' color="success" className={`font-bold ${tema} text-content1`} placement="right" showArrow>
             <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
-              <UserCircleGear size={40} color="#f9f1f1" weight="fill" />
+              <UserCircleGear size={40} color={foreground} weight="fill" />
             </div>
           </Tooltip>
 
@@ -163,7 +162,7 @@ export default function PainelGerenciamento() {
 
       <Tooltip content='Adicionar' className={`text-foreground ${tema}`} placement="right">
         <div className="p-2 bg-content6 hover:bg-opacity-70 transition-all rounded-full flex items-center justify-center border-[10px] border-background2 cursor-pointer " onClick={() => adicionarItem()}>
-          <Plus size={40} color="#fdfcfc" weight="bold" />
+          <Plus size={40} color={foreground} weight="bold" />
         </div>
       </Tooltip>
     </div>
@@ -182,13 +181,13 @@ export default function PainelGerenciamento() {
           >
             <Tab key="Online" title={
               <div className="flex items-center space-x-2">
-                <Sun  size={20} color="#f9f1f1" weight="fill" />
+                <Sun  size={20} color={foreground} weight="fill" />
                 <span>Perguntas Online</span>
               </div>
             }></Tab>
             <Tab key="Offline" title={
               <div className="flex items-center space-x-2">
-                <MoonStars size={20} color="#f9f1f1" weight="fill" />
+                <MoonStars size={20} color={foreground} weight="fill" />
                 <span>Perguntas Offline</span>
               </div>
             }></Tab>
@@ -206,7 +205,7 @@ export default function PainelGerenciamento() {
                 <span className="text-content6">Resultado </span>
                 Pesquisa
               </h1>
-              <CardPergunta cor={foregroundColor} tipo="gerenciamento" filtro='pergunta' estado={estadoDasPerguntas} idPesquisa={idPesquisa}/>
+              <CardPergunta cor={foreground} tipo="gerenciamento" filtro='pergunta' estado={estadoDasPerguntas} idPesquisa={idPesquisa}/>
             </>
             :
             <>
@@ -220,9 +219,9 @@ export default function PainelGerenciamento() {
                 
               </h1>
               {temaSelecionado == "todos" ? 
-                <CardPergunta cor={foregroundColor} tipo="gerenciamento" estado={estadoDasPerguntas}/> 
+                <CardPergunta cor={foreground} tipo="gerenciamento" estado={estadoDasPerguntas}/> 
                 : 
-                <CardPergunta cor={foregroundColor} tipo="gerenciamento" estado={estadoDasPerguntas} filtro="tema" temaParaFiltro={temaSelecionado}/> 
+                <CardPergunta cor={foreground} tipo="gerenciamento" estado={estadoDasPerguntas} filtro="tema" temaParaFiltro={temaSelecionado}/> 
               }
             </>
           }
@@ -255,7 +254,7 @@ export default function PainelGerenciamento() {
               <span className="text-content6">Novas </span> 
               Perguntas
             </h1>
-            <CardPergunta cor={foregroundColor} tipo="gerenciamento" modelo='responder'/> 
+            <CardPergunta cor={foreground} tipo="gerenciamento" modelo='responder'/> 
           </>
         }
       </div>
@@ -269,7 +268,7 @@ export default function PainelGerenciamento() {
         <Dropdown className={tema} backdrop="blur">
           <DropdownTrigger >
             <div className="bg-content2 rounded-full p-4 hover:opacity-70 transition-all cursor-pointer">
-              <FolderNotchOpen size={40} color="#fdfcfc" weight="fill" />
+              <FolderNotchOpen size={40} color={foreground} weight="fill" />
             </div>
           </DropdownTrigger>
           <DropdownMenu items={temasParaFiltragem} 
@@ -302,7 +301,7 @@ export default function PainelGerenciamento() {
         {painel != 'sugestaoPerguntas' &&
             <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
               <div className="hover:bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
-                <SealQuestion size={35} color="#f9f1f1" weight="fill" />
+                <SealQuestion size={35} color={foreground} weight="fill" />
               </div>
             </Badge>
         }
@@ -310,7 +309,7 @@ export default function PainelGerenciamento() {
         {painel == 'sugestaoPerguntas' &&
             <Badge content={quantasPerguntasNovas} color="success" variant="shadow" className="font-bold " showOutline={false} isInvisible={!temPerguntasNovas}>
               <div className="bg-content2 p-2 cursor-pointer rounded-full" onClick={() => alternarPainel('sugestaoPerguntas')}>
-                <SealQuestion size={35} color="#f9f1f1" weight="fill" />
+                <SealQuestion size={35} color={foreground} weight="fill" />
               </div>
             </Badge>
           
@@ -318,36 +317,36 @@ export default function PainelGerenciamento() {
 
         {usuario && usuario.level == 2 && painel != 'colaboradores' &&
           <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
-            <UserCircleGear size={35} color="#f9f1f1" weight="fill" />
+            <UserCircleGear size={35} color={foreground} weight="fill" />
           </div>
         }
 
         {usuario && usuario.level == 2 && painel == 'colaboradores' &&
           <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('colaboradores')}>
-            <UserCircleGear size={35} color="#f9f1f1" weight="fill" />
+            <UserCircleGear size={35} color={foreground} weight="fill" />
           </div>
         }
       </div>
 
       <div className="p-2 bg-content6 rounded-full relative bottom-8 border-8 border-background cursor-pointer" onClick={() => adicionarItem()}>
-        <Plus size={40} color="#fdfcfc" weight="bold" />
+        <Plus size={40} color={foreground} weight="bold" />
       </div>
 
       <div className="flex flex-1 justify-around items-center">
         {painel != 'temas' &&
           <div className="hover:bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
-            <Folders size={35} color="#fdfcfc" weight="fill" />
+            <Folders size={35} color={foreground} weight="fill" />
           </div>
         }
 
         {painel == 'temas' &&
           <div className="bg-content2 rounded-full p-2 cursor-pointer" onClick={() => alternarPainel('temas')}>
-            <Folders size={35} color="#fdfcfc" weight="fill" />
+            <Folders size={35} color={foreground} weight="fill" />
           </div>
         }
         <Dropdown className={tema} backdrop="blur">
           <DropdownTrigger>
-            <FolderNotchOpen size={35} color="#fdfcfc" weight="fill" />
+            <FolderNotchOpen size={35} color={foreground} weight="fill" />
           </DropdownTrigger>
           <DropdownMenu items={temasParaFiltragem} 
           selectionMode="single"

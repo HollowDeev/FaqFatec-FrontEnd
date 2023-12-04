@@ -14,7 +14,7 @@ import dataContexto from "../../context/Data/dataContexto"
 
 const CardColaboradores = () => {
 
-    const {tema: temaSistema} = useContext(temaContexto)
+    const {tema: temaSistema, foreground} = useContext(temaContexto)
 
     const actionsApi = useActionsApi()
     const {parametrosRequisicao} = useContext(AuthContext)
@@ -52,11 +52,11 @@ const CardColaboradores = () => {
         {dbColaboradores != null && !loading? (
         <div  className="w-full flex flex-col gap-5" key='1'>
             {dbColaboradores.map((colaboradorDados) => (
-                <div className="w-full h-auto bg-content2 bg-opacity-60 rounded-2xl flex flex-col justify-between gap-5 p-3 static" key={colaboradorDados.id}>
+                <div className="w-full h-auto bg-content2 bg-opacity-40 backdrop-blur-sm rounded-2xl flex flex-col justify-between gap-5 p-3 static" key={colaboradorDados.id}>
 
                     <div className="flex items-center h-auto gap-3 relative">
                         <div>
-                            <User size={50} color="#f9f1f1" weight="duotone" />
+                            <User size={50} color={foreground} weight="duotone" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold">{colaboradorDados.name}</h1>
@@ -68,7 +68,7 @@ const CardColaboradores = () => {
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu onAction={(acao) => selecao(acao, colaboradorDados)}>
-                                <DropdownItem key='mudarSenha' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Mudar Senha</DropdownItem>
+                                <DropdownItem key='mudarSenha' startContent={<PencilSimpleLine size={20} color={foreground} weight="fill" />}>Mudar Senha</DropdownItem>
                                 <DropdownItem key="remover"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Remover</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
@@ -83,7 +83,7 @@ const CardColaboradores = () => {
                                 </div>
                             </DropdownTrigger>
                             <DropdownMenu  onAction={(acao) => selecao(acao, colaboradorDados)}>
-                                <DropdownItem key='mudarSenha' startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Mudar Senha</DropdownItem>
+                                <DropdownItem key='mudarSenha' startContent={<PencilSimpleLine size={20} color={foreground} weight="fill" />}>Mudar Senha</DropdownItem>
                                 <DropdownItem key="remover"  className="text-danger" startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Remover</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>

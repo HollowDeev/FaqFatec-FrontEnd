@@ -17,7 +17,7 @@ import { AuthContext } from '../../context/Auth/AuthProvider'
 // eslint-disable-next-line react/prop-types
 const ModalTemas = ({isOpen, acao}) => {
   
-  const {tema: temaSistema} = useContext(temaContexto)
+  const { tema: temaSistema, foreground } = useContext(temaContexto)
 
   const {parametrosRequisicao} = useContext(AuthContext)
 
@@ -81,7 +81,7 @@ const ModalTemas = ({isOpen, acao}) => {
           <ModalBody>
             <div>
               <Input size={'lg'} className='text-foreground' label="Nome:" description="Digite o nome" isRequired value={nome.toUpperCase()} 
-              onChange={(e) => definirNome(e.target.value)} startContent={<Textbox size={25} color="#f9f1f1" weight="fill" />}
+              onChange={(e) => definirNome(e.target.value)} startContent={<Textbox size={25} color={foreground} weight="fill" />}
               />
             </div>
             <div className='mt-8'>
@@ -93,7 +93,7 @@ const ModalTemas = ({isOpen, acao}) => {
                 className="text-foreground"
                 selectedKeys={icone}
                 onSelectionChange={definirIcone}
-                startContent={<StackSimple size={25} color="#f9f1f1" weight="fill" />}
+                startContent={<StackSimple size={25} color={foreground} weight="fill" />}
                 description="Selecione o tema dessa pergunta"
                 isRequired
               >
@@ -115,7 +115,7 @@ const ModalTemas = ({isOpen, acao}) => {
             </Button>
 
             <Button onPress={onClose} onClick={btnFinalizar}
-              variant='flat' color='success' className='text-xl p-6'
+              variant={temaSistema == 'dark' ? 'flat' : 'bordered'} color='success' className='text-xl p-6'
               endContent={ loading ? 
                 <Spinner color='success' />
               : 

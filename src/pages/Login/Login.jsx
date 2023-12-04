@@ -8,10 +8,14 @@ import { useGerenciador } from "../../hooks/useGerenciador"
 import { useActionsApi } from "../../hooks/useActionsApi"
 import useGerenciadorContexto from "../../hooks/useGerenciadorContexto"
 import Alerta from "../../components/Alerta/Alerta"
+import temaContexto from "../../context/TemaContexto"
 
 
 
 export const Login = () => {
+
+    const { foreground } = useContext(temaContexto)
+
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
     const [erro, definirErro] = useState("")
@@ -20,7 +24,7 @@ export const Login = () => {
     const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
-    const {entrar} = useContext(AuthContext)
+    const { entrar } = useContext(AuthContext)
 
     const actionsApi = useActionsApi()
 
@@ -28,24 +32,24 @@ export const Login = () => {
     const gerenciador = useGerenciador()
 
     useEffect(() => {
-        
+
         const formatoEmailValido = /@fatec\.sp\.gov\.br$/.test(email);
 
         if (!formatoEmailValido && email.includes('@')) {
-          definirErro('O email deve ser do domínio @fatec.sp.gov.br');
+            definirErro('O email deve ser do domínio @fatec.sp.gov.br');
         } else {
-          definirErro('');
+            definirErro('');
         }
 
-    }, [ email])
+    }, [email])
 
 
-    const handleButton = async ()  => {
+    const handleButton = async () => {
         setLoading(true)
-        try{
+        try {
             await entrar(email, senha)
             navigate('/')
-        }catch(e){
+        } catch (e) {
             definirErro(e.message)
         }
         setLoading(false)
@@ -56,9 +60,9 @@ export const Login = () => {
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     const recuperarSenha = async () => {
-        if(email != ''){
+        if (email != '') {
             setLoading(true)
-            try{
+            try {
                 await actionsApi.recuperarConta(email)
                 const alerta = {
                     tipo: 'notificacao',
@@ -68,91 +72,91 @@ export const Login = () => {
                     dadosFuncao: ''
                 }
                 gerenciador.exibirAlerta(gerenciar, alerta)
-            }catch(e){
+            } catch (e) {
                 definirErro(e.message)
             }
             setLoading(false)
-        }else {
+        } else {
             definirErro('Preencha o seu email para recuperarmos a sua conta')
         }
     }
 
-  return (
-    <div className="flex flex-col justify-center items-center  gap-5">
-        <Alerta />
-        {loading === false ? 
-            <>
-                <h1 className="text-3xl font-bold">
-                    {modoExibicao == 'login' ?
-                        <span className="text-content6">Login</span> 
-                    :
-                        <span className="text-content6">Recuperar Senha</span> 
-                    }
-                </h1>
-                <hr />
-                <form className="flex flex-col gap-2 w-[300px]">
-                    <Input type="text" label="email" isRequired size="sm" onChange={(e) => setEmail(e.target.value)}
-                    isInvalid={erro ? true : false}
-                    errorMessage={erro}
-                    />
-
-                    {modoExibicao == 'login' &&
-                        <Input type={isVisible ? "text" : "password"} label="senha" isRequired size="sm" onChange={(e) => setSenha(e.target.value)} 
-                        endContent={
-                            <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                            {isVisible ? (
-                                <Eye size={20} color="#fdfcfc" weight="fill" />
-                            ) : (
-                                <EyeSlash size={20} color="#fdfcfc" weight="fill" />
-                            )}
-                            </button>
-                        } 
-                        isInvalid={erro ? true : false}
-                        errorMessage={erro}
+    return (
+        <div className="flex flex-col justify-center items-center  gap-5">
+            <Alerta />
+            {loading === false ?
+                <>
+                    <h1 className="text-3xl font-bold">
+                        {modoExibicao == 'login' ?
+                            <span className="text-content6">Login</span>
+                            :
+                            <span className="text-content6">Recuperar Senha</span>
+                        }
+                    </h1>
+                    <hr />
+                    <form className="flex flex-col gap-2 w-[300px]">
+                        <Input type="text" label="email" isRequired size="sm" onChange={(e) => setEmail(e.target.value)}
+                            isInvalid={erro ? true : false}
+                            errorMessage={erro}
                         />
-                    }
-                    
-                <span onClick={() => modoExibicao == 'login' ? definirModoExibicao('recuperarSenha') : definirModoExibicao('login')} className="opacity-40 hover:text-content5 hover:opacity-100 font-semibold px-2 cursor-pointer text-sm">
+
+                        {modoExibicao == 'login' &&
+                            <Input type={isVisible ? "text" : "password"} label="senha" isRequired size="sm" onChange={(e) => setSenha(e.target.value)}
+                                endContent={
+                                    <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                                        {isVisible ? (
+                                            <Eye size={20} color={foreground} weight="fill" />
+                                        ) : (
+                                            <EyeSlash size={20} color={foreground} weight="fill" />
+                                        )}
+                                    </button>
+                                }
+                                isInvalid={erro ? true : false}
+                                errorMessage={erro}
+                            />
+                        }
+
+                        <span onClick={() => modoExibicao == 'login' ? definirModoExibicao('recuperarSenha') : definirModoExibicao('login')} className="opacity-40 hover:text-content5 hover:opacity-100 font-semibold px-2 cursor-pointer text-sm">
+                            {modoExibicao == 'login' ?
+                                'Esqueceu sua senha?'
+                                :
+                                'Voltar para login'
+                            }
+                        </span>
+                    </form>
                     {modoExibicao == 'login' ?
-                        'Esqueceu sua senha?'
-                    :
-                        'Voltar para login'
+                        email == "" || senha == "" ? <Button isDisabled >Prencha os campos</Button>
+                            :
+                            <Button onClick={() => handleButton()}>Entrar</Button>
+                        :
+                        email == "" ? <Button isDisabled >Prencha o Email</Button>
+                            :
+                            <Button onClick={() => recuperarSenha()}>Recuperar</Button>
                     }
-                </span>
-                </form>
-                {modoExibicao == 'login' ?
-                    email == "" || senha == "" ? <Button isDisabled >Prencha os campos</Button> 
-                    : 
-                    <Button onClick={() => handleButton()}>Entrar</Button>
+                </>
                 :
-                    email == "" ? <Button isDisabled >Prencha o Email</Button> 
-                    : 
-                    <Button onClick={() => recuperarSenha()}>Recuperar</Button>
-                }
-            </>
-            :
-            modoExibicao == 'login' ?
-                <div className="w-full flex flex-col justify-center items-center">
-                    <h1 className="text-2xl  mb-5">Verificando suas credenciais</h1>
-                    
-                    <Progress size="md" isIndeterminate aria-label="Loading..." className="max-w-sm" 
+                modoExibicao == 'login' ?
+                    <div className="w-full flex flex-col justify-center items-center">
+                        <h1 className="text-2xl  mb-5">Verificando suas credenciais</h1>
 
-                    color="danger"
-                    />
-                    
-                </div>
-                :
-                <div className="w-full flex flex-col justify-center items-center">
-                    <h1 className="text-2xl  mb-5">Enviando o email de recuperação</h1>
-                    
-                    <Spinner color="success" />
-                    
-                    
-                </div>
-                
-        }
-        
+                        <Progress size="md" isIndeterminate aria-label="Loading..." className="max-w-sm"
 
-    </div>
-  )
+                            color="danger"
+                        />
+
+                    </div>
+                    :
+                    <div className="w-full flex flex-col justify-center items-center">
+                        <h1 className="text-2xl  mb-5">Enviando o email de recuperação</h1>
+
+                        <Spinner color="success" />
+
+
+                    </div>
+
+            }
+
+
+        </div>
+    )
 }

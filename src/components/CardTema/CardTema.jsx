@@ -16,7 +16,7 @@ import { AuthContext } from "../../context/Auth/AuthProvider"
 
 const CardTema = ({tipo = 'visualizacao'}) => {
 
-    const {tema: temaSistema} = useContext(temaContexto)
+    const {tema: temaSistema, foreground} = useContext(temaContexto)
 
     const actionsApi = useActionsApi()
 
@@ -55,7 +55,7 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                     <>
                         {dbTemas.map(({tema, icone, id}) => 
                         
-                        <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 p-5 text-center flex flex-col justify-between items-center hover:translate-y-[-20px] cursor-pointer transition-transform" key={id} onClick={() => definirTema(tema)}>
+                        <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-40 backdrop-blur-sm p-5 text-center flex flex-col justify-between items-center hover:translate-y-[-20px] cursor-pointer transition-transform" key={id} onClick={() => definirTema(tema)}>
                                 <MediaQuery maxWidth={640}>
                                     <Icone icone={icone} tamanho={70}/>
                                 </MediaQuery>
@@ -84,7 +84,7 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                         <>
                             {dbTemas.map(({tema, icone, id}) => 
                         
-                                <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-60 sm:p-5 relative text-center flex flex-col justify-between items-center" key={id} onClick={() => definirTema(tema)}>
+                                <div className="w-36 h-36 sm:w-52 sm:h-52 bg-content2 rounded-2xl bg-opacity-40 backdrop-blur-sm sm:p-5 relative text-center flex flex-col justify-between items-center" key={id} onClick={() => definirTema(tema)}>
                                     
                                     <MediaQuery maxWidth={640}>
                                         <Icone icone={icone} tamanho={70} />
@@ -98,7 +98,7 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                                                     </div>
                                                 </DropdownTrigger>
                                                 <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, {tema, icone, id})}>
-                                                    <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                                    <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color={foreground} weight="fill" />}>Editar</DropdownItem>
                                                     <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
                                                 </DropdownMenu>
                                         </Dropdown>
@@ -113,7 +113,7 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                                             <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden">GERENCIAR</div>
                                         </DropdownTrigger>
                                         <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, tema)}>
-                                            <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color="#f9f1f1" weight="fill" />}>Editar</DropdownItem>
+                                            <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color={foreground} weight="fill" />}>Editar</DropdownItem>
                                             <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
                                         </DropdownMenu>
                                     </Dropdown>

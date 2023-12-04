@@ -17,7 +17,7 @@ function Main() {
 
   return (
 
-    <main className={` ${tema} text-foreground bg-background2 sm:bg-[url(bg-cps.png)] sm:bg-right sm:bg-repeat-y sm:bg-fixed h-full min-h-[100vh] flex flex-col justify-between font-roboto`}>
+  <main className={` ${tema} text-foreground bg-background2 ${tema == 'dark' ? 'sm:bg-dark' : 'sm:bg-light'} sm:bg-right sm:bg-repeat-y sm:bg-fixed h-full min-h-[100vh] flex flex-col justify-between font-roboto`}>
       <Cabecalho />
 
       <Routes>

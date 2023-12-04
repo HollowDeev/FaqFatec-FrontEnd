@@ -16,7 +16,7 @@ const BarraPesquisa = () => {
 
     const {definirIdParaPesquisa, idPesquisa} = useContext(PesquisaContexto)
     
-    const {tema} = useContext(temaContexto)
+    const {tema, foreground} = useContext(temaContexto)
     const {usuario} = useContext(AuthContext)
 
     const {dbPerguntasOnline, dbPerguntasOffline} = useContext(dataContexto)
@@ -44,7 +44,7 @@ const BarraPesquisa = () => {
     <>
         <MediaQuery maxWidth={640}>
             <div className="p-2" onClick={() => onOpen()}>
-                <MagnifyingGlass size={24} color="#fdfcfc" weight="bold" cursor="pointer"/>
+                <MagnifyingGlass size={24} color={foreground} weight="bold" cursor="pointer"/>
             </div>
         </MediaQuery>
 
@@ -52,7 +52,7 @@ const BarraPesquisa = () => {
         <MediaQuery minWidth={640}>
             {dbPerguntas ?
                 <Autocomplete className="w-[450px]" size="sm" defaultItems={dbPerguntas} onSelectionChange={pesquisar} startContent={
-                    <MagnifyingGlass size={24} color="#fdfcfc" weight="bold" />
+                    <MagnifyingGlass size={24} color={foreground} weight="bold" />
                 }
                 placeholder='Pesquise por uma pergunta e a encostre rapidamente'
                 inputProps={{
@@ -86,7 +86,7 @@ const BarraPesquisa = () => {
                         <ModalBody>
                         {dbPerguntas && 
                             <Autocomplete  size="sm" defaultItems={dbPerguntas} onSelectionChange={pesquisar} startContent={
-                                <MagnifyingGlass size={24} color="#fdfcfc" weight="bold" />
+                                <MagnifyingGlass size={24} color={foreground} weight="bold" />
                             }
                             selectedKey={idPesquisa}
                             >

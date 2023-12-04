@@ -16,7 +16,8 @@ import dataContexto from '../../context/Data/dataContexto'
 // eslint-disable-next-line react/prop-types
 const ModalColaboradores = ({isOpen, acao}) => {
   
-  const {tema: temaSistema} = useContext(temaContexto)
+  const { tema: temaSistema, foreground } = useContext(temaContexto)
+
 
   const { onOpenChange } = useDisclosure()
 
@@ -119,26 +120,26 @@ const ModalColaboradores = ({isOpen, acao}) => {
               <ModalBody>
                 <div>
                   <Input size={'lg'} className='text-foreground' label="Senha:" description="Digite a nova senha" isRequired value={senha} 
-                  onChange={(e) => definirSenha(e.target.value)} type={senhaVisivel ? 'text' : 'password'} isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color="#f9f1f1" weight="fill" /> }  placeholder='Nova Senha' 
+                  onChange={(e) => definirSenha(e.target.value)} type={senhaVisivel ? 'text' : 'password'} isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color={foreground} weight="fill" /> }  placeholder='Nova Senha' 
                   endContent={
                     <button className="focus:outline-none" type="button" onClick={toggleSenhaVisivel}>
                       {senhaVisivel ? (
-                        <Eye size={25} color="#f9f1f1" weight="fill" />
+                        <Eye size={25} color={foreground} weight="fill" />
                       ) : (
-                        <EyeSlash size={25} color="#f9f1f1" weight="fill" />
+                        <EyeSlash size={25} color={foreground} weight="fill" />
                       )}
                     </button>}
                   />
                 </div>
                 <div>
                 <Input size={'lg'} className='text-foreground' label="Confirmar senha:" description="Digite novamente a nova senha" isRequired value={confirmarSenha} 
-                  onChange={(e) => definirConfirmarSenha(e.target.value)} type={confirmarSenhaVisivel ? 'text' : 'password'}  isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color="#f9f1f1" weight="fill" />} placeholder='Confirme a nova Senha' 
+                  onChange={(e) => definirConfirmarSenha(e.target.value)} type={confirmarSenhaVisivel ? 'text' : 'password'}  isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color={foreground} weight="fill" />} placeholder='Confirme a nova Senha' 
                   endContent={
                     <button className="focus:outline-none" type="button" onClick={toggleConfirmarSenhaVisivel}>
                       {confirmarSenhaVisivel ? (
-                        <Eye size={25} color="#f9f1f1" weight="fill" />
+                        <Eye size={25} color={foreground} weight="fill" />
                       ) : (
-                        <EyeSlash size={25} color="#f9f1f1" weight="fill" />
+                        <EyeSlash size={25} color={foreground} weight="fill" />
                       )}
                     </button>}
                   />
@@ -155,7 +156,7 @@ const ModalColaboradores = ({isOpen, acao}) => {
                 </Button>
     
                 <Button onPress={onClose} onClick={btnFinalizar}
-                  variant='flat' color='success' className='text-xl p-6'
+                  variant={temaSistema == 'dark' ? 'flat' : 'bordered'} color='success' className='text-xl p-6'
                   endContent={ loading ? 
                     <Spinner color='success' />
                   : 
@@ -186,34 +187,34 @@ const ModalColaboradores = ({isOpen, acao}) => {
               <ModalBody>
                 <div>
                   <Input size={'lg'} className='text-foreground' label="Nome:" description="Digite o nome completo do colaborador" isRequired value={nome} 
-                  onChange={(e) => definirNome(e.target.value)} isInvalid={erro}  errorMessage={mensagemErro} startContent={<Textbox size={25} color="#f9f1f1" weight="fill" /> } placeholder='Nome do colaborador'/>
+                  onChange={(e) => definirNome(e.target.value)} isInvalid={erro}  errorMessage={mensagemErro} startContent={<Textbox size={25} color={foreground} weight="fill" /> } placeholder='Nome do colaborador'/>
                 </div>
                 <div>
                   <Input size={'lg'} className='text-foreground' label="Email:" description="Digite o email institucional do colaborador" isRequired value={email} 
-                  onChange={(e) => definirEmail(e.target.value)} isInvalid={erro}  errorMessage={mensagemErro} startContent={<EnvelopeSimple size={25} color="#f9f1f1" weight="fill" />} placeholder='Email institucional'/>
+                  onChange={(e) => definirEmail(e.target.value)} isInvalid={erro}  errorMessage={mensagemErro} startContent={<EnvelopeSimple size={25} color={foreground} weight="fill" />} placeholder='Email institucional'/>
                 </div>
                 <div>
                   <Input size={'lg'} className='text-foreground' label="Senha:" description="Digite a nova senha" isRequired value={senha} 
-                  onChange={(e) => definirSenha(e.target.value)} type={senhaVisivel ? 'text' : 'password'} isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color="#f9f1f1" weight="fill" /> } placeholder='Nova Senha' 
+                  onChange={(e) => definirSenha(e.target.value)} type={senhaVisivel ? 'text' : 'password'} isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color={foreground} weight="fill" /> } placeholder='Nova Senha' 
                   endContent={
                     <button className="focus:outline-none" type="button" onClick={toggleSenhaVisivel}>
                       {senhaVisivel ? (
-                        <Eye size={25} color="#f9f1f1" weight="fill" />
+                        <Eye size={25} color={foreground} weight="fill" />
                       ) : (
-                        <EyeSlash size={25} color="#f9f1f1" weight="fill" />
+                        <EyeSlash size={25} color={foreground} weight="fill" />
                       )}
                     </button>}
                   />
                 </div>
                 <div>
                 <Input size={'lg'} className='text-foreground' label="Confirmar senha:" description="Digite novamente a nova senha" isRequired value={confirmarSenha} 
-                  onChange={(e) => definirConfirmarSenha(e.target.value)} type={confirmarSenhaVisivel ? 'text' : 'password'}  isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color="#f9f1f1" weight="fill" />} placeholder='Confirme a nova Senha' 
+                  onChange={(e) => definirConfirmarSenha(e.target.value)} type={confirmarSenhaVisivel ? 'text' : 'password'}  isInvalid={erro}  errorMessage={mensagemErro} startContent={<Password size={25} color={foreground} weight="fill" />} placeholder='Confirme a nova Senha' 
                   endContent={
                     <button className="focus:outline-none" type="button" onClick={toggleConfirmarSenhaVisivel}>
                       {confirmarSenhaVisivel ? (
-                        <Eye size={25} color="#f9f1f1" weight="fill" />
+                        <Eye size={25} color={foreground} weight="fill" />
                       ) : (
-                        <EyeSlash size={25} color="#f9f1f1" weight="fill" />
+                        <EyeSlash size={25} color={foreground} weight="fill" />
                       )}
                     </button>}
                   />
