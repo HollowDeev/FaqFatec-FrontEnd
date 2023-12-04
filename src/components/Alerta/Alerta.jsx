@@ -80,7 +80,7 @@ const Alerta = () => {
                     :
                         <SealCheck size={30} color="#17c964" weight="duotone" />
                     }
-                    <h1 className={`${!alertaNotificacao ? "bg-content5 text-foreground" : "bg-content6 text-background2"} px-2 border-l-2`}>{dados.titulo}</h1>
+                    <h1 className={`${!alertaNotificacao ? "bg-content5 text-white" : "bg-content6 text-black"} px-2 border-l-2 border-foreground`}>{dados.titulo}</h1>
                 </ModalHeader>
                 <ModalBody>
                     {dados.mensagem}
