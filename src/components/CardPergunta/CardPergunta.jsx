@@ -138,11 +138,11 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
         return splitText.map((part, index) => {
             if (part.match(linkRegex)) {
-              return `<a key=${index} href=${part} target="_blank" rel="noopener noreferrer" className='text-content5 font-bold'>${part}</a>`;
+                return `<a key=${index} href=${part} target="_blank" rel="noopener noreferrer" className='text-content5 font-bold'>${part}</a>`;
             } else {
-              return part;
+                return part;
             }
-          }).join('');
+        }).join('');
     };
 
     switch (tipo) {
@@ -356,7 +356,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
                                                         <Dropdown className={`text-foreground ${temaSistema}`}>
                                                             <DropdownTrigger>
-                                                                <div className={` ${estado == 'Online' ? "bg-content6 text-background2" : "bg-content5 text-white"} p-2 text-center rounded-b-xl text-xl font-bold sm:hidden`}>
+                                                                <div className={` ${estado == 'Online' ? "bg-content6 text-background2" : "bg-content5 text-white"} p-2 text-center rounded-b-xl text-xl font-bold sm:hidden cursor-pointer`}>
                                                                     GERENCIAR
                                                                 </div>
                                                             </DropdownTrigger>
@@ -422,7 +422,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
                                                         <Dropdown className={`text-foreground ${temaSistema}`}>
                                                             <DropdownTrigger>
-                                                                <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                                <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden cursor-pointer" >
                                                                     GERENCIAR
                                                                 </div>
                                                             </DropdownTrigger>
@@ -486,7 +486,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
                                                         <Dropdown className={`text-foreground ${temaSistema}`}>
                                                             <DropdownTrigger>
-                                                                <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                                <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden cursor-pointer">
                                                                     GERENCIAR
                                                                 </div>
                                                             </DropdownTrigger>
@@ -543,7 +543,7 @@ export default function CardPergunta({ limite, temaParaFiltro, filtro, cor, tipo
 
                                                 <Dropdown className={`text-foreground ${temaSistema}`}>
                                                     <DropdownTrigger>
-                                                        <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden">
+                                                        <div className="bg-content6 p-2 text-center rounded-b-xl text-xl font-bold text-background2 sm:hidden cursor-pointer">
                                                             GERENCIAR
                                                         </div>
                                                     </DropdownTrigger>

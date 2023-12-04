@@ -145,7 +145,7 @@ const ModalColaboradores = ({isOpen, acao}) => {
                   />
                 </div>
               </ModalBody>
-              <ModalFooter>
+              <ModalFooter className='justify-center sm:justify-end'>
                 <Button onPress={onClose} onClick={btnCancelar}
                   variant='light' color='danger' className='text-xl p-6'
                   endContent={

@@ -9,7 +9,7 @@ function TemaProvider({children}) {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tema, setTema] = useState("light")
-  const [foregroud, setForeground] = useState('#ECEDEE')
+  const [foreground, setForeground] = useState('#ECEDEE')
   
   useEffect(() => {
     if(tema == 'light'){
@@ -21,7 +21,7 @@ function TemaProvider({children}) {
 
 
   return (
-    <temaContexto.Provider value={{tema, foregroud, setTema}}>
+    <temaContexto.Provider value={{tema, foreground, setTema}}>
       {children}
     </temaContexto.Provider>
   )

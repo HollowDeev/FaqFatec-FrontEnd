@@ -26,7 +26,7 @@ const BarraPesquisa = () => {
     const pesquisar = (id) => {
         definirIdParaPesquisa(id);
     }
-
+    
     useEffect(() => {
         if(dbPerguntasOnline != null && dbPerguntasOffline != null && usuario && usuario.level > 0) {
             const pergunta = [

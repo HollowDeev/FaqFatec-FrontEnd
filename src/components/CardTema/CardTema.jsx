@@ -108,11 +108,11 @@ const CardTema = ({tipo = 'visualizacao'}) => {
                                     <h1 className="text-2xl font-extrabold mx-1 sm:m-0">{tema.toUpperCase()}</h1>
                                 
                                     
-                                    <Dropdown className={`text-foreground ${temaSistema}`}>
+                                    <Dropdown className={`text-foreground ${temaSistema} `}>
                                         <DropdownTrigger >
-                                            <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden">GERENCIAR</div>
+                                            <div className=" w-full bg-content6 rounded-b-2xl py-1 sm:hidden cursor-pointer">GERENCIAR</div>
                                         </DropdownTrigger>
-                                        <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, tema)}>
+                                        <DropdownMenu className={temaSistema} onAction={(acao) => selecionar(acao, {tema, icone, id})}>
                                             <DropdownItem key="editar" startContent={<PencilSimpleLine size={20} color={foreground} weight="fill" />}>Editar</DropdownItem>
                                             <DropdownItem key="excluir" className="text-danger"  startContent={<Trash size={20} color="#C2120D" weight="fill" />}>Excluir</DropdownItem>
                                         </DropdownMenu>

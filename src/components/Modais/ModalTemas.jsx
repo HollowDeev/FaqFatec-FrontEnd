@@ -104,9 +104,9 @@ const ModalTemas = ({isOpen, acao}) => {
               )}
             </div>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter className='justify-center sm:justify-end'>
             <Button onPress={onClose} onClick={btnCancelar}
-              variant='light' color='danger' className='text-xl p-6'
+              variant='light' color='danger' className='text-xl p-2 sm:p-6'
               endContent={
                 <XCircle size={25} color="#FF000F" weight="fill" />
               }
@@ -115,7 +115,7 @@ const ModalTemas = ({isOpen, acao}) => {
             </Button>
 
             <Button onPress={onClose} onClick={btnFinalizar}
-              variant={temaSistema == 'dark' ? 'flat' : 'bordered'} color='success' className='text-xl p-6'
+              variant={temaSistema == 'dark' ? 'flat' : 'bordered'} color='success' className='text-xl p-2 sm:p-6'
               endContent={ loading ? 
                 <Spinner color='success' />
               : 

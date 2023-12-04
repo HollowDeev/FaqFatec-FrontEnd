@@ -130,7 +130,7 @@ const ModalPerguntas = ({isOpen, acao}) => {
               )}
             </div>
           </ModalBody>
-          <ModalFooter className='flex justify-between items-center'>
+          <ModalFooter className='p-2 sm:p-5 justify-center items-center flex-col sm:flex-row sm:justify-between'>
             <Tabs className="font-semibold" variant="bordered" 
               size="sm" 
               selectedKey={estadoDaPergunta} 
