@@ -141,7 +141,7 @@ const Registro = () => {
         </div>
         {erroGlobal != '' &&
           <div className="flex items-center gap-2">
-            <p className="bg-content5 px-2">Falha ao criar a conta pois: </p>
+            <p className="bg-content5 px-2 text-white">Falha ao criar a conta pois: </p>
             <span>{erroGlobal}</span>
           </div>
         }
