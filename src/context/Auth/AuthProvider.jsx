@@ -29,7 +29,7 @@ export const AuthProvider = ({children}) => {
 
       if(tokenSalvo){
         const userData = await api.validarToken(tokenSalvo)
-        
+    
         if(userData){
           definirParametros(userData.level, tokenSalvo, userData.id)
           return userData
@@ -57,6 +57,7 @@ export const AuthProvider = ({children}) => {
  
   const entrar = async (email, senha) => {
     const userData = await api.entrar(email, senha)
+    console.log(userData)
     if(userData){
       definirUsuario(userData)
       armazenarToken(userData.token)

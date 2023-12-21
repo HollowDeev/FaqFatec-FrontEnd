@@ -16,7 +16,7 @@ const RequireAuth = ({children, level=0}) => {
     useEffect(() => {
         const verificar = async () => {
             const userdataResponse = await checarAutorizacao()
-
+            console.log(userdataResponse)
             if(!userdataResponse) {
                 navigate('/login')
                 return

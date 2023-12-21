@@ -18,16 +18,15 @@ const DataProvider = ({children}) => {
 
     const definirDados = async () => {
         const dados = await api.buscarDados()
-        
         definirDbIcones(dados.icones)
-        definirDbPerguntas(dados.perguntasOnline.original)
+        definirDbPerguntas(dados.perguntas.original)
+        
         definirDbTemas(dados.temas.original)
     }
 
     const definirDadosColaboradores = async() => {
         if(parametrosRequisicao && usuario.level == 2){
             const colaboradores = await api.buscarColaboradores(parametrosRequisicao)
-            console.log(colaboradores)
             definirDbColaboradores(colaboradores)
         }
     }
